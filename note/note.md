@@ -88,19 +88,100 @@ func main()  {
 - 空白符
 
 ### 特殊的函数
-- main 函数
+- main 函数：
+    - main 函数是 go 程序的入口；
+    - main 函数应该放在 main 包中；
 - init 函数
+    - 所有的包都可以包含一个 init 函数
+    - init 函数无参数和返回值类型
+    - 作用： 可用于执行初始化任务，也可用于在开始执行之前验证程序的正确性
 - 多返回值函数（两种方式）
+- 大写开头的函数名或变量和小写开头的区别（类似于 java 语言中的`可见性`）
+    - 大写开头： 包外可见
+    - 小写开头： 包内可见
 
 ---
 ## package
-- 声明
-- 导出与非导出（类似于 java 语言中的`可见性`）
+- 作用： 包用于组织 Go 源代码，提供了更好的可重用性与可读性
+- 声明： 关键字 package
+    ```go
+    // 声明一个包
+    package pkgName
+    ```
+- 包的导入： import 关键字
+    ```go
+    package main
+    // 导入包 fmt
+    import "fmt"
+    ```
+- 包的初始化顺序（可对比 java 语言中 静态代码块的初始化）
+    - 先初始化包级别的变量
+    - 紧接着调用 init 函数。包可以有多个 init 函数（在一个文件或分布于多个文件中），它们按照编译器解析它们的顺序进行调用
 
 ## 语句
 ### if-else
-### 循环
+```go
+package main
+import "fmt"
+func main() {
+    var num = 20
+    if num = 15; num > 10 {
+        fmt.Println("num is greater than 10")
+    } else {
+        fmt.Println("num is less than 10")
+    }
+}
+```
+### 循环（go 中的循环只有 for）
+```go
+package main
+import "fmt"
+func main() {
+    var num = 20
+    for i := 0; i < num; i++ {
+        if i > 10 {
+            break
+        }
+        if i%2 == 0 {
+            switch i {
+                case 0:
+                 fmt.Println("zero")
+            }
+            continue
+        }
+        fmt.Printf("i=%d ", i)
+    }
+}
+```
 ### switch
+```go
+package main
+import "fmt"
+func main() {
+    var num = 20
+    for i := 0; i < num; i++ {
+        if i > 10 {
+            break
+        }
+        if i%2 == 0 {
+            switch i {
+            case 0:
+                fmt.Println("Zero")
+            case 2:
+                fmt.Println("Two")
+            case 4, 6: // 多判断
+                fmt.Println("more than 2")
+                // 将执行下一个 case 语句
+                fallthrough
+            default: // 默认 
+                fmt.Println("Nothing")
+            }
+            continue
+        }
+        fmt.Printf("i=%d ", i)
+    }
+}
+```
 
 ## 数组与切片
 
