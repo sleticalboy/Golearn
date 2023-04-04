@@ -14,3 +14,7 @@
 # idea
 .idea/
 Golearn.iml
+
+# vscode
+.vscode/__*
+!.vscode/*.json
