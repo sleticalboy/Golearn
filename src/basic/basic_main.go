@@ -9,4 +9,5 @@ func Main() {
 	sliceRun()
 	mapRun()
 	ptrRun()
+	structRun()
 }

@@ -326,12 +326,88 @@ for i, rune := range s {
 ## 指针
 
 ### 指针指向一块内存的地址（c）
+```go
+a := 100
+p := &a
+fmt.Println("a memory addres is", p)
+```
 
 ### 函数中数组传参推荐使用切片而不是指针
 
 ### 指针运算---不支持！！！
 
+### 指针解引用
+```go
+a := 100
+p := &a
+fmt.Println("a is", *p)
+```
+
 ## 结构体
+
+### 命名结构体
+```go
+type Person struct {
+    // 命名字段
+    // 同类型的字段放在一行是为了紧凑
+    name, address string
+    age, gender int
+    // 匿名字段
+    float64
+}
+```
+
+### 匿名结构体
+```go
+tom := struct {
+    name, address string
+    age, gender int
+}{
+    name: "tom",
+    age: 18,
+    gender: 1
+}
+```
+
+### 结构体指针
+```go
+jack := &Person {
+    name: "jack",
+    age: 18
+}
+fmt.Println("jack.age is", jack.age)
+```
+
+### 嵌套结构体
+```go
+type Group struct {
+    tl, mp Person
+}
+```
+
+### 提升字段：结构体中有匿名的结构体字段
+```go
+type Other struct {
+    tv, floor string
+}
+type House struct {
+    width, height, length int
+    Other
+}
+
+var h House
+h.width = 30
+h.height = 40
+h.length = 50
+h.Other = Other {
+    tv: "ChangHong",
+    floor: "fake"
+}
+```
+
+### 导出结构体：结构体中的字段首字母大写则对外可见
+
+### 结构体的可比较性：结构体中的所有字段均具有可比较性
 
 ## 方法与函数
 
