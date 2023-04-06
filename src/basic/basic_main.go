@@ -11,4 +11,5 @@ func Main() {
 	ptrRun()
 	structRun()
 	methodRun()
+	itfRun()
 }

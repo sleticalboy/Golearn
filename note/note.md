@@ -467,6 +467,48 @@ func main() {
 
 ## 接口
 
+### 定义并实现接口
+```go
+// 定义接口
+type Runnable interface {
+	run()
+}
+// 定义数据结构
+type DownloadTask struct {
+	url string
+}
+
+// 实现接口
+func (task *DownloadTask) run() {
+	fmt.Printf("download task run %s\n", task.url)
+}
+
+func main() {
+    dt := &DownloadTask{
+		url: "https://www.example.com",
+	}
+    // 调用接口
+	dt.run()
+}
+```
+
+### 空接口
+```go
+// 空接口没有实现任何方法，所以任何类都实现了空接口
+interface {}
+```
+
+### 类型断言：提取接口的底层值（哪个类实现了接口？）
+```go
+func itfAssert(itf interface{}) {
+    switch itf.(type) {
+        case string:
+        case int:
+        default:
+    }
+}
+```
+
 ## 并发
 
 ## 协程
