@@ -10,4 +10,5 @@ func Main() {
 	mapRun()
 	ptrRun()
 	structRun()
+	methodRun()
 }
