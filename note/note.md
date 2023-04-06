@@ -511,9 +511,49 @@ func itfAssert(itf interface{}) {
 
 ## 并发
 
-## 协程
+### 并发与并行
+- 并行：一边写代码一边听歌（同时进行）
+- 并发：写代码、运行代码、解决 bug（时间片轮转执行不同的任务）
 
-## 信道： channel
+### go 语言的并发 `协程`
+```go
+// 定义函数
+func run() {
+    fmt.Println("running...")
+    time.Sleep(1 * time.Second)
+}
+
+// 使用 go 关键字开启协程
+func main() {
+    go run()
+}
+```
+
+### 协程通信：`chan` 信道
+```go
+func download(finished chan bool) {
+	fmt.Println("\nI'm downloading big file!")
+	time.Sleep(1500 * time.Millisecond)
+	fmt.Println("download over, notify other routine")
+	// 下载完成，通过信道通知
+	finished <- true
+}
+
+func main() {
+    // 使用信道通讯，创建管道 make(chan type)
+	finished := make(chan bool)
+	// 执行下载任务
+	go download(finished)
+	// 从信道读取值，在其他地方没有写入操作时会一直阻塞
+	fmt.Println("\nwaiting for download done!")
+	<-finished
+	fmt.Println("big file is download!")
+    close(finished)
+}
+```
+
+### 管道死锁
+- 当管道只有写入没有读取时，就会发生死锁
 
 ## 缓冲信道和工作池
 

@@ -12,4 +12,5 @@ func Main() {
 	structRun()
 	methodRun()
 	itfRun()
+	routineRun()
 }
