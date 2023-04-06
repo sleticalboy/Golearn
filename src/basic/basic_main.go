@@ -7,4 +7,5 @@ func Main() {
 	functionRun()
 	arrayRun()
 	sliceRun()
+	mapRun()
 }

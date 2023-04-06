@@ -257,7 +257,55 @@ b = append(b, c...)
 
 ## 函数中的可变参数
 
+### 可变参数被作为`切片`使用
+
 ## Maps
+
+### map 创建
+```go
+// make(map[key-type]value-type)
+m := make(map[string]int)
+m2 := map[string]int {
+    "key": 111,
+}
+```
+
+### map 增删改查
+```go
+m := make(map[string]int)
+// 添加元素
+m["a"] = 111
+m["b"] = 222
+m["c"] = 333
+// 删除元素
+delete(m, "a")
+// 修改元素
+m["c"] = 3
+// 查询元素：返回 key 对应的 value 和是否存在
+v, b := m["b"]
+if b == true {
+    fmt.Println("m.b is", v)
+} else {
+    fmt.Println("m.b not found")
+}
+
+```
+
+### map 遍历
+```go
+m := map[string]int {
+    "key": 111,
+    "a": 222,
+    "b": 333,
+    "c": 444,
+}
+// 遍历结果与存储顺序不一定一致（hash 表）
+for k, v := range m {
+    fmt.Printf("map[%s] is %d\n", k, v)
+}
+```
+
+### 获取 map 长度：`len(map)`
 
 ## 字符串
 
