@@ -8,4 +8,5 @@ func Main() {
 	arrayRun()
 	sliceRun()
 	mapRun()
+	ptrRun()
 }
