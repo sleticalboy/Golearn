@@ -4,6 +4,7 @@
 *.dll
 *.so
 *.dylib
+build/
 
 # Test binary, build with `go test -c`
 *.test
@@ -16,5 +17,4 @@
 Golearn.iml
 
 # vscode
-.vscode/__*
 !.vscode/*.json

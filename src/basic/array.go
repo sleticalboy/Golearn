@@ -16,6 +16,12 @@ func arrayRun() {
 	c := [...]int{2, 8, 0}
 	fmt.Println("dynamic array is", c)
 
+	// 把一个数组负值给另一个数组变量后，修改该变量中的元素不会影响原数组
+	d := c
+	d[2] = 999
+	fmt.Println("array c is", c)
+	fmt.Println("array d is", d)
+
 	// 数组的大小是类型的一部分
 	// 数组不能调整大小
 

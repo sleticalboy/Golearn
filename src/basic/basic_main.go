@@ -6,4 +6,5 @@ func Main() {
 	statementRun()
 	functionRun()
 	arrayRun()
+	sliceRun()
 }

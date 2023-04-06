@@ -9,7 +9,7 @@
       "type": "go",
       "request": "launch",
       "mode": "exec",
-      "program": "${fileDirname}/__debug_bin",
+      "program": "${workspaceFolder}/build/main",
       "preLaunchTask": "go: build(debug)",
       "console": "integratedTerminal"
     },
@@ -18,7 +18,9 @@
       "type": "go",
       "request": "launch",
       "mode": "debug",
-      "program": "${fileDirname}"
+      "program": "${workspaceFolder}/build/main",
+      "preLaunchTask": "go: build(debug)",
+      "console": "integratedTerminal"
     }
   ]
 }
