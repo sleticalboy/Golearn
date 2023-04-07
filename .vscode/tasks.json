@@ -9,10 +9,10 @@
         "build",
         "-gcflags=all=-N -l",
         "-o",
-        "${workspaceFolder}/build/main"
+        "${workspaceFolder}/__debug_bin"
       ],
       "options": {
-        "cwd": "${fileDirname}"
+        "cwd": "${workspaceFolder}"
       }
     }
   ]

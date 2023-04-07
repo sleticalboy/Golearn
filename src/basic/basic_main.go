@@ -13,4 +13,6 @@ func Main() {
 	methodRun()
 	itfRun()
 	routineRun()
+	deferRun()
+	errorRun()
 }

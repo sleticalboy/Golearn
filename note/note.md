@@ -620,17 +620,80 @@ func main() {
 
 - 用于并发编程时控制边界变量的读写控制
 
-## 结构体取代类
+## 结构体组合
+
+- go 不支持继承，但支持组合
+- 多个结构体嵌套组合成复杂的结构体
 
 ## 多态
 
+- go 中的多态：
+  - 多个结构体实现同一个接口
+  - 声明接口的切片保存所有结构体，然后遍历切片调用接口方法
+- 像 java 中的一个类可以实现多个接口
+
 ## Defer
 
+- 含有 `defer` 语句的函数，会在该函数返回之前执行 `defer` 之后的函数
+- 像 java 中的 `try...finally` 语句
+- 像 c/c++ 函数中定义的 label 一样，在函数返回之前去执行
+
+```go
+func doLast(i int) {
+	fmt.Printf("doLast() called with: %d\n", i)
+}
+
+func main() {
+	println("\ndefer run")
+
+	i := 20
+	// deferRun 函数退出之前会执行，i 已经被读取到 doLast() 栈中，最后会输出 20
+	defer doLast(i)
+
+	// 修改变量值，不会影响 doLast() 输出结果
+	i = 30
+	fmt.Printf("before deferRun() exit with: %d\n", i)
+}
+```
+
 ## 异常
+
 ### 异常处理
+```go
+func main() {
+    f, err := os.Open("/hello.txt")
+	if err != nil {
+		fmt.Printf("open failed: '%s'\n", err.Error())
+	} else {
+		fmt.Printf("open '%s' success\n", f.Name())
+	}
+}
+```
+
 ### 自定义异常
 
+- 需要实现 `error` 接口
+
+```go
+// 定义结构体
+type myError struct {
+	errorCode int
+	errorStr  string
+}
+// 实现 error 接口
+func (err *myError) Error() string {
+	return fmt.Sprintf("my error code: %d, error: %s\n", err.errorCode, err.errorStr)
+}
+```
+
 ## panic 和 recover
+
+- panic 程序终止运行
+  - 发生了一个不可恢复的错误，程序不能继续运行，比如：c10k 问题
+  - 编程错误，比如 `1 / 0`
+- recover 重获对程序的控制
+  - 只有在相同的协程中 `recover` 才会起作用，否则不起作用
+  - 打印堆栈 `debug.PrintStack()`
 
 ## 函数是一等公民
 
