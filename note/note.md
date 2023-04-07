@@ -697,6 +697,77 @@ func (err *myError) Error() string {
 
 ## 函数是一等公民
 
+### 函数变量
+```go
+func main() {
+    // 把函数复制给变量
+	fun := func() {
+		fmt.Println("func variable run")
+	}
+	// 调用函数
+	fun()
+}
+```
+
+### 匿名函数
+```go
+func main() {
+    // 匿名函数调用
+	func(param string) {
+		fmt.Printf("anonymous func run with '%s'\n", param)
+	}("anonymous param")
+}
+```
+
+### 自定义函数类型
+```go
+// 自定义函数类型: 名字+签名
+type add func(a, b int) int
+
+func main() {
+// 实现自定义函数
+	var a add = func(a, b int) int {
+		return a + b
+	}
+	// 调用自定义函数
+	sum := a(3, 9)
+	fmt.Println("sum is", sum)
+}
+```
+
+### 高阶函数
+
+- 满足以下任意条件即为高阶函数：
+  - 接收一个或多个函数作为参数
+  - 返回值是一个函数
+- 高阶函数常用来设计流式 API，比如：java 中的 stream API
+
+```go
+// 定义函数，入参为函数类型
+func high(convert func (a int) string) {
+	s := convert(50)
+	fmt.Printf("convert result is '%s'\n", s)
+}
+
+func main() {
+    // 调用高阶函数，传入匿名函数
+	high(func (a int) string {
+		return fmt.Sprintf("input is %d", a)
+	})
+}
+```
+
+### 闭包
+```go
+func main() {
+    // 闭包：匿名函数调用函数体外的变量
+	a := 100
+	func() {
+		fmt.Println("clouser invoke var in outter", a)
+	}()
+}
+```
+
 ## 反射
 
 ## 文件操作
