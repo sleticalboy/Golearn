@@ -530,6 +530,13 @@ func main() {
 ```
 
 ### 协程通信：`chan` 信道
+
+- 信道默认是双向的
+- 双向信道可读可写
+- 单向信道只能读或写
+- 遍历信道使用 `range`
+- 读取信道返回值：`v, ok <- ch`，ok == true 表示管道正常工作，否则表示关闭
+
 ```go
 func download(finished chan bool) {
 	fmt.Println("\nI'm downloading big file!")
@@ -555,11 +562,63 @@ func main() {
 ### 管道死锁
 - 当管道只有写入没有读取时，就会发生死锁
 
-## 缓冲信道和工作池
+### 缓冲信道和工作池
 
-## Select
+- 缓冲信道：有 buffer 的信道，当写入值超出容量时才阻塞，否则不阻塞
+  - 写入时，数据会先写入缓冲区，当缓冲区已满时才阻塞
+  - 读取时，先从缓冲区读取数据，缓冲区无数据时才阻塞
 
-## Mutex
+```go
+// 创建缓冲信道
+ch := make(chan int, 5/* capacity */)
+ch <- 1
+ch <- 2
+ch <- 3
+fmt.Println(<- ch)
+fmt.Println(<- ch)
+fmt.Println(<- ch)
+```
+
+### 工作池 `WorkerPools`
+
+- `WaitGroup` 用于等待一批协程结束，程序会一致阻塞等待这些协程全部结束
+- 工作原理比较像 java 中的 `CountDownLatch`
+- go 中没有线程池，我们要利用 `WaitGroup` 自己封装线程池
+
+```go
+func work(group *sync.WaitGroup, i int) {
+    fmt.Printf("worker %d is working...\n", i)
+    time.Sleep(1 * time.Second)
+    // 计数器 -1
+    group.Done()
+    fmt.Printf("worker %d works done...\n", i)
+}
+
+func main() {
+    fmt.Println("main() enter")
+    wg := sync.WaitGroup
+    for i := 0; i < 3; i ++ {
+        // 计数器 +1
+        wg.add(1)
+        go work(&wg, i)
+    }
+    // 等待工作结束（计数器为 0 时结束阻塞）
+    wg.Wait()
+    fmt.Println("main() exit")
+}
+```
+
+### Select
+
+- 用于在多个发送/接收信道操作中进行选择
+- select 语句会一致阻塞，直到发送/接收操作就绪
+- 语法类似 `switch` 语句，没有 `default` 时可能会产生死锁问题
+- 多个信道就绪的情况下 `select` 是随机选取的，这与 `switch` 不同
+- 类似 java nio 编程中的 selector？
+
+### Mutex
+
+- 用于并发编程时控制边界变量的读写控制
 
 ## 结构体取代类
 
