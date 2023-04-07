@@ -15,4 +15,5 @@ func Main() {
 	routineRun()
 	deferRun()
 	errorRun()
+	reflectsRun()
 }
