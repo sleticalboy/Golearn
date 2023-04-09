@@ -1,4 +1,4 @@
-package basic
+package basics
 
 import (
 	"fmt"
@@ -54,12 +54,12 @@ func printValue(vf reflect.Value, depth int) {
 	case reflect.Float32, reflect.Float64:
 		fmt.Printf(" -> %f\n", vf.Float())
 	case reflect.Slice, reflect.Array:
-		len := vf.Len()
+		length := vf.Len()
 		fmt.Printf(" -> ")
-		slice := vf.Slice(0, len)
-		for i := 0; i < len; i++ {
+		slice := vf.Slice(0, length)
+		for i := 0; i < length; i++ {
 			fmt.Printf("[%d]: %v", i, slice.Index(i))
-			if i != len-1 {
+			if i != length-1 {
 				fmt.Printf(", ")
 			} else {
 				fmt.Println()

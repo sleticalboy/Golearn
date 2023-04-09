@@ -1,4 +1,4 @@
-package basic
+package basics
 
 import (
 	"fmt"
@@ -38,7 +38,7 @@ func bufferedChan() {
 	}
 }
 
-func work(group * sync.WaitGroup, i int) {
+func work(group *sync.WaitGroup, i int) {
 	fmt.Printf("worker %d starts working...\n", i)
 	time.Sleep(500 * time.Millisecond)
 	fmt.Printf("worker %d finished working...\n", i)

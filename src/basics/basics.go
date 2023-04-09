@@ -1,4 +1,4 @@
-package basic
+package basics
 
 func Main() {
 	variateRun()

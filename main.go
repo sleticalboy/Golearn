@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"golearn/src/basic"
+	"golearn/src/files"
 	"golearn/src/hello"
 )
 
@@ -12,6 +12,7 @@ func init() {
 
 func main() {
 	fmt.Println("go main exec.")
-	hello.Say()
-	basic.Main()
+	hello.Main()
+	//basics.Main()
+	files.Main()
 }

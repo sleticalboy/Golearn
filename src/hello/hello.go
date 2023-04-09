@@ -2,6 +2,6 @@ package hello
 
 import "fmt"
 
-func Say() {
+func Main() {
 	fmt.Println("\nHello Go")
 }

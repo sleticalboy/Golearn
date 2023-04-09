@@ -1,4 +1,4 @@
-package basic
+package basics
 
 import "fmt"
 
@@ -61,7 +61,7 @@ func superFunc() {
 }
 
 // 定义函数，入参为函数类型
-func high(convert func (a int) string) {
+func high(convert func(a int) string) {
 	s := convert(50)
 	fmt.Printf("convert result is '%s'\n", s)
 }
@@ -69,7 +69,7 @@ func high(convert func (a int) string) {
 // 定义函数，返回值为一个函数
 func fun() func(a, b int) string {
 	return func(a, b int) string {
-		return fmt.Sprintf("sum is %d", a + b)
+		return fmt.Sprintf("sum is %d", a+b)
 	}
 }
 
@@ -77,7 +77,7 @@ func higherFunc() {
 	println("\nhigher function run")
 
 	// 调用高阶函数，传入匿名函数
-	high(func (a int) string {
+	high(func(a int) string {
 		return fmt.Sprintf("input is %d", a)
 	})
 
@@ -93,10 +93,10 @@ func higherFunc() {
 
 func functionRun() {
 	println("\nfunction of golang")
-	
+
 	// 普通函数
 	commonFunc()
-	
+
 	// 头等函数
 	superFunc()
 
