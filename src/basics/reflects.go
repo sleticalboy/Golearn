@@ -28,7 +28,7 @@ func (n Nested) What() (a, b, c int, reason string) {
 type foo struct {
 	a string
 	b int
-	n Nested
+	N Nested
 }
 
 type sample struct {
@@ -149,11 +149,23 @@ func reflectsRun() {
 		fo: foo{
 			a: "aaa",
 			b: 111,
-			n: Nested{
+			N: Nested{
 				Cc: "nested struct depth 2",
 			},
 		},
 	}
+
+	// 反射调用无返回值方法
+	if m, ok := reflect.TypeOf(s.fo.N).MethodByName("Say"); ok {
+		m.Func.Call([]reflect.Value{0: reflect.ValueOf(s.fo.N)})
+	}
+
+	// 反射调用有返回值方法
+	if m, ok := reflect.TypeOf(s.fo.N).MethodByName("String"); ok {
+		ret := m.Func.Call([]reflect.Value{0: reflect.ValueOf(s.fo.N)})
+		fmt.Printf("reflect call String() '%s'\n", ret[0].String())
+	}
+
 	ref(s)
 
 	ref("hello")

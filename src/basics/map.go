@@ -17,4 +17,8 @@ func mapRun() {
 	fmt.Println("map is", m2)
 	fmt.Println("map.c is", m2["c"])
 
+	// 遍历
+	for k, v := range m2 {
+		fmt.Printf("%s: %d\n", k, v)
+	}
 }

@@ -770,6 +770,223 @@ func main() {
 
 ## 反射
 
+- go 的反射有着比较严格的要求，对一切非导出的字段、方法进行反射都是不允许的
+
+```go
+
+type ISay interface {
+	Say()
+}
+
+type Nested struct {
+	Cc string
+}
+
+// 实现接口 ISay
+func (n Nested) Say() {
+	fmt.Println("sample.Say() run...")
+}
+
+// 实现接口 Stringer
+func (n Nested) String() string {
+	return fmt.Sprintf("Nestedt{Cc: %s}", n.Cc)
+}
+
+type foo struct {
+	a string
+	b int
+    // 二级嵌套
+	N Nested
+}
+
+type sample struct {
+	name    string
+	age     int
+	salary  float32
+	subject []string
+    // 一级嵌套
+	fo      foo
+}
+
+func main(o any) {
+    // 自定义结构体（稍微复杂点）
+	s := sample{
+		name:    "tom",
+		age:     24,
+		salary:  9000.0,
+		subject: []string{"java", "go", "c++"},
+		fo: foo{
+			a: "aaa",
+			b: 111,
+			N: Nested{
+				Cc: "nested struct depth 2",
+			},
+		},
+	}
+
+    // 反射获取类型（java 的 Object.getClass()）
+    t := reflect.TypeOf(s)
+    // 反射获取值
+    v := reflect.ValueOf(s)
+    // 返回实际类型（java 的 Class）枚举类型 Kind
+    kind := t.Kind()
+    // Invalid Kind = iota/Bool
+    // /Int/Int8/Int16/Int32/Int64/Uint/Uint8/Uint16/Uint32/Uint64/Uintptr
+    // Float32/Float64 float、double 类型
+    // Complex64/Complex128 复数类型
+	// Array/Slice 数组、切片类型
+	// Chan 信道
+	// Func 函数
+	// Interface 接口
+	// Map 字典
+	// Pointer 指针
+	// UnsafePointer
+	// String 字符串
+	// Struct 结构体
+    if kind == reflect.Struct {
+        // 获取方法和字段数量，然后通过索引去反射
+        nf := t.NumField()
+        for i := 0; i < nf; i++ {
+            var tf reflect.StructField = t.Field(i)
+            fmt.Printf("%s.%s[%v]", t.Name(), tf.Name, tf.Type)
+        }
+    }
+    // 反射调用无返回值方法
+	if m, ok := reflect.TypeOf(s.fo.N).MethodByName("Say"); ok {
+		m.Func.Call([]reflect.Value{0: reflect.ValueOf(s.fo.N)})
+	}
+	// 反射调用有返回值方法
+	if m, ok := reflect.TypeOf(s.fo.N).MethodByName("String"); ok {
+		ret := m.Func.Call([]reflect.Value{0: reflect.ValueOf(s.fo.N)})
+		fmt.Printf("reflect call String() '%s'\n", ret[0].String())
+	}
+}
+```
+
 ## 文件操作
-### 读取文件
+
+### 读取文件全部内容
+```go
+func main() {
+    // 读取文件全部内容
+	if content, err := os.ReadFile(path); err == nil {
+		fmt.Printf(string(content))
+	} else {
+		fmt.Println(err)
+	}
+}
+```
+
+### 读取文件部分内容
+```go
+func main() {
+    // 读取文件部分内容（通过 buffer 读取）
+	f, err := os.Open(path)
+    // 关闭文件
+	defer func() {
+		_ = f.Close()
+	}()
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	buf := make([]byte, 256)
+	if info, err := f.Stat(); err == nil {
+		count := info.Size() / 256
+		reset := info.Size() % 256
+		fmt.Printf("%d -> %d...%d\n", info.Size(), count, reset)
+	}
+	for {
+		readBytes, err := f.Read(buf)
+		if err == io.EOF {
+			fmt.Println("readFiles() hit EOF!")
+			break
+		}
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+		// buf 没有被填满，直接打印会出现脏数据
+		if readBytes != len(buf) {
+			fmt.Printf(string(buf[0:readBytes]))
+		} else {
+			fmt.Printf(string(buf))
+		}
+	}
+}
+```
+
+### 逐行读取文件
+```go
+func main() {
+    // 打开文件
+	f, err = os.Open(path)
+	defer func() {
+		_ = f.Close()
+	}()
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+    // 通过 scanner 逐行读取文件
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		text := strings.TrimSpace(scanner.Text())
+		if len(text) == 0 {
+			continue
+		}
+		fmt.Println(text)
+	}
+}
+```
+
 ### 写入文件
+```go
+func main() {
+    // 创建文件
+	f, err := os.Create(path)
+	defer func() {
+		_ = f.Close()
+	}()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Printf("writeFiles() '%s'\n", f.Name())
+    // 写入字符串（字节数组）
+	writeBytes, err := f.WriteString("first line\n")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Printf("write bytes: %d\n", writeBytes)
+    // 通过 fmt.Fprintf() 将数据写入到文件中
+	writeBytes, err = fmt.Fprintf(f, "write via fmt.Fprintf: %d\n", 90)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Printf("write bytes: %d\n", writeBytes)
+}
+```
+
+### 追加文件
+```go
+func main() {
+    // 追加文件（打开时以 append 方式打开）
+	f, err = os.OpenFile(path, os.O_APPEND|os.O_WRONLY, 0644)
+	defer func() {
+		_ = f.Close()
+	}()
+	writeBytes, err = f.WriteString("append line to file\n")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Printf("write bytes: %d\n", writeBytes)
+}
+```
+
+## 网络编程

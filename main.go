@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
-	"golearn/src/files"
-	"golearn/src/hello"
+	// "golearn/src/hello"
+	// "golearn/src/basics"
+	// "golearn/src/files"
+	"golearn/src/http"
 )
 
 func init() {
@@ -12,7 +14,8 @@ func init() {
 
 func main() {
 	fmt.Println("go main exec.")
-	hello.Main()
-	//basics.Main()
-	files.Main()
+	// hello.Main()
+	// basics.Main()
+	// files.Main()
+	http.Main()
 }

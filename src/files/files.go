@@ -3,6 +3,7 @@ package files
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 )
@@ -20,6 +21,7 @@ func readFiles() {
 	} else {
 		fmt.Println(err)
 	}
+
 	// 读取文件部分内容（通过 buffer 读取）
 	path = fmt.Sprintf("%s/LICENSE", dir)
 	fmt.Printf("readFiles() path is '%s'\n", path)
@@ -41,15 +43,19 @@ func readFiles() {
 	}
 	for {
 		readBytes, err := f.Read(buf)
-		if err == nil {
-			// buf 没有被填满，可能会出问题
-			if readBytes != len(buf) {
-				fmt.Printf(string(buf[0:readBytes]))
-			} else {
-				fmt.Printf(string(buf))
-			}
-		} else {
+		if err == io.EOF {
+			fmt.Println("readFiles() hit EOF!")
 			break
+		}
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+		// buf 没有被填满，直接打印会出现脏数据
+		if readBytes != len(buf) {
+			fmt.Printf("%s", string(buf[0:readBytes]))
+		} else {
+			fmt.Println(string(buf))
 		}
 	}
 	fmt.Println()
