@@ -15,8 +15,7 @@ type Xml struct {
 
 type XmlMap = gin.H
 
-func Others() {
-	engine := gin.Default()
+func Others(engine *gin.Engine) {
 	fmt.Printf("other....%v\n", engine.BasePath())
 
 	// curl -X GET "http://localhost:8099/api/v1/xml"
@@ -64,9 +63,4 @@ func Others() {
 		}
 		context.ProtoBuf(http.StatusOK, data)
 	})
-
-	err := engine.Run("127.0.0.1:8099")
-	if err != nil {
-		fmt.Println(err)
-	}
 }

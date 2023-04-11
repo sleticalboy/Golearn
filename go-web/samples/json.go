@@ -6,8 +6,7 @@ import (
 	"net/http"
 )
 
-func Json() {
-	engine := gin.Default()
+func Json(engine *gin.Engine) {
 	fmt.Printf("json run... %v\n", engine.BasePath())
 
 	engine.GET("/api/v1/hello", func(context *gin.Context) {
@@ -17,9 +16,4 @@ func Json() {
 			"desc":     "Go web 编程",
 		})
 	})
-
-	err := engine.Run("127.0.0.1:8099")
-	if err != nil {
-		fmt.Println(err)
-	}
 }

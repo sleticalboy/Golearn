@@ -12,8 +12,7 @@ type LoginForm struct {
 	Pwd  string `form:"pwd" binding:"required"`
 }
 
-func FormLogin() {
-	engine := gin.Default()
+func FormLogin(engine *gin.Engine) {
 	fmt.Printf("form login....%v\n", engine.BasePath())
 	// form 绑定结构体
 	// curl -X POST "http://localhost:8099/api/v1/login" --form user=user --form pwd=root
@@ -64,9 +63,4 @@ func FormLogin() {
 			"data":   fmt.Sprintf(`{"user":"%s", "pwd":"%s", "id":"%s", "page":"%s"}`, user, pwd, id, page),
 		})
 	})
-
-	err := engine.Run("127.0.0.1:8099")
-	if err != nil {
-		fmt.Println(err)
-	}
 }

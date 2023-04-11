@@ -62,8 +62,7 @@ func response(context *gin.Context, dests []string, err *UploadError) {
 	}
 }
 
-func Uploads() {
-	engine := gin.Default()
+func Uploads(engine *gin.Engine) {
 	fmt.Printf("upload run...%s\n", engine.BasePath())
 
 	engine.POST("/api/v1/upload", func(context *gin.Context) {
@@ -86,9 +85,4 @@ func Uploads() {
 			response(context, []string{0: dest}, err)
 		}
 	})
-
-	err := engine.Run("127.0.0.1:8099")
-	if err != nil {
-		fmt.Println(err)
-	}
 }

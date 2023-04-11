@@ -1,5 +1,6 @@
 package samples
 
-func Downloads() {
+import "github.com/gin-gonic/gin"
 
+func Downloads(engine *gin.Engine) {
 }
