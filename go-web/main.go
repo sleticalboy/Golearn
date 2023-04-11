@@ -14,5 +14,9 @@ func main() {
 		samples.FormLogin()
 	} else if os.Args[1] == "others" {
 		samples.Others()
+	} else if os.Args[1] == "upload" {
+		samples.Uploads()
+	} else if os.Args[1] == "download" {
+		samples.Downloads()
 	}
 }
