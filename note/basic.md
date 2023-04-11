@@ -8,7 +8,7 @@
 package  main
 // 导包
 import (
- "fmt"
+    "fmt"
 )
 // 主函数
 func main() {
@@ -415,14 +415,14 @@ h.Other = Other {
 ```go
 // 像 java 类中的成员方法
 func commonFunction() {
-	fmt.Println(">>>function is like the Object method in java>>>")
+    fmt.Println(">>>function is like the Object method in java>>>")
 }
 
 // 像 kotlin 的扩展函数，类型用来确定属于谁的方法，类型名用于访问该类型中的字段
 // 与 kotlin 不同的是，kotlin 不需要类型名默认就可以访问类型中的字段
 func (man Man) getFullName(prefix string) string {
-	fmt.Println(">>>method is like the ext function in kotlin>>>")
-	return	prefix + " " + man.first + "-" + man.last
+    fmt.Println(">>>method is like the ext function in kotlin>>>")
+    return prefix + " " + man.first + "-" + man.last
 }
 ```
 
@@ -430,38 +430,38 @@ func (man Man) getFullName(prefix string) string {
 ```go
 // 定义结构体
 type Man struct {
-	first, last string
+    first, last string
 }
 
 // 值接收器：在方法内修改了类型的字段，在其他地方无效
 // 相当于把这个结构体直接 copy 了一份过来，当一个结构体很大时用这种方式就不合适了
 func (man Man) changeName(prefix string) {
-	man.first = prefix + "-" + man.first
-	fmt.Println("changed man in value recv", man)
+    man.first = prefix + "-" + man.first
+    fmt.Println("changed man in value recv", man)
 }
 
 // 指针接收器：在方法内修改了类型的字段，其他地方会生效
 func (man *Man) changeLast(prefix string) {
-	man.last = prefix + "-" + man.last
-	fmt.Println("changed man in pointer recv", man)
+    man.last = prefix + "-" + man.last
+    fmt.Println("changed man in pointer recv", man)
 }
 
 func main() {
-	var man Man
-	man.first = "first"
-	man.last = "last"
-	fmt.Println("man full name is", man.getFullName("prefix"))
+    var man Man
+    man.first = "first"
+    man.last = "last"
+    fmt.Println("man full name is", man.getFullName("prefix"))
 
-	tom := Man{
-		first: "tom",
-		last:  "jack",
-	}
-	fmt.Println("raw tom ", tom)
-	tom.changeName("young")
-	fmt.Println("changed tom ", tom)
+    tom := Man{
+        first: "tom",
+        last:  "jack",
+    }
+    fmt.Println("raw tom ", tom)
+    tom.changeName("young")
+    fmt.Println("changed tom ", tom)
 
-	(&tom).changeLast("old")
-	fmt.Println("changed tom ", tom)
+    (&tom).changeLast("old")
+    fmt.Println("changed tom ", tom)
 }
 ```
 
@@ -471,24 +471,24 @@ func main() {
 ```go
 // 定义接口
 type Runnable interface {
-	run()
+    run()
 }
 // 定义数据结构
 type DownloadTask struct {
-	url string
+    url string
 }
 
 // 实现接口
 func (task *DownloadTask) run() {
-	fmt.Printf("download task run %s\n", task.url)
+    fmt.Printf("download task run %s\n", task.url)
 }
 
 func main() {
     dt := &DownloadTask{
-		url: "https://www.example.com",
-	}
+        url: "https://www.example.com",
+    }
     // 调用接口
-	dt.run()
+    dt.run()
 }
 ```
 
@@ -539,22 +539,22 @@ func main() {
 
 ```go
 func download(finished chan bool) {
-	fmt.Println("\nI'm downloading big file!")
-	time.Sleep(1500 * time.Millisecond)
-	fmt.Println("download over, notify other routine")
-	// 下载完成，通过信道通知
-	finished <- true
+    fmt.Println("\nI'm downloading big file!")
+    time.Sleep(1500 * time.Millisecond)
+    fmt.Println("download over, notify other routine")
+    // 下载完成，通过信道通知
+    finished <- true
 }
 
 func main() {
     // 使用信道通讯，创建管道 make(chan type)
-	finished := make(chan bool)
-	// 执行下载任务
-	go download(finished)
-	// 从信道读取值，在其他地方没有写入操作时会一直阻塞
-	fmt.Println("\nwaiting for download done!")
-	<-finished
-	fmt.Println("big file is download!")
+    finished := make(chan bool)
+    // 执行下载任务
+    go download(finished)
+    // 从信道读取值，在其他地方没有写入操作时会一直阻塞
+    fmt.Println("\nwaiting for download done!")
+    <-finished
+    fmt.Println("big file is download!")
     close(finished)
 }
 ```
@@ -640,19 +640,17 @@ func main() {
 
 ```go
 func doLast(i int) {
-	fmt.Printf("doLast() called with: %d\n", i)
+    fmt.Printf("doLast() called with: %d\n", i)
 }
 
 func main() {
-	println("\ndefer run")
-
-	i := 20
-	// deferRun 函数退出之前会执行，i 已经被读取到 doLast() 栈中，最后会输出 20
-	defer doLast(i)
-
-	// 修改变量值，不会影响 doLast() 输出结果
-	i = 30
-	fmt.Printf("before deferRun() exit with: %d\n", i)
+    println("\ndefer run")
+    i := 20
+    // deferRun 函数退出之前会执行，i 已经被读取到 doLast() 栈中，最后会输出 20
+    defer doLast(i)
+    // 修改变量值，不会影响 doLast() 输出结果
+    i = 30
+    fmt.Printf("before deferRun() exit with: %d\n", i)
 }
 ```
 
@@ -662,11 +660,11 @@ func main() {
 ```go
 func main() {
     f, err := os.Open("/hello.txt")
-	if err != nil {
-		fmt.Printf("open failed: '%s'\n", err.Error())
-	} else {
-		fmt.Printf("open '%s' success\n", f.Name())
-	}
+    if err != nil {
+        fmt.Printf("open failed: '%s'\n", err.Error())
+    } else {
+        fmt.Printf("open '%s' success\n", f.Name())
+    }
 }
 ```
 
@@ -677,12 +675,12 @@ func main() {
 ```go
 // 定义结构体
 type myError struct {
-	errorCode int
-	errorStr  string
+    errorCode int
+    errorStr  string
 }
 // 实现 error 接口
 func (err *myError) Error() string {
-	return fmt.Sprintf("my error code: %d, error: %s\n", err.errorCode, err.errorStr)
+    return fmt.Sprintf("my error code: %d, error: %s\n", err.errorCode, err.errorStr)
 }
 ```
 
@@ -701,11 +699,11 @@ func (err *myError) Error() string {
 ```go
 func main() {
     // 把函数复制给变量
-	fun := func() {
-		fmt.Println("func variable run")
-	}
-	// 调用函数
-	fun()
+    fun := func() {
+        fmt.Println("func variable run")
+    }
+    // 调用函数
+    fun()
 }
 ```
 
@@ -713,9 +711,9 @@ func main() {
 ```go
 func main() {
     // 匿名函数调用
-	func(param string) {
-		fmt.Printf("anonymous func run with '%s'\n", param)
-	}("anonymous param")
+    func(param string) {
+        fmt.Printf("anonymous func run with '%s'\n", param)
+    }("anonymous param")
 }
 ```
 
@@ -725,13 +723,13 @@ func main() {
 type add func(a, b int) int
 
 func main() {
-// 实现自定义函数
-	var a add = func(a, b int) int {
-		return a + b
-	}
-	// 调用自定义函数
-	sum := a(3, 9)
-	fmt.Println("sum is", sum)
+    // 实现自定义函数
+    var a add = func(a, b int) int {
+        return a + b
+    }
+    // 调用自定义函数
+    sum := a(3, 9)
+    fmt.Println("sum is", sum)
 }
 ```
 
@@ -745,15 +743,15 @@ func main() {
 ```go
 // 定义函数，入参为函数类型
 func high(convert func (a int) string) {
-	s := convert(50)
-	fmt.Printf("convert result is '%s'\n", s)
+    s := convert(50)
+    fmt.Printf("convert result is '%s'\n", s)
 }
 
 func main() {
     // 调用高阶函数，传入匿名函数
-	high(func (a int) string {
-		return fmt.Sprintf("input is %d", a)
-	})
+    high(func (a int) string {
+        return fmt.Sprintf("input is %d", a)
+    })
 }
 ```
 
@@ -761,10 +759,10 @@ func main() {
 ```go
 func main() {
     // 闭包：匿名函数调用函数体外的变量
-	a := 100
-	func() {
-		fmt.Println("clouser invoke var in outter", a)
-	}()
+    a := 100
+    func() {
+        fmt.Println("clouser invoke var in outter", a)
+    }()
 }
 ```
 
@@ -773,56 +771,55 @@ func main() {
 - go 的反射有着比较严格的要求，对一切非导出的字段、方法进行反射都是不允许的
 
 ```go
-
 type ISay interface {
-	Say()
+    Say()
 }
 
 type Nested struct {
-	Cc string
+    Cc string
 }
 
 // 实现接口 ISay
 func (n Nested) Say() {
-	fmt.Println("sample.Say() run...")
+    fmt.Println("sample.Say() run...")
 }
 
 // 实现接口 Stringer
 func (n Nested) String() string {
-	return fmt.Sprintf("Nestedt{Cc: %s}", n.Cc)
+    return fmt.Sprintf("Nestedt{Cc: %s}", n.Cc)
 }
 
 type foo struct {
-	a string
-	b int
+    a string
+    b int
     // 二级嵌套
-	N Nested
+    N Nested
 }
 
 type sample struct {
-	name    string
-	age     int
-	salary  float32
-	subject []string
+    name    string
+    age     int
+    salary  float32
+    subject []string
     // 一级嵌套
-	fo      foo
+    fo      foo
 }
 
 func main(o any) {
     // 自定义结构体（稍微复杂点）
-	s := sample{
-		name:    "tom",
-		age:     24,
-		salary:  9000.0,
-		subject: []string{"java", "go", "c++"},
-		fo: foo{
-			a: "aaa",
-			b: 111,
-			N: Nested{
-				Cc: "nested struct depth 2",
-			},
-		},
-	}
+    s := sample{
+        name:    "tom",
+        age:     24,
+        salary:  9000.0,
+        subject: []string{"java", "go", "c++"},
+        fo: foo{
+            a: "aaa",
+            b: 111,
+            N: Nested{
+                Cc: "nested struct depth 2",
+            },
+        },
+    }
 
     // 反射获取类型（java 的 Object.getClass()）
     t := reflect.TypeOf(s)
@@ -834,15 +831,15 @@ func main(o any) {
     // /Int/Int8/Int16/Int32/Int64/Uint/Uint8/Uint16/Uint32/Uint64/Uintptr
     // Float32/Float64 float、double 类型
     // Complex64/Complex128 复数类型
-	// Array/Slice 数组、切片类型
-	// Chan 信道
-	// Func 函数
-	// Interface 接口
-	// Map 字典
-	// Pointer 指针
-	// UnsafePointer
-	// String 字符串
-	// Struct 结构体
+    // Array/Slice 数组、切片类型
+    // Chan 信道
+    // Func 函数
+    // Interface 接口
+    // Map 字典
+    // Pointer 指针
+    // UnsafePointer
+    // String 字符串
+    // Struct 结构体
     if kind == reflect.Struct {
         // 获取方法和字段数量，然后通过索引去反射
         nf := t.NumField()
@@ -852,14 +849,14 @@ func main(o any) {
         }
     }
     // 反射调用无返回值方法
-	if m, ok := reflect.TypeOf(s.fo.N).MethodByName("Say"); ok {
-		m.Func.Call([]reflect.Value{0: reflect.ValueOf(s.fo.N)})
-	}
-	// 反射调用有返回值方法
-	if m, ok := reflect.TypeOf(s.fo.N).MethodByName("String"); ok {
-		ret := m.Func.Call([]reflect.Value{0: reflect.ValueOf(s.fo.N)})
-		fmt.Printf("reflect call String() '%s'\n", ret[0].String())
-	}
+    if m, ok := reflect.TypeOf(s.fo.N).MethodByName("Say"); ok {
+        m.Func.Call([]reflect.Value{0: reflect.ValueOf(s.fo.N)})
+    }
+    // 反射调用有返回值方法
+    if m, ok := reflect.TypeOf(s.fo.N).MethodByName("String"); ok {
+        ret := m.Func.Call([]reflect.Value{0: reflect.ValueOf(s.fo.N)})
+        fmt.Printf("reflect call String() '%s'\n", ret[0].String())
+    }
 }
 ```
 
@@ -869,11 +866,11 @@ func main(o any) {
 ```go
 func main() {
     // 读取文件全部内容
-	if content, err := os.ReadFile(path); err == nil {
-		fmt.Printf(string(content))
-	} else {
-		fmt.Println(err)
-	}
+    if content, err := os.ReadFile(path); err == nil {
+        fmt.Printf(string(content))
+    } else {
+        fmt.Println(err)
+    }
 }
 ```
 
@@ -881,39 +878,39 @@ func main() {
 ```go
 func main() {
     // 读取文件部分内容（通过 buffer 读取）
-	f, err := os.Open(path)
+    f, err := os.Open(path)
     // 关闭文件
-	defer func() {
-		_ = f.Close()
-	}()
+    defer func() {
+        _ = f.Close()
+    }()
 
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	buf := make([]byte, 256)
-	if info, err := f.Stat(); err == nil {
-		count := info.Size() / 256
-		reset := info.Size() % 256
-		fmt.Printf("%d -> %d...%d\n", info.Size(), count, reset)
-	}
-	for {
-		readBytes, err := f.Read(buf)
-		if err == io.EOF {
-			fmt.Println("readFiles() hit EOF!")
-			break
-		}
-		if err != nil {
-			fmt.Println(err)
-			break
-		}
-		// buf 没有被填满，直接打印会出现脏数据
-		if readBytes != len(buf) {
-			fmt.Printf(string(buf[0:readBytes]))
-		} else {
-			fmt.Printf(string(buf))
-		}
-	}
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+    buf := make([]byte, 256)
+    if info, err := f.Stat(); err == nil {
+        count := info.Size() / 256
+        reset := info.Size() % 256
+        fmt.Printf("%d -> %d...%d\n", info.Size(), count, reset)
+    }
+    for {
+        readBytes, err := f.Read(buf)
+        if err == io.EOF {
+            fmt.Println("readFiles() hit EOF!")
+            break
+        }
+        if err != nil {
+            fmt.Println(err)
+            break
+        }
+        // buf 没有被填满，直接打印会出现脏数据
+        if readBytes != len(buf) {
+            fmt.Printf(string(buf[0:readBytes]))
+        } else {
+            fmt.Printf(string(buf))
+        }
+    }
 }
 ```
 
@@ -921,24 +918,23 @@ func main() {
 ```go
 func main() {
     // 打开文件
-	f, err = os.Open(path)
-	defer func() {
-		_ = f.Close()
-	}()
-
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+    f, err = os.Open(path)
+    defer func() {
+        _ = f.Close()
+    }()
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
     // 通过 scanner 逐行读取文件
-	scanner := bufio.NewScanner(f)
-	for scanner.Scan() {
-		text := strings.TrimSpace(scanner.Text())
-		if len(text) == 0 {
-			continue
-		}
-		fmt.Println(text)
-	}
+    scanner := bufio.NewScanner(f)
+    for scanner.Scan() {
+        text := strings.TrimSpace(scanner.Text())
+        if len(text) == 0 {
+            continue
+        }
+        fmt.Println(text)
+    }
 }
 ```
 
@@ -946,29 +942,29 @@ func main() {
 ```go
 func main() {
     // 创建文件
-	f, err := os.Create(path)
-	defer func() {
-		_ = f.Close()
-	}()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Printf("writeFiles() '%s'\n", f.Name())
+    f, err := os.Create(path)
+    defer func() {
+        _ = f.Close()
+    }()
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+    fmt.Printf("writeFiles() '%s'\n", f.Name())
     // 写入字符串（字节数组）
-	writeBytes, err := f.WriteString("first line\n")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Printf("write bytes: %d\n", writeBytes)
+    writeBytes, err := f.WriteString("first line\n")
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+    fmt.Printf("write bytes: %d\n", writeBytes)
     // 通过 fmt.Fprintf() 将数据写入到文件中
-	writeBytes, err = fmt.Fprintf(f, "write via fmt.Fprintf: %d\n", 90)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Printf("write bytes: %d\n", writeBytes)
+    writeBytes, err = fmt.Fprintf(f, "write via fmt.Fprintf: %d\n", 90)
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+    fmt.Printf("write bytes: %d\n", writeBytes)
 }
 ```
 
@@ -976,17 +972,94 @@ func main() {
 ```go
 func main() {
     // 追加文件（打开时以 append 方式打开）
-	f, err = os.OpenFile(path, os.O_APPEND|os.O_WRONLY, 0644)
-	defer func() {
-		_ = f.Close()
-	}()
-	writeBytes, err = f.WriteString("append line to file\n")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Printf("write bytes: %d\n", writeBytes)
+    f, err = os.OpenFile(path, os.O_APPEND|os.O_WRONLY, 0644)
+    defer func() {
+        _ = f.Close()
+    }()
+    writeBytes, err = f.WriteString("append line to file\n")
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+    fmt.Printf("write bytes: %d\n", writeBytes)
 }
 ```
 
 ## 网络编程
+
+### 服务端
+```go
+var (
+    handlers = map[string]func(w http.ResponseWriter, r *http.Request){
+        "/api/v1/hello_world": func(response http.ResponseWriter, request *http.Request) {
+            if request.Method == "GET" {
+                response.WriteHeader(200)
+                str := "Hello Go(GET) Http World!\n"
+                _, _ = response.Write(bytes.NewBufferString(str).Bytes())
+            } else if request.Method == "POST" {
+                body := make([]byte, request.ContentLength)
+                _, _ = request.Body.Read(body)
+                fmt.Printf("request body is %s\n", string(body))
+                str := "Hello Go(POST) Http World!\n"
+                _, _ = response.Write(bytes.NewBufferString(str).Bytes())
+                fmt.Printf("response body is %s\n", str)
+            }
+        },
+    }
+)
+
+func httpServerRun() {
+    // 注册 api handler
+    for api, handler := range handlers {
+        http.HandleFunc(api, handler)
+    }
+    // 创建服务器
+    server := &http.Server{
+        Addr: "127.0.0.1:8099",
+        Handler: nil,
+    }
+    // 启动服务器
+    err := server.ListenAndServe()
+    // err = http.ListenAndServe(server.Addr, nil)
+    if err != nil {
+        fmt.Printf("Listen http://127.0.0.1.8099 failed: %e\n", err)
+    }
+}
+```
+
+### 客户端
+```go
+func httpClientRun(method string) {
+    requestUrl := "http://127.0.0.1:8099/api/v1/hello_world"
+    jsonStr := []byte(`{"hello": "world"}`)
+    var (
+        response *http.Response
+        err      error
+    )
+    if method == "POST" {
+        response, err = http.Post(requestUrl, "application/json", bytes.NewBuffer(jsonStr))
+    } else {
+        response, err = http.Get(requestUrl)
+    }
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+    defer func() {
+        _ = response.Body.Close()
+    }()
+    // 记得处理 EOF
+    // body := make([]byte, response.ContentLength)
+    // _, err = response.Body.Read(body)
+    // if err != nil && err != io.EOF {
+    //      fmt.Println(err)
+    //      return
+    // }
+    // 使用系统 API 时，系统内部会自动消费掉 EOF
+    body, err := io.ReadAll(response.Body)
+    if err != nil {
+        return
+    }
+    fmt.Println(string(body))
+}
+```
