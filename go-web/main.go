@@ -12,5 +12,7 @@ func main() {
 		samples.Json()
 	} else if os.Args[1] == "form" {
 		samples.FormLogin()
+	} else if os.Args[1] == "others" {
+		samples.Others()
 	}
 }
