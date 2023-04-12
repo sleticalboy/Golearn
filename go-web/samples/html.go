@@ -15,6 +15,7 @@ func Html(engine *gin.Engine) {
 	// engine.LoadHTMLFiles()
 	// engine.LoadHTMLGlob("")
 
+	// curl http://127.0.0.1:8099/
 	engine.GET("/", func(context *gin.Context) {
 		context.HTML(http.StatusOK, "index", "Hello Gin")
 	})
