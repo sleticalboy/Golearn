@@ -8,8 +8,6 @@ import (
 	"os"
 )
 
-var pwd, _ = os.Getwd()
-
 type UploadError struct {
 	Status int
 	Msg    string
@@ -21,6 +19,7 @@ func (e UploadError) Error() string {
 }
 
 func saveFile(context *gin.Context, name string, file *multipart.FileHeader) (string, *UploadError) {
+	var pwd, _ = os.Getwd()
 	dest := fmt.Sprintf("%s/../build/%s", pwd, file.Filename)
 	fmt.Printf("src: %s, dest: %s\n", file.Filename, dest)
 	err := context.SaveUploadedFile(file, dest)
