@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path"
+	"strconv"
 	"strings"
 )
 
@@ -129,8 +131,38 @@ func writeFiles() {
 	fmt.Printf("write bytes: %d\n", writeBytes)
 }
 
+func ParseDir(dir string) (map[int64]string, error) {
+	fileMap := map[int64]string{}
+	// 遍历素材目录
+	dirEntry, err := os.ReadDir(dir)
+	if err != nil {
+		return nil, err
+	}
+	for _, entry := range dirEntry {
+		name := entry.Name()
+		if !strings.HasSuffix(name, ".xyt") {
+			continue
+		}
+		// 0x1100300000080243.xyt
+		if strings.HasPrefix(name, "0x") {
+			name = name[2 : len(name)-5]
+		}
+		key, err := strconv.ParseInt(name, 16, 64)
+		if err != nil {
+			return nil, err
+		}
+		fileMap[key] = path.Join(dir, entry.Name())
+	}
+	return fileMap, nil
+}
+
 func Main() {
 	println("\nfiles Run")
 	readFiles()
 	writeFiles()
+	fileMap, err := ParseDir("/home/binlee/Downloads/xyt")
+	if err != nil {
+		return
+	}
+	fmt.Printf("file maps: %v", fileMap)
 }
