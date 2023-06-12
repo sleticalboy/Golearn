@@ -1,6 +1,9 @@
 package basics
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 // 命名结构体
 type Person struct {
@@ -23,6 +26,52 @@ func NewProject(path string) project {
 
 func (p *project) Build(out string) {
 	fmt.Printf("Build() project '%s' to '%s'\n", p.Path, out)
+}
+
+type Employee struct {
+	Name string `json:"name"`
+}
+
+func (p *Employee) speak() {
+	fmt.Printf("my name is: %v\n", p.Name)
+}
+
+type Family struct {
+	Members string
+}
+
+type Tom struct {
+	Employee
+	Age    int `json:"age"`
+	Family Family
+}
+
+func (tom *Tom) runaway() {
+	tom.speak()
+	fmt.Printf("I'm runaway with my family members: %v\n", tom.Family.Members)
+}
+
+func extendsInGo() {
+	tom := Tom{
+		Employee: Employee{
+			Name: "tom",
+		},
+		Age: 19,
+		Family: Family{
+			Members: "father, mother, dogs",
+		},
+	}
+	tom.runaway()
+	t, _ := json.Marshal(tom)
+	fmt.Printf("tom is: %v\n", string(t))
+
+	var user Tom
+	raw := []byte(`{"name":"jack","age":29,"Family":{"Members":"wife"}}`)
+	err := json.Unmarshal(raw, &user)
+	if err != nil {
+		return
+	}
+	fmt.Printf("jack is: %v, raw: %s\n", user, string(raw))
 }
 
 func structRun() {

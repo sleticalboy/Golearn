@@ -131,7 +131,7 @@ func writeFiles() {
 	fmt.Printf("write bytes: %d\n", writeBytes)
 }
 
-func ParseDir(dir string) (map[int64]string, error) {
+func parseDir(dir string) (map[int64]string, error) {
 	fileMap := map[int64]string{}
 	// 遍历素材目录
 	dirEntry, err := os.ReadDir(dir)
@@ -160,7 +160,7 @@ func Main() {
 	println("\nfiles Run")
 	readFiles()
 	writeFiles()
-	fileMap, err := ParseDir("/home/binlee/Downloads/xyt")
+	fileMap, err := parseDir("/home/binlee/Downloads/xyt")
 	if err != nil {
 		return
 	}

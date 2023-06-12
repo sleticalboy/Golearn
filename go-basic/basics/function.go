@@ -39,7 +39,7 @@ type add func(a, b int) int
 func superFunc() {
 	println("\nsuper function run")
 
-	// 把函数复制给变量
+	// 把函数赋值给变量
 	fun := func() {
 		fmt.Println("func variable run")
 	}
