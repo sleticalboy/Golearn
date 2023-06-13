@@ -1,7 +1,7 @@
 package main
 
 import (
-	"com.binlee/goweb/samples"
+	"com.binlee/goweb/services"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/sync/errgroup"
@@ -15,12 +15,12 @@ func main() {
 	// file, _ := os.OpenFile("../build/gin.log", os.O_CREATE|os.O_APPEND, 0644)
 	// gin.DefaultWriter = io.MultiWriter(file)
 
-	samples.Html(engine)
-	samples.Json(engine)
-	samples.FormLogin(engine)
-	samples.Others(engine)
-	samples.Uploads(engine)
-	samples.Downloads(engine)
+	services.Html(engine)
+	services.Json(engine)
+	services.FormLogin(engine)
+	services.Others(engine)
+	services.Uploads(engine)
+	services.Downloads(engine)
 	err := engine.Run("127.0.0.1:8099")
 	if err != nil {
 		fmt.Println(err)
