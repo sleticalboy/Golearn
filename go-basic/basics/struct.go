@@ -29,21 +29,22 @@ func (p *project) Build(out string) {
 }
 
 type Employee struct {
-	Name string `json:"name"`
+	Name   string  `json:"name"`
+	Salary float32 `json:"salary"`
 }
 
 func (p *Employee) speak() {
-	fmt.Printf("my name is: %v\n", p.Name)
+	fmt.Printf("my name is: %s, salary is: %f\n", p.Name, p.Salary)
 }
 
 type Family struct {
-	Members string
+	Members string `json:"members" json:"Members"`
 }
 
 type Tom struct {
 	Employee
-	Age    int `json:"age"`
-	Family Family
+	Age    int    `json:"age"`
+	Family Family `json:"family" json:"Family"`
 }
 
 func (tom *Tom) runaway() {
@@ -54,7 +55,8 @@ func (tom *Tom) runaway() {
 func extendsInGo() {
 	tom := Tom{
 		Employee: Employee{
-			Name: "tom",
+			Name:   "tom",
+			Salary: 325.6,
 		},
 		Age: 19,
 		Family: Family{
@@ -66,10 +68,10 @@ func extendsInGo() {
 	fmt.Printf("tom is: %v\n", string(t))
 
 	var user Tom
-	raw := []byte(`{"name":"jack","age":29,"Family":{"Members":"wife"}}`)
+	raw := []byte(`{"name":"jack","salary":366.7,"age":29,"Family":{"Members":"wife"}}`)
 	err := json.Unmarshal(raw, &user)
 	if err != nil {
-		return
+		panic(err)
 	}
 	fmt.Printf("jack is: %v, raw: %s\n", user, string(raw))
 }
