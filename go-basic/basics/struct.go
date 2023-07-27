@@ -49,7 +49,7 @@ type Tom struct {
 
 func (tom *Tom) runaway() {
 	tom.speak()
-	fmt.Printf("I'm runaway with my family members: %v\n", tom.Family.Members)
+	fmt.Printf("I'm going to swimming with my family members: %v\n", tom.Family.Members)
 }
 
 func extendsInGo() {
