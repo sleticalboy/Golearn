@@ -4,5 +4,5 @@
 
 float foo_func(const char *str) {
     printf("foo_func() call with: %s\n", str);
-    return 20.04;
+    return 20.04 * 10.5;
 }
