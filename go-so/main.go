@@ -17,9 +17,12 @@ func GoFib() {
 }
 
 //export Fib
-func Fib(value int) {
+func Fib(value int) int {
 	// fmt.Printf("Fib() in go, value: %d", value)
-	value += 1
+	if value == 1 || value == 2 {
+		return value
+	}
+	return Fib(value-1) + Fib(value-2)
 }
 
 func main() {}
