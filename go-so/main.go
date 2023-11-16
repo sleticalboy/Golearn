@@ -6,6 +6,9 @@ package main
 
 typedef struct { char *name; int age; char *home; } Person;
 typedef unsigned long long GoUint64_;
+
+#cgo LDFLAGS: -lpython3.10
+#include <python3.10/Python.h>
 */
 import "C"
 import (
@@ -64,6 +67,14 @@ func GoHome2(ming C.Person) {
 	fmt.Printf("GoHome2() -> name: %v, age: %v, home: %v\n", C.GoString(ming.name), ming.age, C.GoString(ming.home))
 }
 
+func helloCpython() {
+	C.Py_Initialize()
+	defer C.Py_Finalize()
+	C.PyRun_SimpleString(C.CString("print('Hello from Python!')"))
+}
+
 func main() {
 	fmt.Println(Fib(93))
+
+	helloCpython()
 }
