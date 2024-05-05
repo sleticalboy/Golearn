@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 	"unsafe"
 )
 
@@ -12,9 +13,9 @@ import (
 // #include "samples.h"
 import "C"
 
-//export cgoCallback
-//
 // 实现 c 中定义的 extern void cgoCallback(int value); 函数
+//
+//export cgoCallback
 func cgoCallback(value int) {
 	fmt.Printf("cgoCallback() c++ value: %d\n", value)
 }
@@ -44,7 +45,7 @@ func main() {
 	go func() {
 		// 阻塞等待信号
 		sig := <-signalCh
-		fmt.Printf("Received signal: %v\n", sig)
+		fmt.Printf("Received signal: %v, -> %d\n", sig, sig)
 
 		// 处理信号
 		switch sig {
@@ -67,9 +68,15 @@ func main() {
 	r := C.hello(cStr)
 	fmt.Printf("c go ret: %.1f\n", float64(r))
 	C.free(unsafe.Pointer(cStr))
+	for i := 0; i < 50; i++ {
+		go func() {
+			C.start_loop(0)
+		}()
+		time.Sleep(time.Millisecond * 2)
+	}
 	// 开始循环
 	go func() {
-		C.start_loop(5)
+		C.start_loop(3)
 		os.Exit(int(syscall.SIGTERM))
 	}()
 

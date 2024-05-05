@@ -27,6 +27,8 @@ extern void cgoCallback(int value);
 
 void start_loop(int counter) {
     std::cout << "start_loop() thread id: " << std::this_thread::get_id() << std::endl;
+    if (counter == 0) return;
+
     auto task = [&]() {
         std::cout << "start_loop() sub thread id: " << std::this_thread::get_id() << std::endl;
         for(int i = 0; i < counter; i++) {
