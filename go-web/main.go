@@ -236,6 +236,16 @@ func upload(context *gin.Context) {
 	}
 }
 
+func login(context *gin.Context) {
+	context.JSON(http.StatusOK, gin.H{
+		"code": 0, "msg": "OK",
+	})
+}
+
+func favicon(context *gin.Context) {
+	context.HTML(http.StatusOK, "favico.ico", nil)
+}
+
 func main() {
 	server := gin.Default()
 
@@ -245,9 +255,10 @@ func main() {
 	// gin.DefaultWriter = io.MultiWriter(file)
 
 	// 静态资源目录
-	server.Static("assets", "resources")
-	server.StaticFS("assets", gin.Dir("resources", true))
-	server.StaticFile("/favicon.ico", "resources/img/")
+	// server.Static("assets", "resources")
+	server.StaticFS("assets", gin.Dir("resources", false))
+	// server.StaticFile("/favicon.ico", "resources/img/")
+	server.GET("/favicon.ico", favicon)
 	// 模板路径
 	server.LoadHTMLGlob("resources/templates/**")
 	server.GET("/", Html)
