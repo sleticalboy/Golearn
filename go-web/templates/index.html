@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{.}}</title>
+</head>
+<body>
+<h1>{{.}}</h1>
+<form action="/api/v1/login" method="post" target="_parent">
+    用户名：<label><input type="text" name="username" autocomplete="username"></label><br>
+    密码：<label><input type="password" name="username" autocomplete="current-password"></label><br>
+    <button name="submit" type="submit">提交</button>
+</form>
+
+<input id="input" type="text"/>
+<button onclick="send()">Send</button>
+<div id="output"></div>
+
+<script>
+    if (window.WebSocket) {
+        console.log("支持websocket")
+    } else {
+        console.log("不支持websocket")
+    }
+    const ws = new WebSocket("ws://192.168.2.119:8099/ws");
+    ws.onopen = function () {
+        console.log("连接成功")
+    }
+    ws.onclose = function () {
+        console.log("连接关闭")
+    }
+    ws.onmessage = (event) => {
+        document.getElementById("output").innerHTML += `<p>${event.data}</p>`;
+    };
+    ws.onerror = function (error) {
+        console.error("WebSocket Error:", error);
+    };
+
+    function send() {
+        const input = document.getElementById("input");
+        if (input.value === "") {
+            console.error("输入不能为空")
+            return;
+        }
+        if (!ws || ws.readyState !== WebSocket.OPEN) {
+            console.error("WebSocket未连接")
+            return;
+        }
+        if (input.value === "quit" || input.value === "q") {
+            ws.close();
+            return;
+        }
+        // 循环发送消息
+        for (let i = 0; i < 10; i++) {
+            ws.send(JSON.stringify({
+                "type": "common",
+                "data": `${input.value} - ${i + 1}`,
+            }));
+        }
+        input.value = "";
+    }
+</script>
+</body>
+</html>
