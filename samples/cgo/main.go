@@ -34,13 +34,9 @@ func main() {
 	// 监听指定的信号
 	signalCh := make(chan os.Signal, 1)
 	// signal.Notify(signalCh, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL)
-	signal.Notify(signalCh, syscall.SIGABRT, syscall.SIGALRM, syscall.SIGBUS, syscall.SIGCHLD,
-		syscall.SIGCLD, syscall.SIGCONT, syscall.SIGFPE, syscall.SIGHUP, syscall.SIGILL, syscall.SIGINT,
-		syscall.SIGIO, syscall.SIGIOT, syscall.SIGKILL, syscall.SIGPIPE, syscall.SIGPOLL, syscall.SIGPROF,
-		syscall.SIGPWR, syscall.SIGQUIT, syscall.SIGSEGV, syscall.SIGSTKFLT, syscall.SIGSTOP, syscall.SIGSYS,
-		syscall.SIGTERM, syscall.SIGTRAP, syscall.SIGTSTP, syscall.SIGTTIN, syscall.SIGTTOU, syscall.SIGUNUSED,
-		syscall.SIGURG, syscall.SIGUSR1, syscall.SIGUSR2, syscall.SIGVTALRM, syscall.SIGWINCH, syscall.SIGXCPU,
-		syscall.SIGXFSZ)
+	signal.Notify(signalCh, syscall.SIGABRT, syscall.SIGALRM, syscall.SIGBUS,
+		syscall.SIGFPE, syscall.SIGHUP, syscall.SIGILL, syscall.SIGINT, syscall.SIGKILL,
+		syscall.SIGPIPE, syscall.SIGQUIT, syscall.SIGSEGV, syscall.SIGTERM, syscall.SIGTRAP)
 
 	go func() {
 		// 阻塞等待信号

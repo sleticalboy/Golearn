@@ -6,9 +6,12 @@ import (
 )
 
 func Main() {
-	println("\nhttp run")
+	fmt.Printf("\nhttp run, args: %+v\n", os.Args)
 
-	flag := os.Args[1]
+	var flag = "-c"
+	if len(os.Args) > 1 {
+		flag = os.Args[1]
+	}
 
 	if flag == "-s" {
 		fmt.Println("run as server")

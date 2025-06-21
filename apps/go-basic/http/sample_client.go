@@ -19,9 +19,7 @@ func httpClientRun(method string) {
 	} else {
 		response, err = http.Get(requestUrl)
 	}
-	defer func() {
-		_ = response.Body.Close()
-	}()
+	defer func() { _ = response.Body.Close() }()
 
 	if err != nil {
 		fmt.Println(err)

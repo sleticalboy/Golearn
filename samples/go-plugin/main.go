@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	path := "/home/binlee/code/Golearn/sample-plugin/sample-plugin.so"
+	path := "/home/binlee/code/Golearn/samples/sample-plugin/sample-plugin.so"
 	plug, err := plugin.Open(path)
 	fmt.Printf("main() plug: %v, err: %v\n", plug, err)
 	if err != nil {

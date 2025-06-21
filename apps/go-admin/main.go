@@ -1,6 +1,9 @@
 package main
 
 import (
+	"github.com/sleticalboy/golearn/apps/go-admin/models"
+	"github.com/sleticalboy/golearn/apps/go-admin/pages"
+	"github.com/sleticalboy/golearn/apps/go-admin/tables"
 	"log"
 	"os"
 	"os/signal"
@@ -13,10 +16,6 @@ import (
 	"github.com/GoAdminGroup/go-admin/template"
 	"github.com/GoAdminGroup/go-admin/template/chartjs"
 	"github.com/gin-gonic/gin"
-
-	"go-admin/models"
-	"go-admin/pages"
-	"go-admin/tables"
 )
 
 func main() {
