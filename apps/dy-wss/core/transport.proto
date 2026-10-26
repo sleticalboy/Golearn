@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+option go_package = "../core";
+
+
+// 键值对头结构
+message PushHeader {
+  string key = 1;
+  string value = 2;
+}
+
+// IM消息帧
+message PushFrame {
+  uint64 seq_id = 1;          // 序列ID
+  uint64 log_id = 2;          // 日志ID
+  int32 service = 3;          // 服务类型
+  int32 method = 4;           // 方法类型
+  repeated PushHeader headers = 5;  // 头信息列表
+  string payload_encoding = 6;     // 负载编码方式（如gzip）
+  string payload_type = 7;         // 负载数据类型
+  bytes payload = 8;               // 实际负载二进制
+  string lod_id_new = 9;           // 新版日志ID（注意原拼写可能错误）
+}
+
+enum CompressType {
+  NONE = 0;
+  ZLIB = 1;
+  ZSTD = 2;
+}
+
+// 聚合负载容器
+message PayloadInIm {
+  map<string, bytes> payloads = 1;  // 键值对形式的负载数据
+  CompressType compress_type = 2;   // 压缩类型
+}
+
+// 单条消息结构
+message Message {
+  string method = 1;                // 方法名（如"WebcastChatMessage"）
+  bytes payload = 2;                // 消息体二进制
+  uint64 msg_id = 3;                // 消息唯一ID
+  int32 msg_type = 4;               // 消息类型
+  uint64 offset = 5;                // 消息偏移量
+  bool need_wrds_store = 6;         // 是否需要存储
+  uint64 wrds_version = 7;          // 存储版本号
+  string wrds_sub_key = 8;          // 存储子键
+  map<string, string> message_extra = 9; // 扩展字段
+}
+
+// 服务端响应结构
+message Response {
+  repeated Message messages = 1;     // 消息列表
+  string cursor = 2;                 // 游标（用于分页）
+  uint64 fetch_interval = 3;         // 下次拉取间隔（毫秒）
+  uint64 now = 4;                    // 服务器当前时间戳
+  string internal_ext = 5;           // 内部扩展字段
+  int32 fetch_type = 6;              // 拉取类型
+  map<string, string> route_params = 7; // 路由参数
+  uint64 heartbeat_duration = 8;     // 心跳间隔
+  bool need_ack = 9;                 // 是否需要ACK确认
+  string push_server = 10;            // 推送服务器地址
+  string live_cursor = 11;            // 直播游标
+  bool history_no_more = 12;          // 是否无历史消息
+  string proxy_server = 13;           // 代理服务器地址
+}

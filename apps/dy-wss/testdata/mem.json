@@ -1,0 +1,60 @@
+{
+  "common": {
+    "method": "WebcastMemberMessage",
+    "msgId": "7530326989350572066",
+    "roomId": "7530304527736638234",
+    "isShowMsg": true,
+    "foldType": "1",
+    "anchorFoldType": "1",
+    "priorityScore": "42000",
+    "anchorFoldTypeV2": "3"
+  },
+  "user": {
+    "id": "111111",
+    "nickName": "笑***",
+    "AvatarThumb": {
+      "urlListList": [
+        "https://p11-webcast.douyinpic.com/img/webcast/small_DefAvatar.png~tplv-obj.image",
+        "https://p3-webcast.douyinpic.com/img/webcast/small_DefAvatar.png~tplv-obj.image"
+      ],
+      "uri": "webcast/small_DefAvatar.png",
+      "avgColor": "#FFEBF8"
+    },
+    "BadgeImageList": [
+      {
+        "urlListList": [
+          "https://p11-webcast.douyinpic.com/img/webcast/new_user_grade_level_v1_9.png~tplv-obj.image"
+        ],
+        "height": "16",
+        "width": "32",
+        "imageType": 1,
+        "content": {
+          "level": "9",
+          "alternativeText": "荣誉等级9级勋章"
+        }
+      }
+    ],
+    "FollowInfo": {},
+    "idStr": "111111"
+  },
+  "memberCount": "1858",
+  "action": "1",
+  "anchorDisplayText": {
+    "key": "invalid_key_placeholder",
+    "defaultPatter": "{0:user} 来了",
+    "defaultFormat": {
+      "color": "#b8ffffff",
+      "weight": 400
+    },
+    "piecesList": [
+      {
+        "type": true,
+        "format": {
+          "color": "#8CE7FF",
+          "weight": 400
+        }
+      }
+    ]
+  },
+  "publicAreaCommon": {}
+}
