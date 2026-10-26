@@ -2,5 +2,3 @@
 *.exe
 log.txt
 dups.txt
-core/assets/*.txt
-core/assets/*.strip.txt
