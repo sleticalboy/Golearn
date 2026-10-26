@@ -1,0 +1,42 @@
+syntax = "proto3";
+import "webcast_public.proto";
+
+option go_package = "./dy";
+
+// ===== 新增嵌套结构 =====
+message BuriedPoint {
+  string enter_tip_type = 1;       // 进入提示类型
+  string msg_show_type = 2;        // 消息显示类型
+}
+
+message DisplayText {
+  repeated DisplayTextPiece pieces = 1; // 文本片段
+  map<string, string> schema_infos = 2; // schema信息
+  string key = 3;                      // 键
+  string default_pattern = 4;          // 默认模式
+  TextFormat default_format = 5; // 默认格式
+}
+
+// ===== 主消息结构 =====
+message MemberMessage {
+  BuriedPoint buried_point = 1;         // [新增]埋点信息
+  map<string, string> alternative_effect_config = 2; // 空对象
+  string member_count = 3;              // 成员数
+  bool is_set_to_admin = 4;             // 是否设为管理员
+  bool is_top_user = 5;                 // 是否顶级用户
+  string rank_score = 6;                // 排名分数
+  string top_user_no = 7;               // 顶级用户编号
+  string enter_type = 8;                // 进入类型
+  string action = 9;                    // 动作
+  string action_description = 10;       // 动作描述
+  string user_id = 11;                  // 用户ID
+  string pop_str = 12;                  // 弹窗字符串
+  string user_enter_tip_type = 13;      // 用户进入提示类型
+  string anchor_enter_tip_type = 14;    // 主播进入提示类型
+  string user_open_id = 15;             // 用户开放ID
+  Common common = 16;                   // 复用公共结构
+  DisplayText display_text = 17;        // [新增]显示文本
+  User user = 18;                       // 复用User结构
+  DisplayText anchor_display_text = 19; // [新增]主播显示文本
+  PublicAreaCommon public_area_common = 20; // [新增]公共区域信息
+}

@@ -1,0 +1,23 @@
+syntax = "proto3";
+import "webcast_public.proto";
+
+option go_package = "./dy";
+
+// ===== 新增结构 =====
+message RoomIntro {
+  repeated string label = 1;            // 标签列表（当前为空数组）
+  repeated string selected_labels = 2;  // 已选标签（当前为空数组）
+  repeated string intro_labels = 3;     // 介绍标签（当前为空数组）
+  string style = 4;                     // 样式标识 "0"
+  string intro = 5;                     // 介绍文本 "抖音首发！..."
+  string intro_video_item_id = 6;       // 介绍视频ID "0"
+  string intro_video_title = 7;         // 介绍视频标题（空字符串）
+  bool poi_enabled = 8;                 // POI功能是否启用
+}
+
+message RoomIntroMessage {
+  RoomIntro intro = 1;                  // [新增]房间介绍信息
+  Common common = 2;                    // 复用公共结构
+  User user = 3;                        // 复用User结构
+  PublicAreaCommon public_area_common = 4; // 复用公共区域信息
+}

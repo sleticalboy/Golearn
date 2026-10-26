@@ -1,0 +1,54 @@
+syntax = "proto3";
+import "webcast_public.proto";
+
+option go_package = "./dy";
+
+message AvatarThumb {
+  repeated string url_list = 1;
+  repeated string flex_setting_list = 2;
+  repeated string text_setting_list = 3;
+  string uri = 4;
+  string height = 5;
+  string width = 6;
+  string avg_color = 7;
+  int32 image_type = 8;
+  string open_web_url = 9;
+  bool is_animated = 10;
+}
+
+message BadgeIcon {
+  repeated string url_list = 1;
+  repeated string flex_setting_list = 2;
+  repeated string text_setting_list = 3;
+  string uri = 4;
+  string height = 5;
+  string width = 6;
+  string avg_color = 7;
+  int32 image_type = 8;
+  string open_web_url = 9;
+  bool is_animated = 10;
+}
+
+message Badge {
+  map<int32, BadgeIcon> icons = 1;  // Key is int32 (e.g., 0)
+  string title = 2;
+}
+
+message FansClub {
+  map<string, string> prefer_data = 1;  // Placeholder for empty object
+  FansClubData data = 2;
+}
+
+message RankItem {
+  string score = 1;
+  string rank = 2;
+  string delta = 3;
+  bool is_hidden = 4;
+  string score_description = 5;
+  string exactly_score = 6;
+  User user = 7;
+}
+
+message WebcastRankMessage {
+  repeated RankItem ranks = 1;
+}

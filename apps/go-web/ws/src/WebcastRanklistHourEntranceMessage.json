@@ -1,0 +1,251 @@
+{
+  "common": {
+    "method": "WebcastRanklistHourEntranceMessage",
+    "msg_id": "7518658597816505363",
+    "room_id": "7518647451507575606",
+    "create_time": "1750574123355",
+    "monitor": 0,
+    "is_show_msg": true,
+    "describe": "",
+    "fold_type": "0",
+    "anchor_fold_type": "0",
+    "priority_score": "0",
+    "log_id": "",
+    "msg_process_filter_k": "",
+    "msg_process_filter_v": "",
+    "anchor_fold_type_v2": "0",
+    "process_at_sei_time_ms": "0",
+    "random_dispatch_ms": "0",
+    "is_dispatch": false,
+    "channel_id": "0",
+    "diff_sei2abs_second": "0",
+    "anchor_fold_duration": "0",
+    "app_id": "0"
+  },
+  "info": {
+    "global_infos": [
+      {
+        "details": [
+          {
+            "pages": [
+              {
+                "content": "小时榜",
+                "background_color": "",
+                "show_times": "0",
+                "content_type": 0
+              }
+            ],
+            "ranklist_type": 0,
+            "title": "小时榜",
+            "ranklist_extra": "",
+            "entrance_extra": "",
+            "schema": "",
+            "icon_url": ""
+          },
+          {
+            "pages": [
+              {
+                "content": "小时榜",
+                "background_color": "",
+                "show_times": "0",
+                "content_type": 0
+              }
+            ],
+            "ranklist_type": 10,
+            "title": "小时榜",
+            "ranklist_extra": "",
+            "entrance_extra": "",
+            "schema": "",
+            "icon_url": ""
+          },
+          {
+            "pages": [
+              {
+                "content": "小时榜",
+                "background_color": "",
+                "show_times": "0",
+                "content_type": 0
+              }
+            ],
+            "ranklist_type": 6,
+            "title": "小时榜",
+            "ranklist_extra": "",
+            "entrance_extra": "",
+            "schema": "",
+            "icon_url": ""
+          }
+        ]
+      },
+      {
+        "details": [
+          {
+            "pages": [
+              {
+                "content": "人气榜",
+                "background_color": "",
+                "show_times": "0",
+                "content_type": 0
+              }
+            ],
+            "ranklist_type": 3,
+            "title": "人气榜",
+            "ranklist_extra": "",
+            "entrance_extra": "",
+            "schema": "",
+            "icon_url": ""
+          }
+        ]
+      }
+    ],
+    "default_global_infos": [
+      {
+        "details": [
+          {
+            "pages": [
+              {
+                "content": "小时榜",
+                "background_color": "",
+                "show_times": "0",
+                "content_type": 0
+              }
+            ],
+            "ranklist_type": 0,
+            "title": "小时榜",
+            "ranklist_extra": "",
+            "entrance_extra": "",
+            "schema": "",
+            "icon_url": ""
+          },
+          {
+            "pages": [
+              {
+                "content": "小时榜",
+                "background_color": "",
+                "show_times": "0",
+                "content_type": 0
+              }
+            ],
+            "ranklist_type": 10,
+            "title": "小时榜",
+            "ranklist_extra": "",
+            "entrance_extra": "",
+            "schema": "",
+            "icon_url": ""
+          },
+          {
+            "pages": [
+              {
+                "content": "小时榜",
+                "background_color": "",
+                "show_times": "0",
+                "content_type": 0
+              }
+            ],
+            "ranklist_type": 6,
+            "title": "小时榜",
+            "ranklist_extra": "",
+            "entrance_extra": "",
+            "schema": "",
+            "icon_url": ""
+          }
+        ]
+      },
+      {
+        "details": [
+          {
+            "pages": [
+              {
+                "content": "人气榜",
+                "background_color": "",
+                "show_times": "0",
+                "content_type": 0
+              }
+            ],
+            "ranklist_type": 3,
+            "title": "人气榜",
+            "ranklist_extra": "",
+            "entrance_extra": "",
+            "schema": "",
+            "icon_url": ""
+          }
+        ]
+      }
+    ],
+    "vertical_infos": [
+      {
+        "details": [
+          {
+            "pages": [
+              {
+                "content": "游戏主播热度榜",
+                "background_color": "",
+                "show_times": "0",
+                "content_type": 7
+              }
+            ],
+            "ranklist_type": 5,
+            "title": "游戏主播热度榜",
+            "ranklist_extra": "",
+            "entrance_extra": "{\"entrance_text\":\"游戏主播热度榜\",\"is_sub_rank\":false}",
+            "schema": "sslocal://webcast_lynxview?url=https%3A%2F%2Flf-webcast-gr-sourcecdn.bytegecko.com%2Fobj%2Fbyte-gurd-source-gr%2Fwebcast%2Fmono%2Flynx%2Fgame_promote_tools_lynx_douyin%2Fpages%2Fcarry_leader_board%2Ftemplate.js%3Fbusiness_type%3Dgamecp_group&gravity=bottom&type=popup&panel_scene=hour_ranklist&lynx_thread=2&enable_font_scale=1&window_floating=0&abandon_coordinate=1&enable_lynx_bg=1&rate_height=480&height_percent=75&add_safe_area_height=0&enable_code_cache=1&enable_preload=main&enable_latch=1&web_bg_color=%23ffffffff&route_params=%7B%22previous_page%22%3A%20%22live_detail%22%2C%20%22previous_module%22%3A%20%5B%22live_entrance%22%5D%7D&room_id=7518647451507575606&anchor_id=3534250783280416",
+            "icon_url": "https://p9-webcast-game-sign.byteimg.com/tos-cn-i-23auat310x/c23b492edae547419460bc0a00a07661.png~tplv-23auat310x-image.image?rk3s=ff1014f5&x-expires=4868925190&x-signature=%2Bk%2B8QAc%2FKOK7eeAKUwFXd9g%2BCSU%3D"
+          },
+          {
+            "pages": [
+              {
+                "content": "游戏主播热度榜",
+                "background_color": "",
+                "show_times": "0",
+                "content_type": 7
+              }
+            ],
+            "ranklist_type": 45,
+            "title": "游戏主播热度榜",
+            "ranklist_extra": "",
+            "entrance_extra": "{\"entrance_text\":\"游戏主播热度榜\",\"is_sub_rank\":false}",
+            "schema": "sslocal://webcast_lynxview?url=https%3A%2F%2Flf-webcast-gr-sourcecdn.bytegecko.com%2Fobj%2Fbyte-gurd-source-gr%2Fwebcast%2Fmono%2Flynx%2Fgame_promote_tools_lynx_douyin%2Fpages%2Fcarry_leader_board%2Ftemplate.js%3Fbusiness_type%3Dgamecp_group&gravity=bottom&type=popup&panel_scene=hour_ranklist&lynx_thread=2&enable_font_scale=1&window_floating=0&abandon_coordinate=1&enable_lynx_bg=1&rate_height=480&height_percent=75&add_safe_area_height=0&enable_code_cache=1&enable_preload=main&enable_latch=1&web_bg_color=%23ffffffff&route_params=%7B%22previous_page%22%3A%20%22live_detail%22%2C%20%22previous_module%22%3A%20%5B%22live_entrance%22%5D%7D&room_id=7518647451507575606&anchor_id=3534250783280416",
+            "icon_url": "https://p9-webcast-game-sign.byteimg.com/tos-cn-i-23auat310x/c23b492edae547419460bc0a00a07661.png~tplv-23auat310x-image.image?rk3s=ff1014f5&x-expires=4868925190&x-signature=%2Bk%2B8QAc%2FKOK7eeAKUwFXd9g%2BCSU%3D"
+          }
+        ]
+      }
+    ],
+    "default_vertical_infos": [
+      {
+        "details": [
+          {
+            "pages": [
+              {
+                "content": "游戏主播热度榜",
+                "background_color": "",
+                "show_times": "0",
+                "content_type": 7
+              }
+            ],
+            "ranklist_type": 5,
+            "title": "游戏主播热度榜",
+            "ranklist_extra": "",
+            "entrance_extra": "{\"entrance_text\":\"游戏主播热度榜\",\"is_sub_rank\":false}",
+            "schema": "sslocal://webcast_lynxview?url=https%3A%2F%2Flf-webcast-gr-sourcecdn.bytegecko.com%2Fobj%2Fbyte-gurd-source-gr%2Fwebcast%2Fmono%2Flynx%2Fgame_promote_tools_lynx_douyin%2Fpages%2Fcarry_leader_board%2Ftemplate.js%3Fbusiness_type%3Dgamecp_group&gravity=bottom&type=popup&panel_scene=hour_ranklist&lynx_thread=2&enable_font_scale=1&window_floating=0&abandon_coordinate=1&enable_lynx_bg=1&rate_height=480&height_percent=75&add_safe_area_height=0&enable_code_cache=1&enable_preload=main&enable_latch=1&web_bg_color=%23ffffffff&route_params=%7B%22previous_page%22%3A%20%22live_detail%22%2C%20%22previous_module%22%3A%20%5B%22live_entrance%22%5D%7D&room_id=7518647451507575606&anchor_id=3534250783280416",
+            "icon_url": "https://p9-webcast-game-sign.byteimg.com/tos-cn-i-23auat310x/c23b492edae547419460bc0a00a07661.png~tplv-23auat310x-image.image?rk3s=ff1014f5&x-expires=4868925190&x-signature=%2Bk%2B8QAc%2FKOK7eeAKUwFXd9g%2BCSU%3D"
+          },
+          {
+            "pages": [
+              {
+                "content": "游戏主播热度榜",
+                "background_color": "",
+                "show_times": "0",
+                "content_type": 7
+              }
+            ],
+            "ranklist_type": 45,
+            "title": "游戏主播热度榜",
+            "ranklist_extra": "",
+            "entrance_extra": "{\"entrance_text\":\"游戏主播热度榜\",\"is_sub_rank\":false}",
+            "schema": "sslocal://webcast_lynxview?url=https%3A%2F%2Flf-webcast-gr-sourcecdn.bytegecko.com%2Fobj%2Fbyte-gurd-source-gr%2Fwebcast%2Fmono%2Flynx%2Fgame_promote_tools_lynx_douyin%2Fpages%2Fcarry_leader_board%2Ftemplate.js%3Fbusiness_type%3Dgamecp_group&gravity=bottom&type=popup&panel_scene=hour_ranklist&lynx_thread=2&enable_font_scale=1&window_floating=0&abandon_coordinate=1&enable_lynx_bg=1&rate_height=480&height_percent=75&add_safe_area_height=0&enable_code_cache=1&enable_preload=main&enable_latch=1&web_bg_color=%23ffffffff&route_params=%7B%22previous_page%22%3A%20%22live_detail%22%2C%20%22previous_module%22%3A%20%5B%22live_entrance%22%5D%7D&room_id=7518647451507575606&anchor_id=3534250783280416",
+            "icon_url": "https://p9-webcast-game-sign.byteimg.com/tos-cn-i-23auat310x/c23b492edae547419460bc0a00a07661.png~tplv-23auat310x-image.image?rk3s=ff1014f5&x-expires=4868925190&x-signature=%2Bk%2B8QAc%2FKOK7eeAKUwFXd9g%2BCSU%3D"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+syntax = "proto3";
+import "webcast_public.proto";
+
+option go_package = "./dy";
+
+// ===== 新增结构 =====
+message GiftDetails {
+  map<string, string> details = 1;  // 空对象暂定义为map<string, string>
+}
+
+message EventTrack {
+  string slice_id = 1;  // 事件追踪切片ID
+}
+
+message SceneInsertStrategy {
+  repeated string gift_ids = 1;           // 礼物ID列表
+  repeated string tag_ids = 2;            // 标签ID列表（当前为空数组）
+  repeated string effected_gift_ids = 3;  // 受影响礼物ID列表（当前为空数组）
+  EventTrack event_track = 4;             // [新增嵌套结构]
+  string scene = 5;                       // 场景标识（"content_tag_game"）
+  string start_time = 6;                  // 开始时间戳
+  string end_time = 7;                    // 结束时间戳
+  string extra = 8;                       // 扩展字段
+  int32 strategy_type = 9;                // 策略类型（1-默认）
+  int32 update_type = 10;                 // 更新类型（0-全量更新）
+}
+
+message GiftSortMessage {
+  GiftDetails gift_details = 1;           // [新增] 礼物详情（当前为空对象）
+  int32 message_type = 2;                 // [新增] 消息类型（3-排序消息）
+  string min_consume_level = 3;           // [新增] 最小消费等级
+  Common common = 4;                      // 复用之前定义的 Common
+  SceneInsertStrategy scene_insert_strategy = 5; // [新增完整结构]
+}

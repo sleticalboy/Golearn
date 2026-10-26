@@ -25,19 +25,37 @@
     } else {
         console.log("不支持websocket")
     }
-    const ws = new WebSocket("ws://192.168.2.119:8099/ws");
-    ws.onopen = function () {
-        console.log("连接成功")
+
+    function connws(url, tp, onmessage) {
+        const ws = new WebSocket(url);
+        ws.onopen = function () {
+            console.log("连接成功 -> " + tp)
+        }
+        ws.onclose = function () {
+            console.log("连接关闭 -> " + tp)
+        }
+        ws.onmessage = onmessage;
+        ws.onerror = function (error) {
+            console.error("WebSocket Error: ", error, ", tp -> " + tp);
+        };
+        return ws;
     }
-    ws.onclose = function () {
-        console.log("连接关闭")
-    }
-    ws.onmessage = (event) => {
-        document.getElementById("output").innerHTML += `<p>${event.data}</p>`;
-    };
-    ws.onerror = function (error) {
-        console.error("WebSocket Error:", error);
-    };
+
+    // echo ws
+    const echoWs = connws(`ws://192.168.2.119:8099/ws`, "echoWs", function (event) {
+        let d = JSON.parse(event.data);
+        document.getElementById("output").innerHTML += `<p>${JSON.stringify(d, null, 2)}</p>`;
+    })
+    // dy live ws
+    // const dyLiveWs = connws(
+    //     `wss://webcast5-ws-web-hl.douyin.com/webcast/im/push/v2/?aid=6383&app_name=douyin_web&browser_language=zh-CN&browser_name=Chrome&browser_online=true&browser_platform=Win32&browser_version=Mozilla%2F5.0%20%28Macintosh%3B%20PPC%20Mac%20OS%20X%2010_6_5%29%20AppleWebKit%2F5321%20%28KHTML%2C%20like%20Gecko%29%20Chrome%2F36.0.853.0%20Mobile%20Safari%2F5321&compress=gzip&cookie_enabled=true&device_platform=web&did_rule=3&endpoint=live_pc&heartbeatDuration=0&host=https://live.douyin.com&identity=audience&im_path=/webcast/im/fetch/&insert_task_id=&live_id=1&live_reason=&need_persist_msg_count=15&screen_height=1080&screen_width=1920&support_wrds=1&tz_name=Asia/Shanghai&update_version_code=1.0.14-beta.0&version_code=180800&webcast_sdk_version=1.0.14-beta.0&room_id=7518679709769976603&user_unique_id=7518697332155729442&cursor=t-1750583158397_r-7518697412538414069_d-1_u-1_h-7518695811188077094&internal_ext=internal_src:dim|wss_push_room_id:7518679709769976603|wss_push_did:7515682490864338470|first_req_ms:1750583158278|fetch_time:1750583158397|seq:1|wss_info:0-0-0-0|wrds_v:7518697408243437007&signature=6guqpgGfPGDMVFFb`,
+    //     "dyLiveWs",
+    //     function (event) {
+    //         // 发送到 echo ws 解码并显示在网页上
+    //         if (echoWs && echoWs.readyState === WebSocket.OPEN) {
+    //             echoWs.send(event.data);
+    //         }
+    //     })
 
     function send() {
         const input = document.getElementById("input");
@@ -45,17 +63,17 @@
             console.error("输入不能为空")
             return;
         }
-        if (!ws || ws.readyState !== WebSocket.OPEN) {
+        if (!echoWs || echoWs.readyState !== WebSocket.OPEN) {
             console.error("WebSocket未连接")
             return;
         }
         if (input.value === "quit" || input.value === "q") {
-            ws.close();
+            echoWs.close();
             return;
         }
         // 循环发送消息
         for (let i = 0; i < 10; i++) {
-            ws.send(JSON.stringify({
+            echoWs.send(JSON.stringify({
                 "type": "common",
                 "data": `${input.value} - ${i + 1}`,
             }));

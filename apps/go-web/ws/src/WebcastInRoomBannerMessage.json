@@ -1,0 +1,263 @@
+{
+  "extra": "{\"24v_x_flash_z\":{\"_extra\":{\"step\":{\"Name\":\"final\",\"Start\":1750046400000,\"End\":1750607999999,\"Index\":0},\"now_millis\":1750573186502,\"now\":\"2025-06-22T14:19:46.502+08:00\",\"extra_map\":{\"about_apply\":{\"can_apply\":true,\"in_cur\":false,\"applied\":false},\"pk_info\":{\"have_started_pk\":false,\"score_by_pk\":0},\"rank_show\":{\"last_daily_rank\":0,\"last_weekly_rank\":0,\"show_daily_banner\":false,\"show_weekly_banner\":false,\"selector\":\"\",\"user_info\":{\"id_str\":\"3534250783280416\",\"live_room_id_str\":\"7518647451507575606\",\"nickname\":\"爱吃桃子\",\"uri\":\"aweme-avatar/tos-cn-i-0813c001_ooS7iANB0CH4wUSiiAAoLAELAAwFfIngZeIdBs\",\"avatar_thumb\":{\"uri\":\"100x100/aweme-avatar/tos-cn-i-0813c001_ooS7iANB0CH4wUSiiAAoLAELAAwFfIngZeIdBs\",\"url_list\":[\"https://p11.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-i-0813c001_ooS7iANB0CH4wUSiiAAoLAELAAwFfIngZeIdBs.jpeg?from=3067671334\"]},\"avatar_medium\":{\"uri\":\"720x720/aweme-avatar/tos-cn-i-0813c001_ooS7iANB0CH4wUSiiAAoLAELAAwFfIngZeIdBs\",\"url_list\":[\"https://p11.douyinpic.com/aweme/720x720/aweme-avatar/tos-cn-i-0813c001_ooS7iANB0CH4wUSiiAAoLAELAAwFfIngZeIdBs.jpeg?from=3067671334\"]},\"vcd_auth\":true,\"secret\":false,\"mystery\":false,\"if_follow\":false,\"follower_count\":null}},\"top1_user\":null},\"sub\":null},\"_just_anchor\":true,\"anchor_pk\":{\"pk_info\":{\"pk_val\":0,\"pk_status\":4},\"pk_inform\":{}},\"anchor_task\":{\"role\":1,\"component_name\":\"anchor_task\",\"task_type\":0,\"start_time\":1750046400000,\"end_time\":1750608000000,\"interval_type\":\"daily\",\"interval\":7,\"task_items\":[{\"status\":1,\"current_phase\":0,\"phases\":[{\"conditions\":[{\"condition_name\":\"condition_1\",\"current\":0,\"target\":3,\"status\":1,\"already_repeat_count\":0,\"repeat_limit\":0,\"time_limit\":0,\"time_limit_start_millis\":0,\"finish_millis\":0}],\"finish_millis\":0,\"reward_got_millis\":0,\"reward_list\":{\"reward_configs\":[{\"reward_id\":\"new_person_sticker\",\"reward_count\":1}]},\"phase_name\":\"多阶段任务_1\"},{\"conditions\":[{\"condition_name\":\"condition_2\",\"current\":0,\"target\":8,\"status\":1,\"already_repeat_count\":0,\"repeat_limit\":0,\"time_limit\":0,\"time_limit_start_millis\":0,\"finish_millis\":0}],\"finish_millis\":0,\"reward_got_millis\":0,\"reward_list\":{\"reward_configs\":[{\"reward_id\":\"new_person_sticker\",\"reward_count\":1}]},\"phase_name\":\"多阶段任务_2\"},{\"conditions\":[{\"condition_name\":\"condition_3\",\"current\":0,\"target\":18,\"status\":1,\"already_repeat_count\":0,\"repeat_limit\":0,\"time_limit\":0,\"time_limit_start_millis\":0,\"finish_millis\":0}],\"finish_millis\":0,\"reward_got_millis\":0,\"reward_list\":{\"reward_configs\":[{\"reward_id\":\"new_person_effect\",\"reward_count\":1}]},\"phase_name\":\"多阶段任务_3\"},{\"conditions\":[{\"condition_name\":\"condition_4\",\"current\":0,\"target\":33,\"status\":1,\"already_repeat_count\":0,\"repeat_limit\":0,\"time_limit\":0,\"time_limit_start_millis\":0,\"finish_millis\":0}],\"finish_millis\":0,\"reward_got_millis\":0,\"reward_list\":{\"reward_configs\":[{\"reward_id\":\"enhancer_card_1_2\",\"reward_count\":1},{\"reward_id\":\"letter_new_audition\",\"reward_count\":1}]},\"phase_name\":\"多阶段任务_4\"}]}]},\"daily_rank\":{\"daily_rank\":null,\"daily_rank_meta\":{\"is_open\":true,\"promotion_count\":0,\"reward_count\":10,\"freeze_interval_show_info_end_time\":0}},\"debug\":false,\"enhance_card\":null,\"pk_score_rank\":{\"pk_score_rank\":null,\"pk_score_rank_meta\":{\"is_open\":true,\"promotion_count\":0,\"reward_count\":10,\"freeze_interval_show_info_end_time\":0}},\"seat_cnt_rank\":{\"seat_cnt_rank\":null,\"seat_cnt_rank_meta\":{\"is_open\":true,\"promotion_count\":0,\"reward_count\":0,\"freeze_interval_show_info_end_time\":0}},\"user\":\"3534250783280416\",\"weekly_rank\":{\"weekly_rank\":null,\"weekly_rank_meta\":{\"is_open\":true,\"promotion_count\":0,\"reward_count\":10,\"freeze_interval_show_info_end_time\":0}}},\"debug\":false,\"user\":\"3534250783280416\"}",
+  "extra_obj": {
+    "24v_x_flash_z": {
+      "_extra": {
+        "step": {
+          "Name": "final",
+          "Start": 1750046400000,
+          "End": 1750607999999,
+          "Index": 0
+        },
+        "now_millis": 1750573186502,
+        "now": "2025-06-22T14:19:46.502+08:00",
+        "extra_map": {
+          "about_apply": {
+            "can_apply": true,
+            "in_cur": false,
+            "applied": false
+          },
+          "pk_info": {
+            "have_started_pk": false,
+            "score_by_pk": 0
+          },
+          "rank_show": {
+            "last_daily_rank": 0,
+            "last_weekly_rank": 0,
+            "show_daily_banner": false,
+            "show_weekly_banner": false,
+            "selector": "",
+            "user_info": {
+              "id_str": "3534250783280416",
+              "live_room_id_str": "7518647451507575606",
+              "nickname": "爱吃桃子",
+              "uri": "aweme-avatar/tos-cn-i-0813c001_ooS7iANB0CH4wUSiiAAoLAELAAwFfIngZeIdBs",
+              "avatar_thumb": {
+                "uri": "100x100/aweme-avatar/tos-cn-i-0813c001_ooS7iANB0CH4wUSiiAAoLAELAAwFfIngZeIdBs",
+                "url_list": [
+                  "https://p11.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-i-0813c001_ooS7iANB0CH4wUSiiAAoLAELAAwFfIngZeIdBs.jpeg?from=3067671334"
+                ]
+              },
+              "avatar_medium": {
+                "uri": "720x720/aweme-avatar/tos-cn-i-0813c001_ooS7iANB0CH4wUSiiAAoLAELAAwFfIngZeIdBs",
+                "url_list": [
+                  "https://p11.douyinpic.com/aweme/720x720/aweme-avatar/tos-cn-i-0813c001_ooS7iANB0CH4wUSiiAAoLAELAAwFfIngZeIdBs.jpeg?from=3067671334"
+                ]
+              },
+              "vcd_auth": true,
+              "secret": false,
+              "mystery": false,
+              "if_follow": false,
+              "follower_count": null
+            }
+          },
+          "top1_user": null
+        },
+        "sub": null
+      },
+      "_just_anchor": true,
+      "anchor_pk": {
+        "pk_info": {
+          "pk_val": 0,
+          "pk_status": 4
+        },
+        "pk_inform": {}
+      },
+      "anchor_task": {
+        "role": 1,
+        "component_name": "anchor_task",
+        "task_type": 0,
+        "start_time": 1750046400000,
+        "end_time": 1750608000000,
+        "interval_type": "daily",
+        "interval": 7,
+        "task_items": [
+          {
+            "status": 1,
+            "current_phase": 0,
+            "phases": [
+              {
+                "conditions": [
+                  {
+                    "condition_name": "condition_1",
+                    "current": 0,
+                    "target": 3,
+                    "status": 1,
+                    "already_repeat_count": 0,
+                    "repeat_limit": 0,
+                    "time_limit": 0,
+                    "time_limit_start_millis": 0,
+                    "finish_millis": 0
+                  }
+                ],
+                "finish_millis": 0,
+                "reward_got_millis": 0,
+                "reward_list": {
+                  "reward_configs": [
+                    {
+                      "reward_id": "new_person_sticker",
+                      "reward_count": 1
+                    }
+                  ]
+                },
+                "phase_name": "多阶段任务_1"
+              },
+              {
+                "conditions": [
+                  {
+                    "condition_name": "condition_2",
+                    "current": 0,
+                    "target": 8,
+                    "status": 1,
+                    "already_repeat_count": 0,
+                    "repeat_limit": 0,
+                    "time_limit": 0,
+                    "time_limit_start_millis": 0,
+                    "finish_millis": 0
+                  }
+                ],
+                "finish_millis": 0,
+                "reward_got_millis": 0,
+                "reward_list": {
+                  "reward_configs": [
+                    {
+                      "reward_id": "new_person_sticker",
+                      "reward_count": 1
+                    }
+                  ]
+                },
+                "phase_name": "多阶段任务_2"
+              },
+              {
+                "conditions": [
+                  {
+                    "condition_name": "condition_3",
+                    "current": 0,
+                    "target": 18,
+                    "status": 1,
+                    "already_repeat_count": 0,
+                    "repeat_limit": 0,
+                    "time_limit": 0,
+                    "time_limit_start_millis": 0,
+                    "finish_millis": 0
+                  }
+                ],
+                "finish_millis": 0,
+                "reward_got_millis": 0,
+                "reward_list": {
+                  "reward_configs": [
+                    {
+                      "reward_id": "new_person_effect",
+                      "reward_count": 1
+                    }
+                  ]
+                },
+                "phase_name": "多阶段任务_3"
+              },
+              {
+                "conditions": [
+                  {
+                    "condition_name": "condition_4",
+                    "current": 0,
+                    "target": 33,
+                    "status": 1,
+                    "already_repeat_count": 0,
+                    "repeat_limit": 0,
+                    "time_limit": 0,
+                    "time_limit_start_millis": 0,
+                    "finish_millis": 0
+                  }
+                ],
+                "finish_millis": 0,
+                "reward_got_millis": 0,
+                "reward_list": {
+                  "reward_configs": [
+                    {
+                      "reward_id": "enhancer_card_1_2",
+                      "reward_count": 1
+                    },
+                    {
+                      "reward_id": "letter_new_audition",
+                      "reward_count": 1
+                    }
+                  ]
+                },
+                "phase_name": "多阶段任务_4"
+              }
+            ]
+          }
+        ]
+      },
+      "daily_rank": {
+        "daily_rank": null,
+        "daily_rank_meta": {
+          "is_open": true,
+          "promotion_count": 0,
+          "reward_count": 10,
+          "freeze_interval_show_info_end_time": 0
+        }
+      },
+      "debug": false,
+      "enhance_card": null,
+      "pk_score_rank": {
+        "pk_score_rank": null,
+        "pk_score_rank_meta": {
+          "is_open": true,
+          "promotion_count": 0,
+          "reward_count": 10,
+          "freeze_interval_show_info_end_time": 0
+        }
+      },
+      "seat_cnt_rank": {
+        "seat_cnt_rank": null,
+        "seat_cnt_rank_meta": {
+          "is_open": true,
+          "promotion_count": 0,
+          "reward_count": 0,
+          "freeze_interval_show_info_end_time": 0
+        }
+      },
+      "user": "3534250783280416",
+      "weekly_rank": {
+        "weekly_rank": null,
+        "weekly_rank_meta": {
+          "is_open": true,
+          "promotion_count": 0,
+          "reward_count": 10,
+          "freeze_interval_show_info_end_time": 0
+        }
+      }
+    },
+    "debug": false,
+    "user": "3534250783280416"
+  },
+  "position": 5,
+  "action_type": 0,
+  "container_url": "",
+  "lynx_container_url": "",
+  "container_type": 0,
+  "op_type": 0,
+  "common": {
+    "method": "WebcastInRoomBannerMessage",
+    "msg_id": "7518654491647497254",
+    "room_id": "7518647451507575606",
+    "create_time": "1750573186529",
+    "monitor": 0,
+    "is_show_msg": true,
+    "describe": "",
+    "fold_type": "0",
+    "anchor_fold_type": "0",
+    "priority_score": "0",
+    "log_id": "",
+    "msg_process_filter_k": "",
+    "msg_process_filter_v": "",
+    "anchor_fold_type_v2": "0",
+    "process_at_sei_time_ms": "0",
+    "random_dispatch_ms": "0",
+    "is_dispatch": false,
+    "channel_id": "0",
+    "diff_sei2abs_second": "0",
+    "anchor_fold_duration": "0",
+    "app_id": "0"
+  }
+}

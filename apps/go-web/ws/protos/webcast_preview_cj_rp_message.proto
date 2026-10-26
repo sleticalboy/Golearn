@@ -1,0 +1,26 @@
+syntax = "proto3";
+import "webcast_public.proto";
+
+option go_package = "./dy";
+
+// ===== 新增结构 =====
+message CJRP {
+  string rp_order_no = 1;               // 红包订单号 RP3-250622140156900034312740041
+  string send_time = 2;                 // 发送时间戳 1750572127
+  string expire_time = 3;               // 过期时间戳 1750573927
+  string display_delay_seconds = 4;     // 显示延迟秒数 5
+  string status = 5;                    // 状态 1
+  string currency = 6;                  // 货币类型 Diamond
+  string icon = 7;                      // 图标URL
+  string text = 8;                      // 显示文本 "红包发放中"
+  string total_amount = 9;              // 总金额 400
+  string left_amount = 10;              // 剩余金额 384
+  string total_num = 11;                // 总数量 400
+  string left_num = 12;                 // 剩余数量 384
+}
+
+// ===== 主消息结构 =====
+message PreviewCjRpMessage {
+  CJRP cjrp = 1;                        // [新增]红包信息
+  Common common = 2;                    // 复用公共结构
+}

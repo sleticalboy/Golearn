@@ -1,0 +1,22 @@
+syntax = "proto3";
+import "webcast_public.proto";
+
+option go_package = "./dy";
+
+// ===== 新增结构 =====
+message RoomStats {
+  string display_short = 1;      // 短格式显示 "21"
+  string display_middle = 2;     // 中格式显示 "21"
+  string display_long = 3;       // 长格式显示 "21在线观众"
+  string display_value = 4;      // 显示值 "21"
+  string display_version = 5;    // 显示版本号 "1663849727"
+  bool incremental = 6;          // 是否增量更新
+  bool is_hidden = 7;            // 是否隐藏
+  string total = 8;              // 总数 "21"
+  string display_type = 9;       // 显示类型 "1"
+}
+
+message RoomStatsMessage {
+  RoomStats stats = 1;           // [新增]房间统计信息
+  Common common = 2;             // 复用公共结构
+}

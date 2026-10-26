@@ -1,0 +1,39 @@
+syntax = "proto3";
+import "webcast_public.proto";
+
+option go_package = "./dy";
+
+// ===== 嵌套结构定义 =====
+message RanklistPage {
+  string content = 1;                // 显示内容（如"小时榜"）
+  string background_color = 2;       // 背景颜色
+  string show_times = 3;             // 展示次数
+  int32 content_type = 4;            // 内容类型
+}
+
+message RanklistDetail {
+  repeated RanklistPage pages = 1;   // 页面内容数组
+  int32 ranklist_type = 2;           // 榜单类型
+  string title = 3;                  // 榜单标题
+  string ranklist_extra = 4;         // 榜单扩展数据
+  string entrance_extra = 5;         // 入口扩展数据（JSON字符串）
+  string schema = 6;                 // 跳转schema
+  string icon_url = 7;               // 图标URL
+}
+
+message RanklistGroup {
+  repeated RanklistDetail details = 1; // 榜单详情数组
+}
+
+message RanklistInfo {
+  repeated RanklistGroup global_infos = 1;          // 全局榜单信息
+  repeated RanklistGroup default_global_infos = 2;  // 默认全局榜单
+  repeated RanklistGroup vertical_infos = 3;        // 垂直榜单信息
+  repeated RanklistGroup default_vertical_infos = 4;// 默认垂直榜单
+}
+
+// ===== 主消息结构 =====
+message RanklistHourEntranceMessage {
+  Common common = 1;      // 复用公共结构
+  RanklistInfo info = 2;  // [新增]榜单入口信息
+}

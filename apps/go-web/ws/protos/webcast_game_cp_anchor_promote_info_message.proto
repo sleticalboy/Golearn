@@ -1,0 +1,96 @@
+syntax = "proto3";
+import "webcast_public.proto";
+
+option go_package = "./dy";
+
+message GameCPAnchorPromoteInfo {
+  repeated string game_info = 1;  // 空数组暂定义为string类型，实际使用时需根据元素结构调整
+  Common common = 2;              // 复用之前定义的 Common 结构体
+}
+
+message ShowInfo {
+  // 基础信息
+  repeated string game_tag_names = 1;       // [新增] 游戏标签数组
+  repeated string component_ids = 2;        // [新增] 组件ID数组
+  int32 type = 3;                          // [新增] 展示类型（1-普通游戏卡）
+  string game_image = 4;                    // [新增] 游戏封面图URL
+  string game_name = 5;                     // [新增] 游戏名称
+
+  // 下载相关
+  string game_download_url = 6;             // [新增] 下载主链接
+  string game_trace_info = 7;               // [新增] 追踪参数
+  string game_background_color = 8;         // [新增] 背景色值（如 "#FF0000"）
+
+  // 时间控制
+  int32 introduce_time_limit = 9;           // [新增] 展示时长限制(秒)
+  string introduce_start_time = 10;         // [新增] 开始时间戳
+  int32 introduce_stop_type = 11;           // [新增] 停止类型(0-自然结束 1-强制关闭)
+
+  // 游戏标识
+  string game_id = 12;                      // [新增] 游戏唯一ID
+  bool audit_result = 13;                   // [新增] 审核状态
+
+  // 平台信息
+  string ios_app_id = 14;                   // [新增] iOS应用ID
+  string company_name = 15;                 // [新增] 公司名称
+  string download_extra = 16;               // [新增] 下载附加参数
+
+  // 合规链接
+  string android_privacy_url = 17;          // [新增] 安卓隐私政策链接
+  string android_authorization_url = 18;    // [新增] 安卓权限申请链接
+  string ios_privacy_url = 19;              // [新增] iOS隐私政策链接
+  string ios_authorization_url = 20;        // [新增] iOS权限申请链接
+
+  // 版本信息
+  string android_version = 21;              // [新增] 安卓版本号
+  string ios_version = 22;                  // [新增] iOS版本号
+  string active_link = 23;                  // [新增] 活动链接
+
+  // 数据指标
+  string download_count = 24;               // [新增] 下载量统计
+
+  // 动画相关
+  bool is_show_animate = 25;                // [新增] 是否显示动画
+  string animate_start_time = 26;           // [新增] 动画开始时间
+  string animate_duration = 27;             // [新增] 动画持续时间(ms)
+
+  // 安全相关
+  string anti_hijack_content = 28;          // [新增] 防劫持文案
+  string anti_hijack_image = 29;            // [新增] 防劫持图片URL
+
+  // 平台特性
+  string ios_sale_point = 30;               // [新增] iOS卖点文案
+  bool is_forbid_jump_ios_app = 31;         // [新增] 是否禁止跳转AppStore
+  bool has_platform_gift = 32;              // [新增] 是否有平台礼包
+  string open_game_url = 33;                // [新增] 直接打开游戏的URL
+
+  // 道具系统
+  string prop_icon = 34;                    // [新增] 道具图标URL
+  string prop_name = 35;                    // [新增] 道具名称
+  string prop_id = 36;                      // [新增] 道具ID
+  string market_price = 37;                 // [新增] 市场价(分)
+  string selling_price = 38;                // [新增] 售价(分)
+  string prop_sku_id = 39;                  // [新增] 道具SKU
+  string prop_type = 40;                    // [新增] 道具类型
+  string game_access_type = 41;             // [新增] 游戏接入方式
+  bool is_prop_exp_game = 42;               // [新增] 是否道具体验游戏
+
+  // 业务扩展
+  int32 biz_type = 43;                      // [新增] 业务类型(0-普通 1-联运)
+  string install_user_count = 44;           // [新增] 安装用户数
+  string android_sale_point = 45;           // [新增] 安卓卖点文案
+  string support_platforms = 46;            // [新增] 支持平台(二进制掩码)
+
+  // 展示信息
+  string play_introduce = 47;               // [新增] 玩法介绍文案
+  string small_icon = 48;                   // [新增] 小图标URL
+  string game_introduction_url = 49;        // [新增] 游戏介绍页URL
+  string promote_instance_id = 50;          // [新增] 推广实例ID
+  string prop_stock_num = 51;               // [新增] 道具库存量
+  bool is_in_pre_download_period = 52;      // [新增] 是否预下载期
+}
+
+message GameCPBaseMessage {
+  Common common = 1;                        // 复用之前定义的 Common
+  ShowInfo show_info = 2;                   // [新增结构]
+}

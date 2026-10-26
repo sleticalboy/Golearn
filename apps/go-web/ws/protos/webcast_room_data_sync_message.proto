@@ -1,0 +1,19 @@
+syntax = "proto3";
+import "webcast_public.proto";
+
+option go_package = "./dy";
+
+// ===== 新增结构 =====
+message SyncPayload {
+  map<int32, int32> data = 1;  // 二进制payload转为map<位置, 值>
+}
+
+message RoomDataSyncMessage {
+  string roomID = 1;            // 房间ID（与room_id重复，需确认是否必要）
+  string syncKey = 2;           // 同步键 "LotteryInfoSyncData"
+  string version = 3;           // 版本号（时间戳+序列）
+  // SyncPayload payload = 4;      // [新增]同步数据负载
+  bytes  payload = 4;      // [新增]同步数据负载
+  string bizLogID = 5;          // 业务日志ID
+  Common common = 6;            // 复用公共结构
+}

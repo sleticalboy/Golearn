@@ -1,0 +1,16 @@
+syntax = "proto3";
+import "webcast_public.proto";
+
+option go_package = "./dy";
+
+message WebcastSocialMessage {
+  string share_type = 1;  // 分享类型
+  string action = 2;      // 动作类型
+  string share_target = 3; // 分享目标ID
+  string follow_count = 4; // 关注数统计
+  // 新增字段（确保编号连续）
+  string share_total_count = 5;  // 总分享数
+  Common common = 6; // 复用公共结构
+  User user = 7; // 复用User结构
+  PublicAreaCommon public_area_common = 8; // [新增]公共区域信息
+}

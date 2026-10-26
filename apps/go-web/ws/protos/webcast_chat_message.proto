@@ -1,0 +1,23 @@
+syntax = "proto3";
+import "webcast_public.proto";
+
+option go_package = "./dy";
+
+// 完整聊天消息结构
+message ChatMessage {
+  repeated string chat_tags = 1;
+  map<string, string> model_info = 2;
+  string content = 3;
+  bool visible_to_sender = 4;
+  string full_screen_text_color = 5;
+  string agree_msg_id = 6;
+  int32 priority_level = 7;
+  string event_time = 8;
+  bool send_review = 9;
+  bool from_intercom = 10;
+  bool intercom_hide_user_card = 11;
+  string chat_by = 12;
+  int32 individual_chat_priority = 13;
+  Common common = 14;
+  User user = 15;
+}

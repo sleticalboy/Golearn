@@ -1,0 +1,16 @@
+syntax = "proto3";
+import "webcast_public.proto";
+
+option go_package = "./dy";
+
+// ===== 新增结构 =====
+message RoomMessage {
+  map<string, string> buried_point = 1;  // 埋点数据（当前为空对象）
+  string content = 2;                    // 房间消息内容（含多行文本）
+  bool supprot_landscape = 3;            // 是否支持横屏 [注意：字段名疑似拼写错误，应为support_landscape]
+  int32 roomMessageType = 4;             // 房间消息类型
+  bool system_top_msg = 5;               // 是否系统置顶消息
+  bool forced_guarantee = 6;             // 是否强制担保
+  string biz_scene = 7;                  // 业务场景标识（空字符串）
+  Common common = 8;                     // 复用公共结构
+}

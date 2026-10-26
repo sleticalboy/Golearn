@@ -1,0 +1,165 @@
+syntax = "proto3";
+import "webcast_public.proto";
+
+option go_package = "./dy";
+
+// ===== 嵌套结构定义 =====
+message StepInfo {
+  string name = 1;          // 阶段名称（如"final"）
+  int64 start = 2;          // 开始时间戳（毫秒）
+  int64 end = 3;            // 结束时间戳（毫秒）
+  int32 index = 4;          // 阶段索引
+}
+
+message ApplyInfo {
+  bool can_apply = 1;       // 能否申请
+  bool in_cur = 2;          // 是否当前
+  bool applied = 3;         // 是否已申请
+}
+
+message PKInfo {
+  bool have_started_pk = 1; // 是否已开始PK
+  int32 score_by_pk = 2;    // PK得分
+}
+
+message AvatarImage {
+  string uri = 1;
+  repeated string url_list = 2;
+}
+
+message UserInfo {
+  string id_str = 1;
+  string live_room_id_str = 2;
+  string nickname = 3;
+  string uri = 4;
+  AvatarImage avatar_thumb = 5;
+  AvatarImage avatar_medium = 6;
+  bool vcd_auth = 7;
+  bool secret = 8;
+  bool mystery = 9;
+  bool if_follow = 10;
+  string follower_count = 11; // 注意：原始为null，定义为可空字符串
+}
+
+message RankShowInfo {
+  int32 last_daily_rank = 1;
+  int32 last_weekly_rank = 2;
+  bool show_daily_banner = 3;
+  bool show_weekly_banner = 4;
+  string selector = 5;
+  UserInfo user_info = 6;
+}
+
+message ExtraMap {
+  ApplyInfo about_apply = 1;
+  PKInfo pk_info = 2;
+  RankShowInfo rank_show = 3;
+  string top1_user = 4; // 注意：原始为null
+}
+
+message AnchorExtra {
+  StepInfo step = 1;
+  int64 now_millis = 2;
+  string now = 3;          // ISO8601时间格式
+  ExtraMap extra_map = 4;
+  string sub = 5;          // 注意：原始为null
+}
+
+message PKStatus {
+  int32 pk_val = 1;
+  int32 pk_status = 2;
+}
+
+message AnchorPK {
+  PKStatus pk_info = 1;
+  map<string, string> pk_inform = 2; // 空对象
+}
+
+message TaskCondition {
+  string condition_name = 1;
+  int32 current = 2;
+  int32 target = 3;
+  int32 status = 4;
+  int32 already_repeat_count = 5;
+  int32 repeat_limit = 6;
+  int32 time_limit = 7;
+  int64 time_limit_start_millis = 8;
+  int64 finish_millis = 9;
+}
+
+message RewardConfig {
+  string reward_id = 1;
+  int32 reward_count = 2;
+}
+
+message TaskPhase {
+  repeated TaskCondition conditions = 1;
+  int64 finish_millis = 2;
+  int64 reward_got_millis = 3;
+  repeated RewardConfig reward_configs = 4;
+  string phase_name = 5;
+}
+
+message TaskItem {
+  int32 status = 1;
+  int32 current_phase = 2;
+  repeated TaskPhase phases = 3;
+}
+
+message AnchorTask {
+  int32 role = 1;
+  string component_name = 2;
+  int32 task_type = 3;
+  int64 start_time = 4;
+  int64 end_time = 5;
+  string interval_type = 6;
+  int32 interval = 7;
+  repeated TaskItem task_items = 8;
+}
+
+message RankMeta {
+  bool is_open = 1;
+  int32 promotion_count = 2;
+  int32 reward_count = 3;
+  int64 freeze_interval_show_info_end_time = 4;
+}
+
+message DailyRank {
+  string daily_rank = 1; // 注意：原始为null
+  RankMeta daily_rank_meta = 2;
+}
+
+message WeeklyRank {
+  string weekly_rank = 1; // 注意：原始为null
+  RankMeta weekly_rank_meta = 2;
+}
+
+message FlashZData {
+  AnchorExtra _extra = 1;
+  bool _just_anchor = 2;
+  AnchorPK anchor_pk = 3;
+  AnchorTask anchor_task = 4;
+  DailyRank daily_rank = 5;
+  bool debug = 6;
+  string enhance_card = 7; // 注意：原始为null
+  WeeklyRank weekly_rank = 8;
+  string user = 9;
+}
+
+message ExtraObject {
+  map<string, FlashZData> flash_data = 1; // 键"24v_x_flash_z"转为动态键
+  bool debug = 2;
+  string user = 3;
+}
+
+// ===== 主消息结构 =====
+message InRoomBannerMessage {
+  string extra = 1;                // 原始JSON字符串
+  int32 position = 2;              // 显示位置
+  int32 action_type = 3;           // 动作类型
+  string container_url = 4;        // 容器URL
+  string lynx_container_url = 5;   // Lynx容器URL
+  int32 container_type = 6;        // 容器类型
+  int32 op_type = 7;               // 操作类型
+  Common common = 8;               // 复用公共结构
+}

@@ -1,0 +1,18 @@
+syntax = "proto3";
+import "webcast_public.proto";
+
+option go_package = "./dy";
+
+// ===== 新增结构 =====
+message StreamAdaptation {
+  int32 adaptation_type = 1;                   // 适配类型 (1)
+  float adaptation_height_ratio = 2;           // 高度适配比例 (0)
+  float adaptation_body_center_ratio = 3;      // 主体中心适配比例 (0)
+  float adaptation_content_top_ratio = 4;      // 内容顶部适配比例 (0)
+  float adaptation_content_bottom_ratio = 5;   // 内容底部适配比例 (0)
+}
+
+message RoomStreamAdaptationMessage {
+  StreamAdaptation adaptation = 1;             // [新增]流适配配置
+  Common common = 2;                           // 复用公共结构
+}

@@ -1,0 +1,272 @@
+syntax = "proto3";
+
+option go_package = "./dy";
+
+// 通用图像结构
+message Image {
+  repeated string url_list = 1;
+  repeated string flex_setting_list = 2;
+  repeated string text_setting_list = 3;
+  string uri = 4;
+  string height = 5;
+  string width = 6;
+  string avg_color = 7;
+  int32 image_type = 8;
+  string open_web_url = 9;
+  bool is_animated = 10;
+}
+
+// 通用消息结构
+message Common {
+  string method = 1;
+  string msg_id = 2;
+  string room_id = 3;
+  string create_time = 4;
+  int32 monitor = 5;
+  bool is_show_msg = 6;
+  string describe = 7;
+  string fold_type = 8;
+  string anchor_fold_type = 9;
+  string priority_score = 10;
+  string log_id = 11;
+  string msg_process_filter_k = 12;
+  string msg_process_filter_v = 13;
+  string anchor_fold_type_v2 = 14;
+  string process_at_sei_time_ms = 15;
+  string random_dispatch_ms = 16;
+  bool is_dispatch = 17;
+  string channel_id = 18;
+  string diff_sei2abs_second = 19;
+  string anchor_fold_duration = 20;
+  string app_id = 21;
+}
+
+// 徽章内容
+message BadgeContent {
+  string name = 1;
+  string font_color = 2;
+  string level = 3;
+  string alternative_text = 4;
+}
+
+// 用户徽章
+message BadgeImage {
+  Image icons = 1;
+  string title = 2;
+}
+
+// 粉丝俱乐部数据
+message FansClubData {
+  repeated string available_gift_ids = 1;
+  string club_name = 2;
+  int32 level = 3;
+  int32 user_fans_cluster_status = 4;
+  string anchor_id = 5;
+  int32 badge_type = 6;
+  int32 user_guard_status = 7;
+  string guard_expired_time = 8;
+  string anchor_open_id = 9;
+  BadgeImage badge = 10;
+}
+
+// 付费等级信息
+message PayGrade {
+  repeated Image grade_icon_list = 1;
+  string total_diamond_count = 2;
+  string name = 3;
+  string next_name = 4;
+  string level = 5;
+  string next_diamond = 6;
+  string now_diamond = 7;
+  string this_grade_min_diamond = 8;
+  string this_grade_max_diamond = 9;
+  string pay_diamond_bak = 10;
+  string grade_describe = 11;
+  string screen_chat_type = 12;
+  string upgrade_need_consume = 13;
+  string next_privileges = 14;
+  string score = 15;
+  bool grade_describe_shining = 16;
+  string grade_banner = 17;
+  Image new_im_icon_with_level = 18;
+  Image new_live_icon = 19;
+}
+
+// 关注信息
+message FollowInfo {
+  string following_count = 1;
+  string follower_count = 2;
+  string follow_status = 3;
+  string push_status = 4;
+  string remark_name = 5;
+  string follower_count_str = 6;
+  string following_count_str = 7;
+  bool invalid_follow_status = 8;
+  string follwer_count_display = 9;
+}
+
+// 公共区域徽章信息
+message PublicAreaBadgeInfo {
+  map<int32, Image> badge_info_map = 1;
+  repeated string badge_list = 2;
+  repeated string webcast_dsl_badge_list = 3;
+}
+
+// 公共区域通用信息
+message PublicAreaCommon {
+  map<string, string> individual_strategy_result = 1; // 个体策略结果
+  map<string, string> tracking_params = 2;      // 追踪参数
+  string user_consume_in_room = 3;              // 用户在房间消费
+  string user_send_gift_cnt_in_room = 4;        // 用户在房间送礼数
+  string individual_priority = 5;               // 个体优先级
+  string support_pin = 6;                       // 是否支持置顶
+  int32 im_action = 7;                          // IM动作
+  bool forbidden_profile = 8;                   // 是否禁止资料
+  string is_featured = 9;                       // 是否精选
+  bool need_filter_display = 10;                // 是否需要过滤显示
+  string force_insertion_priority = 11;         // 强制插入优先级
+  Image user_label = 12;
+}
+
+// ========== 新增内容 ========== //
+message JAccreditInfo {
+  int32 j_accredit_basic = 1;    // 基础认证状态
+  int32 j_accredit_advance = 2;  // 高级认证状态
+  int32 j_accredit_content = 3;  // 内容认证状态
+  int32 j_accredit_live = 4;     // 直播认证状态
+}
+
+// 用户详细信息
+message User {
+  repeated Image badge_image_list = 1;
+  repeated Image real_time_icons = 2;
+  repeated Image new_real_time_icons = 3;
+  repeated Image top_fans = 4;
+  repeated Image media_badge_image_list = 5;
+  repeated string commerce_webcast_config_ids = 6;
+  repeated Image badge_image_list_v2 = 7;
+  string id = 8;
+  string short_id = 9;
+  string nickname = 10;
+  int32 gender = 11;
+  string signature = 12;
+  int32 level = 13;
+  string birthday = 14;
+  string telephone = 15;
+  bool verified = 16;
+  int32 experience = 17;
+  string city = 18;
+  int32 status = 19;
+  string create_time = 20;
+  string modify_time = 21;
+  int32 secret = 22;
+  string share_qrcode_uri = 23;
+  int32 income_share_percent = 24;
+  string special_id = 25;
+  string top_vip_no = 26;
+  string pay_score = 27;
+  string ticket_count = 28;
+  int32 link_mic_stats = 29;
+  string display_id = 30;
+  bool with_commerce_permission = 31;
+  bool with_fusion_shop_entry = 32;
+  string total_recharge_diamond_count = 33;
+  string verified_content = 34;
+  string sec_uid = 35;
+  int32 user_role = 36;
+  int32 authorization_info = 37;
+  int32 adversary_authorization_info = 38;
+  int32 adversary_user_status = 39;
+  string location_city = 40;
+  string remark_name = 41;
+  int32 mystery_man = 42;
+  string web_rid = 43;
+  string desensitized_nickname = 44;
+  bool is_anonymous = 45;
+  int32 consume_diamond_level = 46;
+  string webcast_uid = 47;
+  string public_area_oper_freq = 48;
+  bool user_canceled = 49;
+  bool allow_be_located = 50;
+  bool allow_find_by_contacts = 51;
+  bool allow_others_download_video = 52;
+  bool allow_others_download_when_sharing_video = 53;
+  bool allow_share_show_profile = 54;
+  bool allow_show_in_gossip = 55;
+  bool allow_show_my_action = 56;
+  bool allow_strange_comment = 57;
+  bool allow_unfollower_comment = 58;
+  bool allow_use_linkmic = 59;
+  string bg_img_url = 60;
+  string birthday_description = 61;
+  bool birthday_valid = 62;
+  int32 block_status = 63;
+  int32 comment_restrict = 64;
+  string constellation = 65;
+  int32 disable_ichat = 66;
+  string enable_ichat_img = 67;
+  int32 exp = 68;
+  string fan_ticket_count = 69;
+  bool fold_stranger_chat = 70;
+  string follow_status = 71;
+  bool hotsoon_verified = 72;
+  string hotsoon_verified_reason = 73;
+  int32 ichat_restrict_type = 74;
+  string id_str = 75;
+  bool is_follower = 76;
+  bool is_following = 77;
+  bool need_profile_guide = 78;
+  string pay_scores = 79;
+  bool push_comment_status = 80;
+  bool push_digg = 81;
+  bool push_follow = 82;
+  bool push_friend_action = 83;
+  bool push_ichat = 84;
+  bool push_status = 85;
+  bool push_video_post = 86;
+  bool push_video_recommend = 87;
+  bool verified_mobile = 88;
+  string verified_reason = 89;
+  bool with_car_management_permission = 90;
+  int32 age_range = 91;
+  string watch_duration_month = 92;
+  int32 foreign_user = 93;
+  string user_open_id = 94;
+  Image avatar_thumb = 95;
+  FollowInfo follow_info = 96;
+  PayGrade pay_grade = 97;
+  FansClubData fans_club = 98;
+  PublicAreaBadgeInfo public_area_badge_info = 99;
+  PublicAreaCommon public_area_common = 100;
+  JAccreditInfo j_accredit_info = 101;
+}
+
+message UserValue {
+  bool with_colon = 1;           // 是否带冒号
+  bool self_show_real_name = 2;  // 是否显示真实姓名
+  int32 left_show_extension = 3; // 左侧扩展显示
+  string left_additional_content = 4; // 左侧附加内容
+  string right_additional_content = 5; // 右侧附加内容
+  User user = 6;                 // 复用之前定义的User结构
+}
+
+message TextFormat {
+  string color = 1;              // 颜色值
+  bool bold = 2;                 // 加粗
+  bool italic = 3;               // 斜体
+  int32 weight = 4;              // 字重
+  int32 italic_angle = 5;        // 倾斜角度
+  int32 font_size = 6;           // 字体大小
+  bool use_heigh_light_color = 7; // 使用高亮色
+  bool use_remote_clor = 8;      // 使用远程颜色
+  bool ignore_color_mapping = 9; // 忽略颜色映射
+}
+
+message DisplayTextPiece {
+  int32 type = 1;                  // 类型
+  string value_ref = 2;            // 值引用
+  string string_value = 3;         // 字符串值
+  string schema_key = 4;           // schema键
+  TextFormat format = 5;           // 文本格式
+  UserValue user_value = 6;        // 用户值
+}
