@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Python Runner</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="node_modules/@xterm/xterm/lib/xterm.js"></script>
+    <link rel="stylesheet" href="node_modules/@xterm/xterm/css/xterm.css">
+</head>
+<body>
+<div class="container">
+    <h1>Interactive Python Runner</h1>
+    <div class="terminal-container">
+        <div id="terminal"></div>
+    </div>
+    <div class="controls">
+        <button id="run-btn">Run Python Code</button>
+        <button id="reset-btn">Reset Session</button>
+    </div>
+</div>
+
+<script>
+    const term = new Terminal();
+    term.open(document.getElementById('terminal'));
+
+    // 自定义提示符功能
+    function showPrompt() {
+        term.write('\r\n$ ');
+    }
+
+    let socket;
+    let currentSessionId;
+    let commandBuffer = '';
+
+    function connectWebSocket() {
+        socket = new WebSocket(`ws://${window.location.host}/ws`);
+
+        socket.onopen = () => {
+            term.clear();
+            term.writeln('\x1b[32mConnected to Python interpreter\x1b[0m\r\n');
+            showPrompt();
+        };
+
+        socket.onmessage = (event) => {
+            term.write(event.data);
+            showPrompt()
+        };
+
+        socket.onclose = () => {
+            term.writeln('\r\nConnection closed');
+        };
+
+        socket.onerror = (error) => {
+            term.writeln(`\r\nWebSocket error: ${error.message}`);
+        };
+    }
+
+    function sendCode(code) {
+        if (socket && socket.readyState === WebSocket.OPEN) {
+            socket.send(code + '\n');
+        } else {
+            term.writeln('Not connected to server');
+        }
+    }
+
+    // 终端输入处理
+    term.onKey((key) => {
+        const printable = !key.domEvent.altKey && !key.domEvent.ctrlKey && !key.domEvent.metaKey;
+
+        if (key.domEvent.key === 'Enter') {
+            // 发送命令
+            term.write('\r\n');
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.send(commandBuffer + '\n');
+                commandBuffer = '';
+            } else {
+                term.writeln('Not connected to server');
+                showPrompt();
+            }
+        } else if (key.domEvent.key === 'Backspace') {
+            // 处理退格
+            if (commandBuffer.length > 0) {
+                commandBuffer = commandBuffer.substr(0, commandBuffer.length - 1);
+                term.write('\b \b');
+            }
+        } else if (printable) {
+            // 处理可打印字符
+            commandBuffer += key.key;
+            term.write(key.key);
+        }
+    });
+
+    // 运行示例代码
+    document.getElementById('run-btn').addEventListener('click', () => {
+        const exampleCode = `print("Interactive Python Runner")
+for i in range(5):
+    print(f"Counting: {i}")
+
+name = input("What's your name? ")
+print(f"Hello, {name}!")`;
+        sendCode(exampleCode);
+    });
+
+    // 重置会话
+    document.getElementById('reset-btn').addEventListener('click', () => {
+        if (socket) {
+            socket.close();
+        }
+        term.reset();
+        connectWebSocket();
+    });
+
+    // 初始连接
+    connectWebSocket();
+</script>
+</body>
+</html>
