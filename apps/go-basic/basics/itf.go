@@ -2,7 +2,7 @@ package basics
 
 import "fmt"
 
-// 定义接口
+// Runnable 定义接口
 type Runnable interface {
 	run()
 }

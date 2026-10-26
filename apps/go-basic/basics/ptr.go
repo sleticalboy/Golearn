@@ -10,7 +10,7 @@ func ptrRun() {
 	s := "hello"
 	// 指针初始值是 nil，打印出来就是 0
 	var p *string
-	fmt.Printf("'%s' mem addr is 0x%x\n", s, p)
+	fmt.Printf("'%s' mem.json addr is 0x%x\n", s, p)
 	// 指针复制
 	if p == nil {
 		p = &s

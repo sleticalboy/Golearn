@@ -18,3 +18,8 @@ Golearn.iml
 
 # vscode
 !.vscode/*.json
+
+node_modules/
+log.txt
+*.bin
+
