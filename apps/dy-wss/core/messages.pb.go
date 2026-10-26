@@ -81,6 +81,7 @@ type Response struct {
 	PushServer        string                 `protobuf:"bytes,10,opt,name=pushServer,proto3" json:"pushServer,omitempty"`
 	LiveCursor        string                 `protobuf:"bytes,11,opt,name=liveCursor,proto3" json:"liveCursor,omitempty"`
 	HistoryNoMore     bool                   `protobuf:"varint,12,opt,name=historyNoMore,proto3" json:"historyNoMore,omitempty"`
+	ProxyServer       string                 `protobuf:"bytes,13,opt,name=proxy_server,json=proxyServer,proto3" json:"proxy_server,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -199,6 +200,13 @@ func (x *Response) GetHistoryNoMore() bool {
 	return false
 }
 
+func (x *Response) GetProxyServer() string {
+	if x != nil {
+		return x.ProxyServer
+	}
+	return ""
+}
+
 type Message struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Method        string                 `protobuf:"bytes,1,opt,name=method,proto3" json:"method,omitempty"`
@@ -209,6 +217,7 @@ type Message struct {
 	NeedWrdsStore bool                   `protobuf:"varint,6,opt,name=needWrdsStore,proto3" json:"needWrdsStore,omitempty"`
 	WrdsVersion   int64                  `protobuf:"varint,7,opt,name=wrdsVersion,proto3" json:"wrdsVersion,omitempty"`
 	WrdsSubKey    string                 `protobuf:"bytes,8,opt,name=wrdsSubKey,proto3" json:"wrdsSubKey,omitempty"`
+	MessageExtra  map[string]string      `protobuf:"bytes,9,rep,name=message_extra,json=messageExtra,proto3" json:"message_extra,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -299,29 +308,37 @@ func (x *Message) GetWrdsSubKey() string {
 	return ""
 }
 
-// 聊天
+func (x *Message) GetMessageExtra() map[string]string {
+	if x != nil {
+		return x.MessageExtra
+	}
+	return nil
+}
+
+// 聊天 — field numbers from live-schema-im.e322bd8a.js
 type ChatMessage struct {
-	state                protoimpl.MessageState `protogen:"open.v1"`
-	Common               *Common                `protobuf:"bytes,1,opt,name=common,proto3" json:"common,omitempty"`
-	User                 *User                  `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
-	Content              string                 `protobuf:"bytes,3,opt,name=content,proto3" json:"content,omitempty"`
-	VisibleToSender      bool                   `protobuf:"varint,4,opt,name=visibleToSender,proto3" json:"visibleToSender,omitempty"`
-	BackgroundImage      *Image                 `protobuf:"bytes,5,opt,name=backgroundImage,proto3" json:"backgroundImage,omitempty"`
-	FullScreenTextColor  string                 `protobuf:"bytes,6,opt,name=fullScreenTextColor,proto3" json:"fullScreenTextColor,omitempty"`
-	BackgroundImageV2    *Image                 `protobuf:"bytes,7,opt,name=backgroundImageV2,proto3" json:"backgroundImageV2,omitempty"`
-	PublicAreaCommon     *PublicAreaCommon      `protobuf:"bytes,8,opt,name=publicAreaCommon,proto3" json:"publicAreaCommon,omitempty"`
-	GiftImage            *Image                 `protobuf:"bytes,9,opt,name=giftImage,proto3" json:"giftImage,omitempty"`
-	AgreeMsgId           uint64                 `protobuf:"varint,11,opt,name=agreeMsgId,proto3" json:"agreeMsgId,omitempty"`
-	PriorityLevel        uint32                 `protobuf:"varint,12,opt,name=priorityLevel,proto3" json:"priorityLevel,omitempty"`
-	LandscapeAreaCommon  *LandscapeAreaCommon   `protobuf:"bytes,13,opt,name=landscapeAreaCommon,proto3" json:"landscapeAreaCommon,omitempty"`
-	EventTime            uint64                 `protobuf:"varint,15,opt,name=eventTime,proto3" json:"eventTime,omitempty"`
-	SendReview           bool                   `protobuf:"varint,16,opt,name=sendReview,proto3" json:"sendReview,omitempty"`
-	FromIntercom         bool                   `protobuf:"varint,17,opt,name=fromIntercom,proto3" json:"fromIntercom,omitempty"`
-	IntercomHideUserCard bool                   `protobuf:"varint,18,opt,name=intercomHideUserCard,proto3" json:"intercomHideUserCard,omitempty"`
-	// repeated chatTagsList = 19;
-	ChatBy                 string `protobuf:"bytes,20,opt,name=chatBy,proto3" json:"chatBy,omitempty"`
-	IndividualChatPriority uint32 `protobuf:"varint,21,opt,name=individualChatPriority,proto3" json:"individualChatPriority,omitempty"`
-	RtfContent             *Text  `protobuf:"bytes,22,opt,name=rtfContent,proto3" json:"rtfContent,omitempty"`
+	state                  protoimpl.MessageState `protogen:"open.v1"`
+	Common                 *Common                `protobuf:"bytes,1,opt,name=common,proto3" json:"common,omitempty"`
+	User                   *User                  `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
+	Content                string                 `protobuf:"bytes,3,opt,name=content,proto3" json:"content,omitempty"`
+	VisibleToSender        bool                   `protobuf:"varint,4,opt,name=visibleToSender,proto3" json:"visibleToSender,omitempty"`
+	BackgroundImage        *Image                 `protobuf:"bytes,5,opt,name=backgroundImage,proto3" json:"backgroundImage,omitempty"`
+	FullScreenTextColor    string                 `protobuf:"bytes,6,opt,name=fullScreenTextColor,proto3" json:"fullScreenTextColor,omitempty"`
+	BackgroundImageV2      *Image                 `protobuf:"bytes,7,opt,name=backgroundImageV2,proto3" json:"backgroundImageV2,omitempty"`
+	PublicAreaCommon       *PublicAreaCommon      `protobuf:"bytes,9,opt,name=publicAreaCommon,proto3" json:"publicAreaCommon,omitempty"`
+	GiftImage              *Image                 `protobuf:"bytes,10,opt,name=giftImage,proto3" json:"giftImage,omitempty"`
+	AgreeMsgId             uint64                 `protobuf:"varint,11,opt,name=agreeMsgId,proto3" json:"agreeMsgId,omitempty"`
+	PriorityLevel          uint32                 `protobuf:"varint,12,opt,name=priorityLevel,proto3" json:"priorityLevel,omitempty"`
+	LandscapeAreaCommon    *LandscapeAreaCommon   `protobuf:"bytes,13,opt,name=landscapeAreaCommon,proto3" json:"landscapeAreaCommon,omitempty"`
+	EventTime              uint64                 `protobuf:"varint,15,opt,name=eventTime,proto3" json:"eventTime,omitempty"`
+	SendReview             bool                   `protobuf:"varint,16,opt,name=sendReview,proto3" json:"sendReview,omitempty"`
+	FromIntercom           bool                   `protobuf:"varint,17,opt,name=fromIntercom,proto3" json:"fromIntercom,omitempty"`
+	IntercomHideUserCard   bool                   `protobuf:"varint,18,opt,name=intercomHideUserCard,proto3" json:"intercomHideUserCard,omitempty"`
+	ChatTags               uint32                 `protobuf:"varint,19,opt,name=chatTags,proto3" json:"chatTags,omitempty"`
+	ChatBy                 uint64                 `protobuf:"varint,20,opt,name=chatBy,proto3" json:"chatBy,omitempty"`
+	IndividualChatPriority uint32                 `protobuf:"varint,21,opt,name=individualChatPriority,proto3" json:"individualChatPriority,omitempty"`
+	RtfContent             *Text                  `protobuf:"bytes,40,opt,name=rtfContent,proto3" json:"rtfContent,omitempty"`
+	RtfContentV2           *Text                  `protobuf:"bytes,41,opt,name=rtfContentV2,proto3" json:"rtfContentV2,omitempty"`
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
 }
@@ -468,11 +485,18 @@ func (x *ChatMessage) GetIntercomHideUserCard() bool {
 	return false
 }
 
-func (x *ChatMessage) GetChatBy() string {
+func (x *ChatMessage) GetChatTags() uint32 {
+	if x != nil {
+		return x.ChatTags
+	}
+	return 0
+}
+
+func (x *ChatMessage) GetChatBy() uint64 {
 	if x != nil {
 		return x.ChatBy
 	}
-	return ""
+	return 0
 }
 
 func (x *ChatMessage) GetIndividualChatPriority() uint32 {
@@ -485,6 +509,13 @@ func (x *ChatMessage) GetIndividualChatPriority() uint32 {
 func (x *ChatMessage) GetRtfContent() *Text {
 	if x != nil {
 		return x.RtfContent
+	}
+	return nil
+}
+
+func (x *ChatMessage) GetRtfContentV2() *Text {
+	if x != nil {
+		return x.RtfContentV2
 	}
 	return nil
 }
@@ -925,7 +956,7 @@ func (x *RoomUserSeqMessageContributor) GetExactlyScore() string {
 	return ""
 }
 
-// 礼物消息
+// 礼物消息 — live-schema-im.e322bd8a.js
 type GiftMessage struct {
 	state                protoimpl.MessageState `protogen:"open.v1"`
 	Common               *Common                `protobuf:"bytes,1,opt,name=common,proto3" json:"common,omitempty"`
@@ -949,7 +980,7 @@ type GiftMessage struct {
 	TrayDisplayText      *Text                  `protobuf:"bytes,19,opt,name=trayDisplayText,proto3" json:"trayDisplayText,omitempty"`
 	BannedDisplayEffects uint64                 `protobuf:"varint,20,opt,name=bannedDisplayEffects,proto3" json:"bannedDisplayEffects,omitempty"`
 	// GiftTrayInfo trayInfo = 21;
-	// AssetEffectMixInfo assetEffectMixInfo = 22;
+	// AssetEffectMixInfo assetEffectMixInfo = 24;
 	DisplayForSelf   bool     `protobuf:"varint,25,opt,name=displayForSelf,proto3" json:"displayForSelf,omitempty"`
 	InteractGiftInfo string   `protobuf:"bytes,26,opt,name=interactGiftInfo,proto3" json:"interactGiftInfo,omitempty"`
 	DiyItemInfo      string   `protobuf:"bytes,27,opt,name=diyItemInfo,proto3" json:"diyItemInfo,omitempty"`
@@ -962,8 +993,18 @@ type GiftMessage struct {
 	ForceDisplayEffects uint64   `protobuf:"varint,34,opt,name=forceDisplayEffects,proto3" json:"forceDisplayEffects,omitempty"`
 	TraceId             string   `protobuf:"bytes,35,opt,name=traceId,proto3" json:"traceId,omitempty"`
 	EffectDisplayTs     uint64   `protobuf:"varint,36,opt,name=effectDisplayTs,proto3" json:"effectDisplayTs,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	// SendTogether sendTogether = 37;
+	// ExtraEffect extraEffect = 38;
+	RoomHotInfo          *RoomHotInfo `protobuf:"bytes,39,opt,name=roomHotInfo,proto3" json:"roomHotInfo,omitempty"`
+	GiftPlayParam        string       `protobuf:"bytes,40,opt,name=giftPlayParam,proto3" json:"giftPlayParam,omitempty"`
+	MultiSendEffectLevel uint32       `protobuf:"varint,41,opt,name=multiSendEffectLevel,proto3" json:"multiSendEffectLevel,omitempty"`
+	// repeated SeriesPlayGift seriesGiftData = 42;
+	UseRoomMessage     bool     `protobuf:"varint,43,opt,name=useRoomMessage,proto3" json:"useRoomMessage,omitempty"`
+	Count              uint64   `protobuf:"varint,44,opt,name=count,proto3" json:"count,omitempty"`
+	VideoLinkmicRoomId uint64   `protobuf:"varint,45,opt,name=videoLinkmicRoomId,proto3" json:"videoLinkmicRoomId,omitempty"`
+	ToOpenids          []string `protobuf:"bytes,5000,rep,name=toOpenids,proto3" json:"toOpenids,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *GiftMessage) Reset() {
@@ -1213,6 +1254,115 @@ func (x *GiftMessage) GetEffectDisplayTs() uint64 {
 	return 0
 }
 
+func (x *GiftMessage) GetRoomHotInfo() *RoomHotInfo {
+	if x != nil {
+		return x.RoomHotInfo
+	}
+	return nil
+}
+
+func (x *GiftMessage) GetGiftPlayParam() string {
+	if x != nil {
+		return x.GiftPlayParam
+	}
+	return ""
+}
+
+func (x *GiftMessage) GetMultiSendEffectLevel() uint32 {
+	if x != nil {
+		return x.MultiSendEffectLevel
+	}
+	return 0
+}
+
+func (x *GiftMessage) GetUseRoomMessage() bool {
+	if x != nil {
+		return x.UseRoomMessage
+	}
+	return false
+}
+
+func (x *GiftMessage) GetCount() uint64 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+func (x *GiftMessage) GetVideoLinkmicRoomId() uint64 {
+	if x != nil {
+		return x.VideoLinkmicRoomId
+	}
+	return 0
+}
+
+func (x *GiftMessage) GetToOpenids() []string {
+	if x != nil {
+		return x.ToOpenids
+	}
+	return nil
+}
+
+type RoomHotInfo struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	LocalHotStrategy uint32                 `protobuf:"varint,1,opt,name=localHotStrategy,proto3" json:"localHotStrategy,omitempty"`
+	PublicAreaLevel  uint32                 `protobuf:"varint,2,opt,name=publicAreaLevel,proto3" json:"publicAreaLevel,omitempty"`
+	GiftLevel        uint32                 `protobuf:"varint,3,opt,name=giftLevel,proto3" json:"giftLevel,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *RoomHotInfo) Reset() {
+	*x = RoomHotInfo{}
+	mi := &file_messages_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RoomHotInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RoomHotInfo) ProtoMessage() {}
+
+func (x *RoomHotInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_messages_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RoomHotInfo.ProtoReflect.Descriptor instead.
+func (*RoomHotInfo) Descriptor() ([]byte, []int) {
+	return file_messages_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *RoomHotInfo) GetLocalHotStrategy() uint32 {
+	if x != nil {
+		return x.LocalHotStrategy
+	}
+	return 0
+}
+
+func (x *RoomHotInfo) GetPublicAreaLevel() uint32 {
+	if x != nil {
+		return x.PublicAreaLevel
+	}
+	return 0
+}
+
+func (x *RoomHotInfo) GetGiftLevel() uint32 {
+	if x != nil {
+		return x.GiftLevel
+	}
+	return 0
+}
+
 type GiftStruct struct {
 	state    protoimpl.MessageState `protogen:"open.v1"`
 	Image    *Image                 `protobuf:"bytes,1,opt,name=image,proto3" json:"image,omitempty"`
@@ -1221,29 +1371,74 @@ type GiftStruct struct {
 	Duration uint64                 `protobuf:"varint,4,opt,name=duration,proto3" json:"duration,omitempty"`
 	Id       uint64                 `protobuf:"varint,5,opt,name=id,proto3" json:"id,omitempty"`
 	// GiftStructFansClubInfo fansclubInfo = 6;
-	ForLinkmic         bool   `protobuf:"varint,7,opt,name=forLinkmic,proto3" json:"forLinkmic,omitempty"`
-	Doodle             bool   `protobuf:"varint,8,opt,name=doodle,proto3" json:"doodle,omitempty"`
-	ForFansclub        bool   `protobuf:"varint,9,opt,name=forFansclub,proto3" json:"forFansclub,omitempty"`
-	Combo              bool   `protobuf:"varint,10,opt,name=combo,proto3" json:"combo,omitempty"`
-	Type               uint32 `protobuf:"varint,11,opt,name=type,proto3" json:"type,omitempty"`
-	DiamondCount       uint32 `protobuf:"varint,12,opt,name=diamondCount,proto3" json:"diamondCount,omitempty"`
-	IsDisplayedOnPanel bool   `protobuf:"varint,13,opt,name=isDisplayedOnPanel,proto3" json:"isDisplayedOnPanel,omitempty"`
-	PrimaryEffectId    uint64 `protobuf:"varint,14,opt,name=primaryEffectId,proto3" json:"primaryEffectId,omitempty"`
-	GiftLabelIcon      *Image `protobuf:"bytes,15,opt,name=giftLabelIcon,proto3" json:"giftLabelIcon,omitempty"`
-	Name               string `protobuf:"bytes,16,opt,name=name,proto3" json:"name,omitempty"`
-	Region             string `protobuf:"bytes,17,opt,name=region,proto3" json:"region,omitempty"`
-	Manual             string `protobuf:"bytes,18,opt,name=manual,proto3" json:"manual,omitempty"`
-	ForCustom          bool   `protobuf:"varint,19,opt,name=forCustom,proto3" json:"forCustom,omitempty"`
-	// specialEffectsMap = 20;
-	Icon          *Image `protobuf:"bytes,21,opt,name=icon,proto3" json:"icon,omitempty"`
-	ActionType    uint32 `protobuf:"varint,22,opt,name=actionType,proto3" json:"actionType,omitempty"` // fixme 后面的就不写了还有几十个属性
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	ForLinkmic              bool     `protobuf:"varint,7,opt,name=forLinkmic,proto3" json:"forLinkmic,omitempty"`
+	Doodle                  bool     `protobuf:"varint,8,opt,name=doodle,proto3" json:"doodle,omitempty"`
+	ForFansclub             bool     `protobuf:"varint,9,opt,name=forFansclub,proto3" json:"forFansclub,omitempty"`
+	Combo                   bool     `protobuf:"varint,10,opt,name=combo,proto3" json:"combo,omitempty"`
+	Type                    uint32   `protobuf:"varint,11,opt,name=type,proto3" json:"type,omitempty"`
+	DiamondCount            uint32   `protobuf:"varint,12,opt,name=diamondCount,proto3" json:"diamondCount,omitempty"`
+	IsDisplayedOnPanel      bool     `protobuf:"varint,13,opt,name=isDisplayedOnPanel,proto3" json:"isDisplayedOnPanel,omitempty"`
+	PrimaryEffectId         uint64   `protobuf:"varint,14,opt,name=primaryEffectId,proto3" json:"primaryEffectId,omitempty"`
+	GiftLabelIcon           *Image   `protobuf:"bytes,15,opt,name=giftLabelIcon,proto3" json:"giftLabelIcon,omitempty"`
+	Name                    string   `protobuf:"bytes,16,opt,name=name,proto3" json:"name,omitempty"`
+	Region                  string   `protobuf:"bytes,17,opt,name=region,proto3" json:"region,omitempty"`
+	Manual                  string   `protobuf:"bytes,18,opt,name=manual,proto3" json:"manual,omitempty"`
+	ForCustom               bool     `protobuf:"varint,19,opt,name=forCustom,proto3" json:"forCustom,omitempty"`
+	Icon                    *Image   `protobuf:"bytes,21,opt,name=icon,proto3" json:"icon,omitempty"`
+	ActionType              uint32   `protobuf:"varint,22,opt,name=actionType,proto3" json:"actionType,omitempty"`
+	WatermelonSeeds         uint32   `protobuf:"varint,23,opt,name=watermelonSeeds,proto3" json:"watermelonSeeds,omitempty"`
+	GoldEffect              string   `protobuf:"bytes,24,opt,name=goldEffect,proto3" json:"goldEffect,omitempty"`
+	GoldenBeans             uint64   `protobuf:"varint,26,opt,name=goldenBeans,proto3" json:"goldenBeans,omitempty"`
+	HonorLevel              uint64   `protobuf:"varint,27,opt,name=honorLevel,proto3" json:"honorLevel,omitempty"`
+	ItemType                uint32   `protobuf:"varint,28,opt,name=itemType,proto3" json:"itemType,omitempty"`
+	SchemeUrl               string   `protobuf:"bytes,29,opt,name=schemeUrl,proto3" json:"schemeUrl,omitempty"`
+	EventName               string   `protobuf:"bytes,31,opt,name=eventName,proto3" json:"eventName,omitempty"`
+	NobleLevel              uint64   `protobuf:"varint,32,opt,name=nobleLevel,proto3" json:"nobleLevel,omitempty"`
+	GuideUrl                string   `protobuf:"bytes,33,opt,name=guideUrl,proto3" json:"guideUrl,omitempty"`
+	PunishMedicine          bool     `protobuf:"varint,34,opt,name=punishMedicine,proto3" json:"punishMedicine,omitempty"`
+	ForPortal               bool     `protobuf:"varint,35,opt,name=forPortal,proto3" json:"forPortal,omitempty"`
+	BusinessText            string   `protobuf:"bytes,36,opt,name=businessText,proto3" json:"businessText,omitempty"`
+	CnyGift                 bool     `protobuf:"varint,37,opt,name=cnyGift,proto3" json:"cnyGift,omitempty"`
+	AppId                   uint64   `protobuf:"varint,38,opt,name=appId,proto3" json:"appId,omitempty"`
+	VipLevel                uint64   `protobuf:"varint,39,opt,name=vipLevel,proto3" json:"vipLevel,omitempty"`
+	IsGray                  bool     `protobuf:"varint,40,opt,name=isGray,proto3" json:"isGray,omitempty"`
+	GraySchemeUrl           string   `protobuf:"bytes,41,opt,name=graySchemeUrl,proto3" json:"graySchemeUrl,omitempty"`
+	GiftScene               uint64   `protobuf:"varint,42,opt,name=giftScene,proto3" json:"giftScene,omitempty"`
+	ForFirstRecharge        bool     `protobuf:"varint,46,opt,name=forFirstRecharge,proto3" json:"forFirstRecharge,omitempty"`
+	DynamicImgForSelected   *Image   `protobuf:"bytes,47,opt,name=dynamicImgForSelected,proto3" json:"dynamicImgForSelected,omitempty"`
+	AfterSendAction         uint32   `protobuf:"varint,48,opt,name=afterSendAction,proto3" json:"afterSendAction,omitempty"`
+	GiftOfflineTime         uint64   `protobuf:"varint,49,opt,name=giftOfflineTime,proto3" json:"giftOfflineTime,omitempty"`
+	TopBarText              string   `protobuf:"bytes,50,opt,name=topBarText,proto3" json:"topBarText,omitempty"`
+	TopRightAvatar          *Image   `protobuf:"bytes,51,opt,name=topRightAvatar,proto3" json:"topRightAvatar,omitempty"`
+	BannerSchemeUrl         string   `protobuf:"bytes,52,opt,name=bannerSchemeUrl,proto3" json:"bannerSchemeUrl,omitempty"`
+	IsLocked                bool     `protobuf:"varint,53,opt,name=isLocked,proto3" json:"isLocked,omitempty"`
+	ReqExtraType            uint64   `protobuf:"varint,54,opt,name=reqExtraType,proto3" json:"reqExtraType,omitempty"`
+	AssetIds                []uint64 `protobuf:"varint,55,rep,packed,name=assetIds,proto3" json:"assetIds,omitempty"`
+	NeedSweepLightCount     uint32   `protobuf:"varint,58,opt,name=needSweepLightCount,proto3" json:"needSweepLightCount,omitempty"`
+	BottomText              *Text    `protobuf:"bytes,60,opt,name=bottomText,proto3" json:"bottomText,omitempty"`
+	MysteryShopStatus       uint32   `protobuf:"varint,61,opt,name=mysteryShopStatus,proto3" json:"mysteryShopStatus,omitempty"`
+	OptionalAssetIds        []uint64 `protobuf:"varint,62,rep,packed,name=optionalAssetIds,proto3" json:"optionalAssetIds,omitempty"`
+	DisableWishList         bool     `protobuf:"varint,63,opt,name=disableWishList,proto3" json:"disableWishList,omitempty"`
+	TrayDynamicImgFlippable bool     `protobuf:"varint,66,opt,name=trayDynamicImgFlippable,proto3" json:"trayDynamicImgFlippable,omitempty"`
+	PicoShowAction          uint64   `protobuf:"varint,67,opt,name=picoShowAction,proto3" json:"picoShowAction,omitempty"`
+	SelectedDynamicEffect   uint64   `protobuf:"varint,68,opt,name=selectedDynamicEffect,proto3" json:"selectedDynamicEffect,omitempty"`
+	BizType                 uint32   `protobuf:"varint,72,opt,name=bizType,proto3" json:"bizType,omitempty"`
+	WebpImage               *Image   `protobuf:"bytes,74,opt,name=webpImage,proto3" json:"webpImage,omitempty"`
+	GiftSource              uint32   `protobuf:"varint,75,opt,name=giftSource,proto3" json:"giftSource,omitempty"`
+	RequiredAssets          []uint64 `protobuf:"varint,76,rep,packed,name=requiredAssets,proto3" json:"requiredAssets,omitempty"`
+	SelectedLabel           *Image   `protobuf:"bytes,77,opt,name=selectedLabel,proto3" json:"selectedLabel,omitempty"`
+	SortScore               uint64   `protobuf:"varint,78,opt,name=sortScore,proto3" json:"sortScore,omitempty"`
+	TopicId                 uint64   `protobuf:"varint,79,opt,name=topicId,proto3" json:"topicId,omitempty"`
+	SortExtra               string   `protobuf:"bytes,80,opt,name=sortExtra,proto3" json:"sortExtra,omitempty"`
+	SendExtraParams         string   `protobuf:"bytes,81,opt,name=sendExtraParams,proto3" json:"sendExtraParams,omitempty"`
+	GiftObtainTime          uint64   `protobuf:"varint,82,opt,name=giftObtainTime,proto3" json:"giftObtainTime,omitempty"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
 }
 
 func (x *GiftStruct) Reset() {
 	*x = GiftStruct{}
-	mi := &file_messages_proto_msgTypes[9]
+	mi := &file_messages_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1255,7 +1450,7 @@ func (x *GiftStruct) String() string {
 func (*GiftStruct) ProtoMessage() {}
 
 func (x *GiftStruct) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[9]
+	mi := &file_messages_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1268,7 +1463,7 @@ func (x *GiftStruct) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GiftStruct.ProtoReflect.Descriptor instead.
 func (*GiftStruct) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{9}
+	return file_messages_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *GiftStruct) GetImage() *Image {
@@ -1411,6 +1606,328 @@ func (x *GiftStruct) GetActionType() uint32 {
 	return 0
 }
 
+func (x *GiftStruct) GetWatermelonSeeds() uint32 {
+	if x != nil {
+		return x.WatermelonSeeds
+	}
+	return 0
+}
+
+func (x *GiftStruct) GetGoldEffect() string {
+	if x != nil {
+		return x.GoldEffect
+	}
+	return ""
+}
+
+func (x *GiftStruct) GetGoldenBeans() uint64 {
+	if x != nil {
+		return x.GoldenBeans
+	}
+	return 0
+}
+
+func (x *GiftStruct) GetHonorLevel() uint64 {
+	if x != nil {
+		return x.HonorLevel
+	}
+	return 0
+}
+
+func (x *GiftStruct) GetItemType() uint32 {
+	if x != nil {
+		return x.ItemType
+	}
+	return 0
+}
+
+func (x *GiftStruct) GetSchemeUrl() string {
+	if x != nil {
+		return x.SchemeUrl
+	}
+	return ""
+}
+
+func (x *GiftStruct) GetEventName() string {
+	if x != nil {
+		return x.EventName
+	}
+	return ""
+}
+
+func (x *GiftStruct) GetNobleLevel() uint64 {
+	if x != nil {
+		return x.NobleLevel
+	}
+	return 0
+}
+
+func (x *GiftStruct) GetGuideUrl() string {
+	if x != nil {
+		return x.GuideUrl
+	}
+	return ""
+}
+
+func (x *GiftStruct) GetPunishMedicine() bool {
+	if x != nil {
+		return x.PunishMedicine
+	}
+	return false
+}
+
+func (x *GiftStruct) GetForPortal() bool {
+	if x != nil {
+		return x.ForPortal
+	}
+	return false
+}
+
+func (x *GiftStruct) GetBusinessText() string {
+	if x != nil {
+		return x.BusinessText
+	}
+	return ""
+}
+
+func (x *GiftStruct) GetCnyGift() bool {
+	if x != nil {
+		return x.CnyGift
+	}
+	return false
+}
+
+func (x *GiftStruct) GetAppId() uint64 {
+	if x != nil {
+		return x.AppId
+	}
+	return 0
+}
+
+func (x *GiftStruct) GetVipLevel() uint64 {
+	if x != nil {
+		return x.VipLevel
+	}
+	return 0
+}
+
+func (x *GiftStruct) GetIsGray() bool {
+	if x != nil {
+		return x.IsGray
+	}
+	return false
+}
+
+func (x *GiftStruct) GetGraySchemeUrl() string {
+	if x != nil {
+		return x.GraySchemeUrl
+	}
+	return ""
+}
+
+func (x *GiftStruct) GetGiftScene() uint64 {
+	if x != nil {
+		return x.GiftScene
+	}
+	return 0
+}
+
+func (x *GiftStruct) GetForFirstRecharge() bool {
+	if x != nil {
+		return x.ForFirstRecharge
+	}
+	return false
+}
+
+func (x *GiftStruct) GetDynamicImgForSelected() *Image {
+	if x != nil {
+		return x.DynamicImgForSelected
+	}
+	return nil
+}
+
+func (x *GiftStruct) GetAfterSendAction() uint32 {
+	if x != nil {
+		return x.AfterSendAction
+	}
+	return 0
+}
+
+func (x *GiftStruct) GetGiftOfflineTime() uint64 {
+	if x != nil {
+		return x.GiftOfflineTime
+	}
+	return 0
+}
+
+func (x *GiftStruct) GetTopBarText() string {
+	if x != nil {
+		return x.TopBarText
+	}
+	return ""
+}
+
+func (x *GiftStruct) GetTopRightAvatar() *Image {
+	if x != nil {
+		return x.TopRightAvatar
+	}
+	return nil
+}
+
+func (x *GiftStruct) GetBannerSchemeUrl() string {
+	if x != nil {
+		return x.BannerSchemeUrl
+	}
+	return ""
+}
+
+func (x *GiftStruct) GetIsLocked() bool {
+	if x != nil {
+		return x.IsLocked
+	}
+	return false
+}
+
+func (x *GiftStruct) GetReqExtraType() uint64 {
+	if x != nil {
+		return x.ReqExtraType
+	}
+	return 0
+}
+
+func (x *GiftStruct) GetAssetIds() []uint64 {
+	if x != nil {
+		return x.AssetIds
+	}
+	return nil
+}
+
+func (x *GiftStruct) GetNeedSweepLightCount() uint32 {
+	if x != nil {
+		return x.NeedSweepLightCount
+	}
+	return 0
+}
+
+func (x *GiftStruct) GetBottomText() *Text {
+	if x != nil {
+		return x.BottomText
+	}
+	return nil
+}
+
+func (x *GiftStruct) GetMysteryShopStatus() uint32 {
+	if x != nil {
+		return x.MysteryShopStatus
+	}
+	return 0
+}
+
+func (x *GiftStruct) GetOptionalAssetIds() []uint64 {
+	if x != nil {
+		return x.OptionalAssetIds
+	}
+	return nil
+}
+
+func (x *GiftStruct) GetDisableWishList() bool {
+	if x != nil {
+		return x.DisableWishList
+	}
+	return false
+}
+
+func (x *GiftStruct) GetTrayDynamicImgFlippable() bool {
+	if x != nil {
+		return x.TrayDynamicImgFlippable
+	}
+	return false
+}
+
+func (x *GiftStruct) GetPicoShowAction() uint64 {
+	if x != nil {
+		return x.PicoShowAction
+	}
+	return 0
+}
+
+func (x *GiftStruct) GetSelectedDynamicEffect() uint64 {
+	if x != nil {
+		return x.SelectedDynamicEffect
+	}
+	return 0
+}
+
+func (x *GiftStruct) GetBizType() uint32 {
+	if x != nil {
+		return x.BizType
+	}
+	return 0
+}
+
+func (x *GiftStruct) GetWebpImage() *Image {
+	if x != nil {
+		return x.WebpImage
+	}
+	return nil
+}
+
+func (x *GiftStruct) GetGiftSource() uint32 {
+	if x != nil {
+		return x.GiftSource
+	}
+	return 0
+}
+
+func (x *GiftStruct) GetRequiredAssets() []uint64 {
+	if x != nil {
+		return x.RequiredAssets
+	}
+	return nil
+}
+
+func (x *GiftStruct) GetSelectedLabel() *Image {
+	if x != nil {
+		return x.SelectedLabel
+	}
+	return nil
+}
+
+func (x *GiftStruct) GetSortScore() uint64 {
+	if x != nil {
+		return x.SortScore
+	}
+	return 0
+}
+
+func (x *GiftStruct) GetTopicId() uint64 {
+	if x != nil {
+		return x.TopicId
+	}
+	return 0
+}
+
+func (x *GiftStruct) GetSortExtra() string {
+	if x != nil {
+		return x.SortExtra
+	}
+	return ""
+}
+
+func (x *GiftStruct) GetSendExtraParams() string {
+	if x != nil {
+		return x.SendExtraParams
+	}
+	return ""
+}
+
+func (x *GiftStruct) GetGiftObtainTime() uint64 {
+	if x != nil {
+		return x.GiftObtainTime
+	}
+	return 0
+}
+
 type GiftIMPriority struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	QueueSizesList    []uint64               `protobuf:"varint,1,rep,packed,name=queueSizesList,proto3" json:"queueSizesList,omitempty"`
@@ -1422,7 +1939,7 @@ type GiftIMPriority struct {
 
 func (x *GiftIMPriority) Reset() {
 	*x = GiftIMPriority{}
-	mi := &file_messages_proto_msgTypes[10]
+	mi := &file_messages_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1434,7 +1951,7 @@ func (x *GiftIMPriority) String() string {
 func (*GiftIMPriority) ProtoMessage() {}
 
 func (x *GiftIMPriority) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[10]
+	mi := &file_messages_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1447,7 +1964,7 @@ func (x *GiftIMPriority) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GiftIMPriority.ProtoReflect.Descriptor instead.
 func (*GiftIMPriority) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{10}
+	return file_messages_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *GiftIMPriority) GetQueueSizesList() []uint64 {
@@ -1481,7 +1998,7 @@ type TextEffect struct {
 
 func (x *TextEffect) Reset() {
 	*x = TextEffect{}
-	mi := &file_messages_proto_msgTypes[11]
+	mi := &file_messages_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1493,7 +2010,7 @@ func (x *TextEffect) String() string {
 func (*TextEffect) ProtoMessage() {}
 
 func (x *TextEffect) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[11]
+	mi := &file_messages_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1506,7 +2023,7 @@ func (x *TextEffect) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextEffect.ProtoReflect.Descriptor instead.
 func (*TextEffect) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{11}
+	return file_messages_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *TextEffect) GetPortrait() *TextEffectDetail {
@@ -1546,7 +2063,7 @@ type TextEffectDetail struct {
 
 func (x *TextEffectDetail) Reset() {
 	*x = TextEffectDetail{}
-	mi := &file_messages_proto_msgTypes[12]
+	mi := &file_messages_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1558,7 +2075,7 @@ func (x *TextEffectDetail) String() string {
 func (*TextEffectDetail) ProtoMessage() {}
 
 func (x *TextEffectDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[12]
+	mi := &file_messages_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1571,7 +2088,7 @@ func (x *TextEffectDetail) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextEffectDetail.ProtoReflect.Descriptor instead.
 func (*TextEffectDetail) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{12}
+	return file_messages_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *TextEffectDetail) GetText() *Text {
@@ -1679,37 +2196,41 @@ func (x *TextEffectDetail) GetStrokeWidth() uint32 {
 	return 0
 }
 
-// 成员消息
+// 成员消息 — live-schema-im.e322bd8a.js
 type MemberMessage struct {
-	state              protoimpl.MessageState `protogen:"open.v1"`
-	Common             *Common                `protobuf:"bytes,1,opt,name=common,proto3" json:"common,omitempty"`
-	User               *User                  `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
-	MemberCount        uint64                 `protobuf:"varint,3,opt,name=memberCount,proto3" json:"memberCount,omitempty"`
-	Operator           *User                  `protobuf:"bytes,4,opt,name=operator,proto3" json:"operator,omitempty"`
-	IsSetToAdmin       bool                   `protobuf:"varint,5,opt,name=isSetToAdmin,proto3" json:"isSetToAdmin,omitempty"`
-	IsTopUser          bool                   `protobuf:"varint,6,opt,name=isTopUser,proto3" json:"isTopUser,omitempty"`
-	RankScore          uint64                 `protobuf:"varint,7,opt,name=rankScore,proto3" json:"rankScore,omitempty"`
-	TopUserNo          uint64                 `protobuf:"varint,8,opt,name=topUserNo,proto3" json:"topUserNo,omitempty"`
-	EnterType          uint64                 `protobuf:"varint,9,opt,name=enterType,proto3" json:"enterType,omitempty"`
-	Action             uint64                 `protobuf:"varint,10,opt,name=action,proto3" json:"action,omitempty"`
-	ActionDescription  string                 `protobuf:"bytes,11,opt,name=actionDescription,proto3" json:"actionDescription,omitempty"`
-	UserId             uint64                 `protobuf:"varint,12,opt,name=userId,proto3" json:"userId,omitempty"`
-	EffectConfig       *EffectConfig          `protobuf:"bytes,13,opt,name=effectConfig,proto3" json:"effectConfig,omitempty"`
-	PopStr             string                 `protobuf:"bytes,14,opt,name=popStr,proto3" json:"popStr,omitempty"`
-	EnterEffectConfig  *EffectConfig          `protobuf:"bytes,15,opt,name=enterEffectConfig,proto3" json:"enterEffectConfig,omitempty"`
-	BackgroundImage    *Image                 `protobuf:"bytes,16,opt,name=backgroundImage,proto3" json:"backgroundImage,omitempty"`
-	BackgroundImageV2  *Image                 `protobuf:"bytes,17,opt,name=backgroundImageV2,proto3" json:"backgroundImageV2,omitempty"`
-	AnchorDisplayText  *Text                  `protobuf:"bytes,18,opt,name=anchorDisplayText,proto3" json:"anchorDisplayText,omitempty"`
-	PublicAreaCommon   *PublicAreaCommon      `protobuf:"bytes,19,opt,name=publicAreaCommon,proto3" json:"publicAreaCommon,omitempty"`
-	UserEnterTipType   uint64                 `protobuf:"varint,20,opt,name=userEnterTipType,proto3" json:"userEnterTipType,omitempty"`
-	AnchorEnterTipType uint64                 `protobuf:"varint,21,opt,name=anchorEnterTipType,proto3" json:"anchorEnterTipType,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	state                 protoimpl.MessageState `protogen:"open.v1"`
+	Common                *Common                `protobuf:"bytes,1,opt,name=common,proto3" json:"common,omitempty"`
+	User                  *User                  `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
+	MemberCount           uint64                 `protobuf:"varint,3,opt,name=memberCount,proto3" json:"memberCount,omitempty"`
+	Operator              *User                  `protobuf:"bytes,4,opt,name=operator,proto3" json:"operator,omitempty"`
+	IsSetToAdmin          bool                   `protobuf:"varint,5,opt,name=isSetToAdmin,proto3" json:"isSetToAdmin,omitempty"`
+	IsTopUser             bool                   `protobuf:"varint,6,opt,name=isTopUser,proto3" json:"isTopUser,omitempty"`
+	RankScore             uint64                 `protobuf:"varint,7,opt,name=rankScore,proto3" json:"rankScore,omitempty"`
+	TopUserNo             uint64                 `protobuf:"varint,8,opt,name=topUserNo,proto3" json:"topUserNo,omitempty"`
+	EnterType             uint64                 `protobuf:"varint,9,opt,name=enterType,proto3" json:"enterType,omitempty"`
+	Action                uint64                 `protobuf:"varint,10,opt,name=action,proto3" json:"action,omitempty"`
+	ActionDescription     string                 `protobuf:"bytes,11,opt,name=actionDescription,proto3" json:"actionDescription,omitempty"`
+	UserId                uint64                 `protobuf:"varint,12,opt,name=userId,proto3" json:"userId,omitempty"`
+	EffectConfig          *EffectConfig          `protobuf:"bytes,13,opt,name=effectConfig,proto3" json:"effectConfig,omitempty"`
+	PopStr                string                 `protobuf:"bytes,14,opt,name=popStr,proto3" json:"popStr,omitempty"`
+	EnterEffectConfig     *EffectConfig          `protobuf:"bytes,15,opt,name=enterEffectConfig,proto3" json:"enterEffectConfig,omitempty"`
+	BackgroundImage       *Image                 `protobuf:"bytes,16,opt,name=backgroundImage,proto3" json:"backgroundImage,omitempty"`
+	BackgroundImageV2     *Image                 `protobuf:"bytes,17,opt,name=backgroundImageV2,proto3" json:"backgroundImageV2,omitempty"`
+	AnchorDisplayText     *Text                  `protobuf:"bytes,18,opt,name=anchorDisplayText,proto3" json:"anchorDisplayText,omitempty"`
+	PublicAreaCommon      *PublicAreaCommon      `protobuf:"bytes,19,opt,name=publicAreaCommon,proto3" json:"publicAreaCommon,omitempty"`
+	UserEnterTipType      uint64                 `protobuf:"varint,20,opt,name=userEnterTipType,proto3" json:"userEnterTipType,omitempty"`
+	AnchorEnterTipType    uint64                 `protobuf:"varint,21,opt,name=anchorEnterTipType,proto3" json:"anchorEnterTipType,omitempty"`
+	PicoEnterEffectConfig *PicoEffectConfig      `protobuf:"bytes,24,opt,name=picoEnterEffectConfig,proto3" json:"picoEnterEffectConfig,omitempty"`
+	UnsetAdminType        uint32                 `protobuf:"varint,25,opt,name=unsetAdminType,proto3" json:"unsetAdminType,omitempty"`
+	EnterRedirectFrom     string                 `protobuf:"bytes,26,opt,name=enterRedirectFrom,proto3" json:"enterRedirectFrom,omitempty"`
+	UserOpenId            string                 `protobuf:"bytes,5000,opt,name=userOpenId,proto3" json:"userOpenId,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
 func (x *MemberMessage) Reset() {
 	*x = MemberMessage{}
-	mi := &file_messages_proto_msgTypes[13]
+	mi := &file_messages_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1721,7 +2242,7 @@ func (x *MemberMessage) String() string {
 func (*MemberMessage) ProtoMessage() {}
 
 func (x *MemberMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[13]
+	mi := &file_messages_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1734,7 +2255,7 @@ func (x *MemberMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MemberMessage.ProtoReflect.Descriptor instead.
 func (*MemberMessage) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{13}
+	return file_messages_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *MemberMessage) GetCommon() *Common {
@@ -1884,18 +2405,69 @@ func (x *MemberMessage) GetAnchorEnterTipType() uint64 {
 	return 0
 }
 
+func (x *MemberMessage) GetPicoEnterEffectConfig() *PicoEffectConfig {
+	if x != nil {
+		return x.PicoEnterEffectConfig
+	}
+	return nil
+}
+
+func (x *MemberMessage) GetUnsetAdminType() uint32 {
+	if x != nil {
+		return x.UnsetAdminType
+	}
+	return 0
+}
+
+func (x *MemberMessage) GetEnterRedirectFrom() string {
+	if x != nil {
+		return x.EnterRedirectFrom
+	}
+	return ""
+}
+
+func (x *MemberMessage) GetUserOpenId() string {
+	if x != nil {
+		return x.UserOpenId
+	}
+	return ""
+}
+
 type PublicAreaCommon struct {
-	state                 protoimpl.MessageState `protogen:"open.v1"`
-	UserLabel             *Image                 `protobuf:"bytes,1,opt,name=userLabel,proto3" json:"userLabel,omitempty"`
-	UserConsumeInRoom     uint64                 `protobuf:"varint,2,opt,name=userConsumeInRoom,proto3" json:"userConsumeInRoom,omitempty"`
-	UserSendGiftCntInRoom uint64                 `protobuf:"varint,3,opt,name=userSendGiftCntInRoom,proto3" json:"userSendGiftCntInRoom,omitempty"`
-	unknownFields         protoimpl.UnknownFields
-	sizeCache             protoimpl.SizeCache
+	state                     protoimpl.MessageState   `protogen:"open.v1"`
+	UserLabel                 *Image                   `protobuf:"bytes,1,opt,name=userLabel,proto3" json:"userLabel,omitempty"`
+	UserConsumeInRoom         uint64                   `protobuf:"varint,2,opt,name=userConsumeInRoom,proto3" json:"userConsumeInRoom,omitempty"`
+	UserSendGiftCntInRoom     uint64                   `protobuf:"varint,3,opt,name=userSendGiftCntInRoom,proto3" json:"userSendGiftCntInRoom,omitempty"`
+	IndividualPriority        uint64                   `protobuf:"varint,4,opt,name=individualPriority,proto3" json:"individualPriority,omitempty"`
+	SupportPin                uint64                   `protobuf:"varint,6,opt,name=supportPin,proto3" json:"supportPin,omitempty"`
+	SuffixText                *SuffixText              `protobuf:"bytes,7,opt,name=suffixText,proto3" json:"suffixText,omitempty"`
+	ImAction                  uint32                   `protobuf:"varint,8,opt,name=imAction,proto3" json:"imAction,omitempty"`
+	ForbiddenProfile          bool                     `protobuf:"varint,9,opt,name=forbiddenProfile,proto3" json:"forbiddenProfile,omitempty"`
+	ReplyResp                 *ChatReplyRespInfo       `protobuf:"bytes,10,opt,name=replyResp,proto3" json:"replyResp,omitempty"`
+	IsFeatured                uint64                   `protobuf:"varint,12,opt,name=isFeatured,proto3" json:"isFeatured,omitempty"`
+	NeedFilterDisplay         bool                     `protobuf:"varint,13,opt,name=needFilterDisplay,proto3" json:"needFilterDisplay,omitempty"`
+	PersonalizedDisplayInfo   *PersonalizedDisplayInfo `protobuf:"bytes,14,opt,name=personalizedDisplayInfo,proto3" json:"personalizedDisplayInfo,omitempty"`
+	ForceInsertionPriority    uint64                   `protobuf:"varint,15,opt,name=forceInsertionPriority,proto3" json:"forceInsertionPriority,omitempty"`
+	MentionInfo               *ChatMentionInfo         `protobuf:"bytes,16,opt,name=mentionInfo,proto3" json:"mentionInfo,omitempty"`
+	HoverInfo                 *HoverInfo               `protobuf:"bytes,17,opt,name=hoverInfo,proto3" json:"hoverInfo,omitempty"`
+	ShowInDanmaku             bool                     `protobuf:"varint,18,opt,name=showInDanmaku,proto3" json:"showInDanmaku,omitempty"`
+	IsLikeComment             bool                     `protobuf:"varint,19,opt,name=isLikeComment,proto3" json:"isLikeComment,omitempty"`
+	BatchRefresh              bool                     `protobuf:"varint,20,opt,name=batchRefresh,proto3" json:"batchRefresh,omitempty"`
+	IsAiMsg                   bool                     `protobuf:"varint,21,opt,name=isAiMsg,proto3" json:"isAiMsg,omitempty"`
+	ShouldLogLightInteractMob bool                     `protobuf:"varint,22,opt,name=shouldLogLightInteractMob,proto3" json:"shouldLogLightInteractMob,omitempty"`
+	TailInteractType          int32                    `protobuf:"varint,24,opt,name=tailInteractType,proto3" json:"tailInteractType,omitempty"`
+	DefaultClickSchemaUrl     string                   `protobuf:"bytes,25,opt,name=defaultClickSchemaUrl,proto3" json:"defaultClickSchemaUrl,omitempty"`
+	BottomPinConfig           *BottomPinInfo           `protobuf:"bytes,26,opt,name=bottomPinConfig,proto3" json:"bottomPinConfig,omitempty"`
+	ForcedInsert              bool                     `protobuf:"varint,27,opt,name=forcedInsert,proto3" json:"forcedInsert,omitempty"`
+	WithUserFeatureLabel      bool                     `protobuf:"varint,28,opt,name=withUserFeatureLabel,proto3" json:"withUserFeatureLabel,omitempty"`
+	ScrollInfo                *ScrollInfo              `protobuf:"bytes,29,opt,name=scrollInfo,proto3" json:"scrollInfo,omitempty"`
+	unknownFields             protoimpl.UnknownFields
+	sizeCache                 protoimpl.SizeCache
 }
 
 func (x *PublicAreaCommon) Reset() {
 	*x = PublicAreaCommon{}
-	mi := &file_messages_proto_msgTypes[14]
+	mi := &file_messages_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1907,7 +2479,7 @@ func (x *PublicAreaCommon) String() string {
 func (*PublicAreaCommon) ProtoMessage() {}
 
 func (x *PublicAreaCommon) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[14]
+	mi := &file_messages_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1920,7 +2492,7 @@ func (x *PublicAreaCommon) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PublicAreaCommon.ProtoReflect.Descriptor instead.
 func (*PublicAreaCommon) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{14}
+	return file_messages_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *PublicAreaCommon) GetUserLabel() *Image {
@@ -1940,6 +2512,611 @@ func (x *PublicAreaCommon) GetUserConsumeInRoom() uint64 {
 func (x *PublicAreaCommon) GetUserSendGiftCntInRoom() uint64 {
 	if x != nil {
 		return x.UserSendGiftCntInRoom
+	}
+	return 0
+}
+
+func (x *PublicAreaCommon) GetIndividualPriority() uint64 {
+	if x != nil {
+		return x.IndividualPriority
+	}
+	return 0
+}
+
+func (x *PublicAreaCommon) GetSupportPin() uint64 {
+	if x != nil {
+		return x.SupportPin
+	}
+	return 0
+}
+
+func (x *PublicAreaCommon) GetSuffixText() *SuffixText {
+	if x != nil {
+		return x.SuffixText
+	}
+	return nil
+}
+
+func (x *PublicAreaCommon) GetImAction() uint32 {
+	if x != nil {
+		return x.ImAction
+	}
+	return 0
+}
+
+func (x *PublicAreaCommon) GetForbiddenProfile() bool {
+	if x != nil {
+		return x.ForbiddenProfile
+	}
+	return false
+}
+
+func (x *PublicAreaCommon) GetReplyResp() *ChatReplyRespInfo {
+	if x != nil {
+		return x.ReplyResp
+	}
+	return nil
+}
+
+func (x *PublicAreaCommon) GetIsFeatured() uint64 {
+	if x != nil {
+		return x.IsFeatured
+	}
+	return 0
+}
+
+func (x *PublicAreaCommon) GetNeedFilterDisplay() bool {
+	if x != nil {
+		return x.NeedFilterDisplay
+	}
+	return false
+}
+
+func (x *PublicAreaCommon) GetPersonalizedDisplayInfo() *PersonalizedDisplayInfo {
+	if x != nil {
+		return x.PersonalizedDisplayInfo
+	}
+	return nil
+}
+
+func (x *PublicAreaCommon) GetForceInsertionPriority() uint64 {
+	if x != nil {
+		return x.ForceInsertionPriority
+	}
+	return 0
+}
+
+func (x *PublicAreaCommon) GetMentionInfo() *ChatMentionInfo {
+	if x != nil {
+		return x.MentionInfo
+	}
+	return nil
+}
+
+func (x *PublicAreaCommon) GetHoverInfo() *HoverInfo {
+	if x != nil {
+		return x.HoverInfo
+	}
+	return nil
+}
+
+func (x *PublicAreaCommon) GetShowInDanmaku() bool {
+	if x != nil {
+		return x.ShowInDanmaku
+	}
+	return false
+}
+
+func (x *PublicAreaCommon) GetIsLikeComment() bool {
+	if x != nil {
+		return x.IsLikeComment
+	}
+	return false
+}
+
+func (x *PublicAreaCommon) GetBatchRefresh() bool {
+	if x != nil {
+		return x.BatchRefresh
+	}
+	return false
+}
+
+func (x *PublicAreaCommon) GetIsAiMsg() bool {
+	if x != nil {
+		return x.IsAiMsg
+	}
+	return false
+}
+
+func (x *PublicAreaCommon) GetShouldLogLightInteractMob() bool {
+	if x != nil {
+		return x.ShouldLogLightInteractMob
+	}
+	return false
+}
+
+func (x *PublicAreaCommon) GetTailInteractType() int32 {
+	if x != nil {
+		return x.TailInteractType
+	}
+	return 0
+}
+
+func (x *PublicAreaCommon) GetDefaultClickSchemaUrl() string {
+	if x != nil {
+		return x.DefaultClickSchemaUrl
+	}
+	return ""
+}
+
+func (x *PublicAreaCommon) GetBottomPinConfig() *BottomPinInfo {
+	if x != nil {
+		return x.BottomPinConfig
+	}
+	return nil
+}
+
+func (x *PublicAreaCommon) GetForcedInsert() bool {
+	if x != nil {
+		return x.ForcedInsert
+	}
+	return false
+}
+
+func (x *PublicAreaCommon) GetWithUserFeatureLabel() bool {
+	if x != nil {
+		return x.WithUserFeatureLabel
+	}
+	return false
+}
+
+func (x *PublicAreaCommon) GetScrollInfo() *ScrollInfo {
+	if x != nil {
+		return x.ScrollInfo
+	}
+	return nil
+}
+
+type SuffixText struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	BizType       uint64                 `protobuf:"varint,1,opt,name=bizType,proto3" json:"bizType,omitempty"`
+	Text          *Text                  `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
+	Tags          string                 `protobuf:"bytes,3,opt,name=tags,proto3" json:"tags,omitempty"`
+	TextList      string                 `protobuf:"bytes,4,opt,name=textList,proto3" json:"textList,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SuffixText) Reset() {
+	*x = SuffixText{}
+	mi := &file_messages_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SuffixText) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SuffixText) ProtoMessage() {}
+
+func (x *SuffixText) ProtoReflect() protoreflect.Message {
+	mi := &file_messages_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SuffixText.ProtoReflect.Descriptor instead.
+func (*SuffixText) Descriptor() ([]byte, []int) {
+	return file_messages_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *SuffixText) GetBizType() uint64 {
+	if x != nil {
+		return x.BizType
+	}
+	return 0
+}
+
+func (x *SuffixText) GetText() *Text {
+	if x != nil {
+		return x.Text
+	}
+	return nil
+}
+
+func (x *SuffixText) GetTags() string {
+	if x != nil {
+		return x.Tags
+	}
+	return ""
+}
+
+func (x *SuffixText) GetTextList() string {
+	if x != nil {
+		return x.TextList
+	}
+	return ""
+}
+
+type HoverInfo struct {
+	state                      protoimpl.MessageState `protogen:"open.v1"`
+	IsHover                    bool                   `protobuf:"varint,1,opt,name=isHover,proto3" json:"isHover,omitempty"`
+	Priority                   uint64                 `protobuf:"varint,2,opt,name=priority,proto3" json:"priority,omitempty"`
+	Duration                   uint64                 `protobuf:"varint,3,opt,name=duration,proto3" json:"duration,omitempty"`
+	DurationInvolveDisplayTime uint64                 `protobuf:"varint,4,opt,name=durationInvolveDisplayTime,proto3" json:"durationInvolveDisplayTime,omitempty"`
+	DurationThreshold          uint64                 `protobuf:"varint,5,opt,name=durationThreshold,proto3" json:"durationThreshold,omitempty"`
+	unknownFields              protoimpl.UnknownFields
+	sizeCache                  protoimpl.SizeCache
+}
+
+func (x *HoverInfo) Reset() {
+	*x = HoverInfo{}
+	mi := &file_messages_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HoverInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HoverInfo) ProtoMessage() {}
+
+func (x *HoverInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_messages_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HoverInfo.ProtoReflect.Descriptor instead.
+func (*HoverInfo) Descriptor() ([]byte, []int) {
+	return file_messages_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *HoverInfo) GetIsHover() bool {
+	if x != nil {
+		return x.IsHover
+	}
+	return false
+}
+
+func (x *HoverInfo) GetPriority() uint64 {
+	if x != nil {
+		return x.Priority
+	}
+	return 0
+}
+
+func (x *HoverInfo) GetDuration() uint64 {
+	if x != nil {
+		return x.Duration
+	}
+	return 0
+}
+
+func (x *HoverInfo) GetDurationInvolveDisplayTime() uint64 {
+	if x != nil {
+		return x.DurationInvolveDisplayTime
+	}
+	return 0
+}
+
+func (x *HoverInfo) GetDurationThreshold() uint64 {
+	if x != nil {
+		return x.DurationThreshold
+	}
+	return 0
+}
+
+type PersonalizedDisplayInfo struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	IsPersonalized bool                   `protobuf:"varint,1,opt,name=isPersonalized,proto3" json:"isPersonalized,omitempty"`
+	FoldType       uint64                 `protobuf:"varint,2,opt,name=foldType,proto3" json:"foldType,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *PersonalizedDisplayInfo) Reset() {
+	*x = PersonalizedDisplayInfo{}
+	mi := &file_messages_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PersonalizedDisplayInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PersonalizedDisplayInfo) ProtoMessage() {}
+
+func (x *PersonalizedDisplayInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_messages_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PersonalizedDisplayInfo.ProtoReflect.Descriptor instead.
+func (*PersonalizedDisplayInfo) Descriptor() ([]byte, []int) {
+	return file_messages_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *PersonalizedDisplayInfo) GetIsPersonalized() bool {
+	if x != nil {
+		return x.IsPersonalized
+	}
+	return false
+}
+
+func (x *PersonalizedDisplayInfo) GetFoldType() uint64 {
+	if x != nil {
+		return x.FoldType
+	}
+	return 0
+}
+
+type ChatReplyRespInfo struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	ReplyMsgId      uint64                 `protobuf:"varint,1,opt,name=replyMsgId,proto3" json:"replyMsgId,omitempty"`
+	ReplyId         uint64                 `protobuf:"varint,2,opt,name=replyId,proto3" json:"replyId,omitempty"`
+	ReplyText       *Text                  `protobuf:"bytes,3,opt,name=replyText,proto3" json:"replyText,omitempty"`
+	ReplyUid        uint64                 `protobuf:"varint,4,opt,name=replyUid,proto3" json:"replyUid,omitempty"`
+	ReplyWebcastUid string                 `protobuf:"bytes,5,opt,name=replyWebcastUid,proto3" json:"replyWebcastUid,omitempty"`
+	ReplyOpenId     string                 `protobuf:"bytes,5000,opt,name=replyOpenId,proto3" json:"replyOpenId,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *ChatReplyRespInfo) Reset() {
+	*x = ChatReplyRespInfo{}
+	mi := &file_messages_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChatReplyRespInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChatReplyRespInfo) ProtoMessage() {}
+
+func (x *ChatReplyRespInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_messages_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChatReplyRespInfo.ProtoReflect.Descriptor instead.
+func (*ChatReplyRespInfo) Descriptor() ([]byte, []int) {
+	return file_messages_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *ChatReplyRespInfo) GetReplyMsgId() uint64 {
+	if x != nil {
+		return x.ReplyMsgId
+	}
+	return 0
+}
+
+func (x *ChatReplyRespInfo) GetReplyId() uint64 {
+	if x != nil {
+		return x.ReplyId
+	}
+	return 0
+}
+
+func (x *ChatReplyRespInfo) GetReplyText() *Text {
+	if x != nil {
+		return x.ReplyText
+	}
+	return nil
+}
+
+func (x *ChatReplyRespInfo) GetReplyUid() uint64 {
+	if x != nil {
+		return x.ReplyUid
+	}
+	return 0
+}
+
+func (x *ChatReplyRespInfo) GetReplyWebcastUid() string {
+	if x != nil {
+		return x.ReplyWebcastUid
+	}
+	return ""
+}
+
+func (x *ChatReplyRespInfo) GetReplyOpenId() string {
+	if x != nil {
+		return x.ReplyOpenId
+	}
+	return ""
+}
+
+type ChatMentionInfo struct {
+	state                 protoimpl.MessageState `protogen:"open.v1"`
+	MentionUserIds        []string               `protobuf:"bytes,1,rep,name=mentionUserIds,proto3" json:"mentionUserIds,omitempty"`
+	MentionWebcastUserIds []string               `protobuf:"bytes,2,rep,name=mentionWebcastUserIds,proto3" json:"mentionWebcastUserIds,omitempty"`
+	ShowTime              uint64                 `protobuf:"varint,3,opt,name=showTime,proto3" json:"showTime,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
+}
+
+func (x *ChatMentionInfo) Reset() {
+	*x = ChatMentionInfo{}
+	mi := &file_messages_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChatMentionInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChatMentionInfo) ProtoMessage() {}
+
+func (x *ChatMentionInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_messages_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChatMentionInfo.ProtoReflect.Descriptor instead.
+func (*ChatMentionInfo) Descriptor() ([]byte, []int) {
+	return file_messages_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *ChatMentionInfo) GetMentionUserIds() []string {
+	if x != nil {
+		return x.MentionUserIds
+	}
+	return nil
+}
+
+func (x *ChatMentionInfo) GetMentionWebcastUserIds() []string {
+	if x != nil {
+		return x.MentionWebcastUserIds
+	}
+	return nil
+}
+
+func (x *ChatMentionInfo) GetShowTime() uint64 {
+	if x != nil {
+		return x.ShowTime
+	}
+	return 0
+}
+
+type BottomPinInfo struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	StayDuration  uint64                 `protobuf:"varint,1,opt,name=stayDuration,proto3" json:"stayDuration,omitempty"`
+	ExitStrategy  uint64                 `protobuf:"varint,2,opt,name=exitStrategy,proto3" json:"exitStrategy,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BottomPinInfo) Reset() {
+	*x = BottomPinInfo{}
+	mi := &file_messages_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BottomPinInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BottomPinInfo) ProtoMessage() {}
+
+func (x *BottomPinInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_messages_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BottomPinInfo.ProtoReflect.Descriptor instead.
+func (*BottomPinInfo) Descriptor() ([]byte, []int) {
+	return file_messages_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *BottomPinInfo) GetStayDuration() uint64 {
+	if x != nil {
+		return x.StayDuration
+	}
+	return 0
+}
+
+func (x *BottomPinInfo) GetExitStrategy() uint64 {
+	if x != nil {
+		return x.ExitStrategy
+	}
+	return 0
+}
+
+type ScrollInfo struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	ScrollSlowEnable   bool                   `protobuf:"varint,1,opt,name=scrollSlowEnable,proto3" json:"scrollSlowEnable,omitempty"`
+	ScrollSlowDuration uint64                 `protobuf:"varint,2,opt,name=scrollSlowDuration,proto3" json:"scrollSlowDuration,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *ScrollInfo) Reset() {
+	*x = ScrollInfo{}
+	mi := &file_messages_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ScrollInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ScrollInfo) ProtoMessage() {}
+
+func (x *ScrollInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_messages_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ScrollInfo.ProtoReflect.Descriptor instead.
+func (*ScrollInfo) Descriptor() ([]byte, []int) {
+	return file_messages_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *ScrollInfo) GetScrollSlowEnable() bool {
+	if x != nil {
+		return x.ScrollSlowEnable
+	}
+	return false
+}
+
+func (x *ScrollInfo) GetScrollSlowDuration() uint64 {
+	if x != nil {
+		return x.ScrollSlowDuration
 	}
 	return 0
 }
@@ -1968,13 +3145,15 @@ type EffectConfig struct {
 	DressId                  string                 `protobuf:"bytes,20,opt,name=dressId,proto3" json:"dressId,omitempty"`
 	Alignment                uint64                 `protobuf:"varint,21,opt,name=alignment,proto3" json:"alignment,omitempty"`
 	AlignmentOffset          uint64                 `protobuf:"varint,22,opt,name=alignmentOffset,proto3" json:"alignmentOffset,omitempty"`
+	EffectScene              string                 `protobuf:"bytes,23,opt,name=effectScene,proto3" json:"effectScene,omitempty"`
+	BadgeList                []*Image               `protobuf:"bytes,25,rep,name=badgeList,proto3" json:"badgeList,omitempty"`
 	unknownFields            protoimpl.UnknownFields
 	sizeCache                protoimpl.SizeCache
 }
 
 func (x *EffectConfig) Reset() {
 	*x = EffectConfig{}
-	mi := &file_messages_proto_msgTypes[15]
+	mi := &file_messages_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1986,7 +3165,7 @@ func (x *EffectConfig) String() string {
 func (*EffectConfig) ProtoMessage() {}
 
 func (x *EffectConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[15]
+	mi := &file_messages_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1999,7 +3178,7 @@ func (x *EffectConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EffectConfig.ProtoReflect.Descriptor instead.
 func (*EffectConfig) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{15}
+	return file_messages_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *EffectConfig) GetType() uint64 {
@@ -2156,6 +3335,120 @@ func (x *EffectConfig) GetAlignmentOffset() uint64 {
 	return 0
 }
 
+func (x *EffectConfig) GetEffectScene() string {
+	if x != nil {
+		return x.EffectScene
+	}
+	return ""
+}
+
+func (x *EffectConfig) GetBadgeList() []*Image {
+	if x != nil {
+		return x.BadgeList
+	}
+	return nil
+}
+
+type PicoEffectConfig struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	Type              uint64                 `protobuf:"varint,1,opt,name=type,proto3" json:"type,omitempty"`
+	Icon              *Image                 `protobuf:"bytes,2,opt,name=icon,proto3" json:"icon,omitempty"`
+	Text              *Text                  `protobuf:"bytes,3,opt,name=text,proto3" json:"text,omitempty"`
+	TextIcon          *Image                 `protobuf:"bytes,4,opt,name=textIcon,proto3" json:"textIcon,omitempty"`
+	StayTime          uint32                 `protobuf:"varint,5,opt,name=stayTime,proto3" json:"stayTime,omitempty"`
+	Badge             *Image                 `protobuf:"bytes,6,opt,name=badge,proto3" json:"badge,omitempty"`
+	CenterAnimAssetId uint64                 `protobuf:"varint,7,opt,name=centerAnimAssetId,proto3" json:"centerAnimAssetId,omitempty"`
+	DressId           string                 `protobuf:"bytes,9,opt,name=dressId,proto3" json:"dressId,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *PicoEffectConfig) Reset() {
+	*x = PicoEffectConfig{}
+	mi := &file_messages_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PicoEffectConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PicoEffectConfig) ProtoMessage() {}
+
+func (x *PicoEffectConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_messages_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PicoEffectConfig.ProtoReflect.Descriptor instead.
+func (*PicoEffectConfig) Descriptor() ([]byte, []int) {
+	return file_messages_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *PicoEffectConfig) GetType() uint64 {
+	if x != nil {
+		return x.Type
+	}
+	return 0
+}
+
+func (x *PicoEffectConfig) GetIcon() *Image {
+	if x != nil {
+		return x.Icon
+	}
+	return nil
+}
+
+func (x *PicoEffectConfig) GetText() *Text {
+	if x != nil {
+		return x.Text
+	}
+	return nil
+}
+
+func (x *PicoEffectConfig) GetTextIcon() *Image {
+	if x != nil {
+		return x.TextIcon
+	}
+	return nil
+}
+
+func (x *PicoEffectConfig) GetStayTime() uint32 {
+	if x != nil {
+		return x.StayTime
+	}
+	return 0
+}
+
+func (x *PicoEffectConfig) GetBadge() *Image {
+	if x != nil {
+		return x.Badge
+	}
+	return nil
+}
+
+func (x *PicoEffectConfig) GetCenterAnimAssetId() uint64 {
+	if x != nil {
+		return x.CenterAnimAssetId
+	}
+	return 0
+}
+
+func (x *PicoEffectConfig) GetDressId() string {
+	if x != nil {
+		return x.DressId
+	}
+	return ""
+}
+
 type Text struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Key           string                 `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
@@ -2168,7 +3461,7 @@ type Text struct {
 
 func (x *Text) Reset() {
 	*x = Text{}
-	mi := &file_messages_proto_msgTypes[16]
+	mi := &file_messages_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2180,7 +3473,7 @@ func (x *Text) String() string {
 func (*Text) ProtoMessage() {}
 
 func (x *Text) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[16]
+	mi := &file_messages_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2193,7 +3486,7 @@ func (x *Text) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Text.ProtoReflect.Descriptor instead.
 func (*Text) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{16}
+	return file_messages_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *Text) GetKey() string {
@@ -2240,7 +3533,7 @@ type TextPiece struct {
 
 func (x *TextPiece) Reset() {
 	*x = TextPiece{}
-	mi := &file_messages_proto_msgTypes[17]
+	mi := &file_messages_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2252,7 +3545,7 @@ func (x *TextPiece) String() string {
 func (*TextPiece) ProtoMessage() {}
 
 func (x *TextPiece) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[17]
+	mi := &file_messages_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2265,7 +3558,7 @@ func (x *TextPiece) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextPiece.ProtoReflect.Descriptor instead.
 func (*TextPiece) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{17}
+	return file_messages_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *TextPiece) GetType() bool {
@@ -2334,7 +3627,7 @@ type TextPieceImage struct {
 
 func (x *TextPieceImage) Reset() {
 	*x = TextPieceImage{}
-	mi := &file_messages_proto_msgTypes[18]
+	mi := &file_messages_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2346,7 +3639,7 @@ func (x *TextPieceImage) String() string {
 func (*TextPieceImage) ProtoMessage() {}
 
 func (x *TextPieceImage) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[18]
+	mi := &file_messages_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2359,7 +3652,7 @@ func (x *TextPieceImage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextPieceImage.ProtoReflect.Descriptor instead.
 func (*TextPieceImage) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{18}
+	return file_messages_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *TextPieceImage) GetImage() *Image {
@@ -2386,7 +3679,7 @@ type TextPiecePatternRef struct {
 
 func (x *TextPiecePatternRef) Reset() {
 	*x = TextPiecePatternRef{}
-	mi := &file_messages_proto_msgTypes[19]
+	mi := &file_messages_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2398,7 +3691,7 @@ func (x *TextPiecePatternRef) String() string {
 func (*TextPiecePatternRef) ProtoMessage() {}
 
 func (x *TextPiecePatternRef) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[19]
+	mi := &file_messages_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2411,7 +3704,7 @@ func (x *TextPiecePatternRef) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextPiecePatternRef.ProtoReflect.Descriptor instead.
 func (*TextPiecePatternRef) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{19}
+	return file_messages_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *TextPiecePatternRef) GetKey() string {
@@ -2437,7 +3730,7 @@ type TextPieceHeart struct {
 
 func (x *TextPieceHeart) Reset() {
 	*x = TextPieceHeart{}
-	mi := &file_messages_proto_msgTypes[20]
+	mi := &file_messages_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2449,7 +3742,7 @@ func (x *TextPieceHeart) String() string {
 func (*TextPieceHeart) ProtoMessage() {}
 
 func (x *TextPieceHeart) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[20]
+	mi := &file_messages_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2462,7 +3755,7 @@ func (x *TextPieceHeart) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextPieceHeart.ProtoReflect.Descriptor instead.
 func (*TextPieceHeart) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{20}
+	return file_messages_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *TextPieceHeart) GetColor() string {
@@ -2482,7 +3775,7 @@ type TextPieceGift struct {
 
 func (x *TextPieceGift) Reset() {
 	*x = TextPieceGift{}
-	mi := &file_messages_proto_msgTypes[21]
+	mi := &file_messages_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2494,7 +3787,7 @@ func (x *TextPieceGift) String() string {
 func (*TextPieceGift) ProtoMessage() {}
 
 func (x *TextPieceGift) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[21]
+	mi := &file_messages_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2507,7 +3800,7 @@ func (x *TextPieceGift) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextPieceGift.ProtoReflect.Descriptor instead.
 func (*TextPieceGift) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{21}
+	return file_messages_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *TextPieceGift) GetGiftId() uint64 {
@@ -2534,7 +3827,7 @@ type PatternRef struct {
 
 func (x *PatternRef) Reset() {
 	*x = PatternRef{}
-	mi := &file_messages_proto_msgTypes[22]
+	mi := &file_messages_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2546,7 +3839,7 @@ func (x *PatternRef) String() string {
 func (*PatternRef) ProtoMessage() {}
 
 func (x *PatternRef) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[22]
+	mi := &file_messages_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2559,7 +3852,7 @@ func (x *PatternRef) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PatternRef.ProtoReflect.Descriptor instead.
 func (*PatternRef) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{22}
+	return file_messages_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *PatternRef) GetKey() string {
@@ -2586,7 +3879,7 @@ type TextPieceUser struct {
 
 func (x *TextPieceUser) Reset() {
 	*x = TextPieceUser{}
-	mi := &file_messages_proto_msgTypes[23]
+	mi := &file_messages_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2598,7 +3891,7 @@ func (x *TextPieceUser) String() string {
 func (*TextPieceUser) ProtoMessage() {}
 
 func (x *TextPieceUser) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[23]
+	mi := &file_messages_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2611,7 +3904,7 @@ func (x *TextPieceUser) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextPieceUser.ProtoReflect.Descriptor instead.
 func (*TextPieceUser) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{23}
+	return file_messages_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *TextPieceUser) GetUser() *User {
@@ -2644,7 +3937,7 @@ type TextFormat struct {
 
 func (x *TextFormat) Reset() {
 	*x = TextFormat{}
-	mi := &file_messages_proto_msgTypes[24]
+	mi := &file_messages_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2656,7 +3949,7 @@ func (x *TextFormat) String() string {
 func (*TextFormat) ProtoMessage() {}
 
 func (x *TextFormat) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[24]
+	mi := &file_messages_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2669,7 +3962,7 @@ func (x *TextFormat) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextFormat.ProtoReflect.Descriptor instead.
 func (*TextFormat) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{24}
+	return file_messages_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *TextFormat) GetColor() string {
@@ -2748,7 +4041,7 @@ type LikeMessage struct {
 
 func (x *LikeMessage) Reset() {
 	*x = LikeMessage{}
-	mi := &file_messages_proto_msgTypes[25]
+	mi := &file_messages_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2760,7 +4053,7 @@ func (x *LikeMessage) String() string {
 func (*LikeMessage) ProtoMessage() {}
 
 func (x *LikeMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[25]
+	mi := &file_messages_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2773,7 +4066,7 @@ func (x *LikeMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LikeMessage.ProtoReflect.Descriptor instead.
 func (*LikeMessage) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{25}
+	return file_messages_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *LikeMessage) GetCommon() *Common {
@@ -2868,7 +4161,7 @@ type SocialMessage struct {
 
 func (x *SocialMessage) Reset() {
 	*x = SocialMessage{}
-	mi := &file_messages_proto_msgTypes[26]
+	mi := &file_messages_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2880,7 +4173,7 @@ func (x *SocialMessage) String() string {
 func (*SocialMessage) ProtoMessage() {}
 
 func (x *SocialMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[26]
+	mi := &file_messages_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2893,7 +4186,7 @@ func (x *SocialMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SocialMessage.ProtoReflect.Descriptor instead.
 func (*SocialMessage) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{26}
+	return file_messages_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *SocialMessage) GetCommon() *Common {
@@ -2957,7 +4250,7 @@ type PicoDisplayInfo struct {
 
 func (x *PicoDisplayInfo) Reset() {
 	*x = PicoDisplayInfo{}
-	mi := &file_messages_proto_msgTypes[27]
+	mi := &file_messages_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2969,7 +4262,7 @@ func (x *PicoDisplayInfo) String() string {
 func (*PicoDisplayInfo) ProtoMessage() {}
 
 func (x *PicoDisplayInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[27]
+	mi := &file_messages_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2982,7 +4275,7 @@ func (x *PicoDisplayInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PicoDisplayInfo.ProtoReflect.Descriptor instead.
 func (*PicoDisplayInfo) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{27}
+	return file_messages_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *PicoDisplayInfo) GetComboSumCount() uint64 {
@@ -3025,7 +4318,7 @@ type DoubleLikeDetail struct {
 
 func (x *DoubleLikeDetail) Reset() {
 	*x = DoubleLikeDetail{}
-	mi := &file_messages_proto_msgTypes[28]
+	mi := &file_messages_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3037,7 +4330,7 @@ func (x *DoubleLikeDetail) String() string {
 func (*DoubleLikeDetail) ProtoMessage() {}
 
 func (x *DoubleLikeDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[28]
+	mi := &file_messages_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3050,7 +4343,7 @@ func (x *DoubleLikeDetail) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DoubleLikeDetail.ProtoReflect.Descriptor instead.
 func (*DoubleLikeDetail) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{28}
+	return file_messages_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *DoubleLikeDetail) GetDoubleFlag() bool {
@@ -3091,7 +4384,7 @@ type DisplayControlInfo struct {
 
 func (x *DisplayControlInfo) Reset() {
 	*x = DisplayControlInfo{}
-	mi := &file_messages_proto_msgTypes[29]
+	mi := &file_messages_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3103,7 +4396,7 @@ func (x *DisplayControlInfo) String() string {
 func (*DisplayControlInfo) ProtoMessage() {}
 
 func (x *DisplayControlInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[29]
+	mi := &file_messages_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3116,7 +4409,7 @@ func (x *DisplayControlInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DisplayControlInfo.ProtoReflect.Descriptor instead.
 func (*DisplayControlInfo) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{29}
+	return file_messages_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *DisplayControlInfo) GetShowText() bool {
@@ -3150,7 +4443,7 @@ type EpisodeChatMessage struct {
 
 func (x *EpisodeChatMessage) Reset() {
 	*x = EpisodeChatMessage{}
-	mi := &file_messages_proto_msgTypes[30]
+	mi := &file_messages_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3162,7 +4455,7 @@ func (x *EpisodeChatMessage) String() string {
 func (*EpisodeChatMessage) ProtoMessage() {}
 
 func (x *EpisodeChatMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[30]
+	mi := &file_messages_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3175,7 +4468,7 @@ func (x *EpisodeChatMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EpisodeChatMessage.ProtoReflect.Descriptor instead.
 func (*EpisodeChatMessage) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{30}
+	return file_messages_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *EpisodeChatMessage) GetCommon() *Message {
@@ -3239,7 +4532,7 @@ type MatchAgainstScoreMessage struct {
 
 func (x *MatchAgainstScoreMessage) Reset() {
 	*x = MatchAgainstScoreMessage{}
-	mi := &file_messages_proto_msgTypes[31]
+	mi := &file_messages_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3251,7 +4544,7 @@ func (x *MatchAgainstScoreMessage) String() string {
 func (*MatchAgainstScoreMessage) ProtoMessage() {}
 
 func (x *MatchAgainstScoreMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[31]
+	mi := &file_messages_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3264,7 +4557,7 @@ func (x *MatchAgainstScoreMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MatchAgainstScoreMessage.ProtoReflect.Descriptor instead.
 func (*MatchAgainstScoreMessage) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{31}
+	return file_messages_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *MatchAgainstScoreMessage) GetCommon() *Common {
@@ -3324,7 +4617,7 @@ type Against struct {
 
 func (x *Against) Reset() {
 	*x = Against{}
-	mi := &file_messages_proto_msgTypes[32]
+	mi := &file_messages_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3336,7 +4629,7 @@ func (x *Against) String() string {
 func (*Against) ProtoMessage() {}
 
 func (x *Against) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[32]
+	mi := &file_messages_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3349,7 +4642,7 @@ func (x *Against) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Against.ProtoReflect.Descriptor instead.
 func (*Against) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{32}
+	return file_messages_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *Against) GetLeftName() string {
@@ -3472,22 +4765,22 @@ func (x *Against) GetRightGoalInt() uint64 {
 }
 
 type Common struct {
-	state      protoimpl.MessageState `protogen:"open.v1"`
-	Method     string                 `protobuf:"bytes,1,opt,name=method,proto3" json:"method,omitempty"`
-	MsgId      uint64                 `protobuf:"varint,2,opt,name=msgId,proto3" json:"msgId,omitempty"`
-	RoomId     uint64                 `protobuf:"varint,3,opt,name=roomId,proto3" json:"roomId,omitempty"`
-	CreateTime uint64                 `protobuf:"varint,4,opt,name=createTime,proto3" json:"createTime,omitempty"`
-	Monitor    uint32                 `protobuf:"varint,5,opt,name=monitor,proto3" json:"monitor,omitempty"`
-	IsShowMsg  bool                   `protobuf:"varint,6,opt,name=isShowMsg,proto3" json:"isShowMsg,omitempty"`
-	Describe   string                 `protobuf:"bytes,7,opt,name=describe,proto3" json:"describe,omitempty"`
-	// DisplayText displayText = 8;
-	FoldType          uint64 `protobuf:"varint,9,opt,name=foldType,proto3" json:"foldType,omitempty"`
-	AnchorFoldType    uint64 `protobuf:"varint,10,opt,name=anchorFoldType,proto3" json:"anchorFoldType,omitempty"`
-	PriorityScore     uint64 `protobuf:"varint,11,opt,name=priorityScore,proto3" json:"priorityScore,omitempty"`
-	LogId             string `protobuf:"bytes,12,opt,name=logId,proto3" json:"logId,omitempty"`
-	MsgProcessFilterK string `protobuf:"bytes,13,opt,name=msgProcessFilterK,proto3" json:"msgProcessFilterK,omitempty"`
-	MsgProcessFilterV string `protobuf:"bytes,14,opt,name=msgProcessFilterV,proto3" json:"msgProcessFilterV,omitempty"`
-	User              *User  `protobuf:"bytes,15,opt,name=user,proto3" json:"user,omitempty"`
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	Method            string                 `protobuf:"bytes,1,opt,name=method,proto3" json:"method,omitempty"`
+	MsgId             uint64                 `protobuf:"varint,2,opt,name=msgId,proto3" json:"msgId,omitempty"`
+	RoomId            uint64                 `protobuf:"varint,3,opt,name=roomId,proto3" json:"roomId,omitempty"`
+	CreateTime        uint64                 `protobuf:"varint,4,opt,name=createTime,proto3" json:"createTime,omitempty"`
+	Monitor           uint32                 `protobuf:"varint,5,opt,name=monitor,proto3" json:"monitor,omitempty"`
+	IsShowMsg         bool                   `protobuf:"varint,6,opt,name=isShowMsg,proto3" json:"isShowMsg,omitempty"`
+	Describe          string                 `protobuf:"bytes,7,opt,name=describe,proto3" json:"describe,omitempty"`
+	DisplayText       *Text                  `protobuf:"bytes,8,opt,name=displayText,proto3" json:"displayText,omitempty"`
+	FoldType          uint64                 `protobuf:"varint,9,opt,name=foldType,proto3" json:"foldType,omitempty"`
+	AnchorFoldType    uint64                 `protobuf:"varint,10,opt,name=anchorFoldType,proto3" json:"anchorFoldType,omitempty"`
+	PriorityScore     uint64                 `protobuf:"varint,11,opt,name=priorityScore,proto3" json:"priorityScore,omitempty"`
+	LogId             string                 `protobuf:"bytes,12,opt,name=logId,proto3" json:"logId,omitempty"`
+	MsgProcessFilterK string                 `protobuf:"bytes,13,opt,name=msgProcessFilterK,proto3" json:"msgProcessFilterK,omitempty"`
+	MsgProcessFilterV string                 `protobuf:"bytes,14,opt,name=msgProcessFilterV,proto3" json:"msgProcessFilterV,omitempty"`
+	User              *User                  `protobuf:"bytes,15,opt,name=user,proto3" json:"user,omitempty"`
 	// Room room = 16;
 	AnchorFoldTypeV2   uint64 `protobuf:"varint,17,opt,name=anchorFoldTypeV2,proto3" json:"anchorFoldTypeV2,omitempty"`
 	ProcessAtSeiTimeMs uint64 `protobuf:"varint,18,opt,name=processAtSeiTimeMs,proto3" json:"processAtSeiTimeMs,omitempty"`
@@ -3496,13 +4789,15 @@ type Common struct {
 	ChannelId          uint64 `protobuf:"varint,21,opt,name=channelId,proto3" json:"channelId,omitempty"`
 	DiffSei2AbsSecond  uint64 `protobuf:"varint,22,opt,name=diffSei2absSecond,proto3" json:"diffSei2absSecond,omitempty"`
 	AnchorFoldDuration uint64 `protobuf:"varint,23,opt,name=anchorFoldDuration,proto3" json:"anchorFoldDuration,omitempty"`
+	AppId              uint64 `protobuf:"varint,24,opt,name=appId,proto3" json:"appId,omitempty"`
+	RoomIdStr          string `protobuf:"bytes,27,opt,name=roomIdStr,proto3" json:"roomIdStr,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
 
 func (x *Common) Reset() {
 	*x = Common{}
-	mi := &file_messages_proto_msgTypes[33]
+	mi := &file_messages_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3514,7 +4809,7 @@ func (x *Common) String() string {
 func (*Common) ProtoMessage() {}
 
 func (x *Common) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[33]
+	mi := &file_messages_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3527,7 +4822,7 @@ func (x *Common) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Common.ProtoReflect.Descriptor instead.
 func (*Common) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{33}
+	return file_messages_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *Common) GetMethod() string {
@@ -3577,6 +4872,13 @@ func (x *Common) GetDescribe() string {
 		return x.Describe
 	}
 	return ""
+}
+
+func (x *Common) GetDisplayText() *Text {
+	if x != nil {
+		return x.DisplayText
+	}
+	return nil
 }
 
 func (x *Common) GetFoldType() uint64 {
@@ -3677,6 +4979,20 @@ func (x *Common) GetAnchorFoldDuration() uint64 {
 	return 0
 }
 
+func (x *Common) GetAppId() uint64 {
+	if x != nil {
+		return x.AppId
+	}
+	return 0
+}
+
+func (x *Common) GetRoomIdStr() string {
+	if x != nil {
+		return x.RoomIdStr
+	}
+	return ""
+}
+
 type User struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
 	Id                 uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -3719,7 +5035,7 @@ type User struct {
 
 func (x *User) Reset() {
 	*x = User{}
-	mi := &file_messages_proto_msgTypes[34]
+	mi := &file_messages_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3731,7 +5047,7 @@ func (x *User) String() string {
 func (*User) ProtoMessage() {}
 
 func (x *User) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[34]
+	mi := &file_messages_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3744,7 +5060,7 @@ func (x *User) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use User.ProtoReflect.Descriptor instead.
 func (*User) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{34}
+	return file_messages_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *User) GetId() uint64 {
@@ -3979,7 +5295,7 @@ type FollowInfo struct {
 
 func (x *FollowInfo) Reset() {
 	*x = FollowInfo{}
-	mi := &file_messages_proto_msgTypes[35]
+	mi := &file_messages_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3991,7 +5307,7 @@ func (x *FollowInfo) String() string {
 func (*FollowInfo) ProtoMessage() {}
 
 func (x *FollowInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[35]
+	mi := &file_messages_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4004,7 +5320,7 @@ func (x *FollowInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FollowInfo.ProtoReflect.Descriptor instead.
 func (*FollowInfo) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{35}
+	return file_messages_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *FollowInfo) GetFollowingCount() uint64 {
@@ -4075,7 +5391,7 @@ type Image struct {
 
 func (x *Image) Reset() {
 	*x = Image{}
-	mi := &file_messages_proto_msgTypes[36]
+	mi := &file_messages_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4087,7 +5403,7 @@ func (x *Image) String() string {
 func (*Image) ProtoMessage() {}
 
 func (x *Image) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[36]
+	mi := &file_messages_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4100,7 +5416,7 @@ func (x *Image) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Image.ProtoReflect.Descriptor instead.
 func (*Image) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{36}
+	return file_messages_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *Image) GetUrlListList() []string {
@@ -4189,7 +5505,7 @@ type NinePatchSetting struct {
 
 func (x *NinePatchSetting) Reset() {
 	*x = NinePatchSetting{}
-	mi := &file_messages_proto_msgTypes[37]
+	mi := &file_messages_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4201,7 +5517,7 @@ func (x *NinePatchSetting) String() string {
 func (*NinePatchSetting) ProtoMessage() {}
 
 func (x *NinePatchSetting) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[37]
+	mi := &file_messages_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4214,7 +5530,7 @@ func (x *NinePatchSetting) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NinePatchSetting.ProtoReflect.Descriptor instead.
 func (*NinePatchSetting) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{37}
+	return file_messages_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *NinePatchSetting) GetSettingListList() []string {
@@ -4236,7 +5552,7 @@ type ImageContent struct {
 
 func (x *ImageContent) Reset() {
 	*x = ImageContent{}
-	mi := &file_messages_proto_msgTypes[38]
+	mi := &file_messages_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4248,7 +5564,7 @@ func (x *ImageContent) String() string {
 func (*ImageContent) ProtoMessage() {}
 
 func (x *ImageContent) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[38]
+	mi := &file_messages_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4261,7 +5577,7 @@ func (x *ImageContent) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImageContent.ProtoReflect.Descriptor instead.
 func (*ImageContent) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{38}
+	return file_messages_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *ImageContent) GetName() string {
@@ -4302,13 +5618,14 @@ type PushFrame struct {
 	PayloadEncoding string                 `protobuf:"bytes,6,opt,name=payloadEncoding,proto3" json:"payloadEncoding,omitempty"`
 	PayloadType     string                 `protobuf:"bytes,7,opt,name=payloadType,proto3" json:"payloadType,omitempty"`
 	Payload         []byte                 `protobuf:"bytes,8,opt,name=payload,proto3" json:"payload,omitempty"`
+	LodIdNew        string                 `protobuf:"bytes,9,opt,name=lod_id_new,json=lodIdNew,proto3" json:"lod_id_new,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
 
 func (x *PushFrame) Reset() {
 	*x = PushFrame{}
-	mi := &file_messages_proto_msgTypes[39]
+	mi := &file_messages_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4320,7 +5637,7 @@ func (x *PushFrame) String() string {
 func (*PushFrame) ProtoMessage() {}
 
 func (x *PushFrame) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[39]
+	mi := &file_messages_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4333,7 +5650,7 @@ func (x *PushFrame) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PushFrame.ProtoReflect.Descriptor instead.
 func (*PushFrame) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{39}
+	return file_messages_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *PushFrame) GetSeqId() uint64 {
@@ -4392,6 +5709,13 @@ func (x *PushFrame) GetPayload() []byte {
 	return nil
 }
 
+func (x *PushFrame) GetLodIdNew() string {
+	if x != nil {
+		return x.LodIdNew
+	}
+	return ""
+}
+
 type Kk struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	K             uint32                 `protobuf:"varint,14,opt,name=k,proto3" json:"k,omitempty"`
@@ -4401,7 +5725,7 @@ type Kk struct {
 
 func (x *Kk) Reset() {
 	*x = Kk{}
-	mi := &file_messages_proto_msgTypes[40]
+	mi := &file_messages_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4413,7 +5737,7 @@ func (x *Kk) String() string {
 func (*Kk) ProtoMessage() {}
 
 func (x *Kk) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[40]
+	mi := &file_messages_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4426,7 +5750,7 @@ func (x *Kk) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Kk.ProtoReflect.Descriptor instead.
 func (*Kk) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{40}
+	return file_messages_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *Kk) GetK() uint32 {
@@ -4452,7 +5776,7 @@ type SendMessageBody struct {
 
 func (x *SendMessageBody) Reset() {
 	*x = SendMessageBody{}
-	mi := &file_messages_proto_msgTypes[41]
+	mi := &file_messages_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4464,7 +5788,7 @@ func (x *SendMessageBody) String() string {
 func (*SendMessageBody) ProtoMessage() {}
 
 func (x *SendMessageBody) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[41]
+	mi := &file_messages_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4477,7 +5801,7 @@ func (x *SendMessageBody) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendMessageBody.ProtoReflect.Descriptor instead.
 func (*SendMessageBody) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{41}
+	return file_messages_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *SendMessageBody) GetConversationId() string {
@@ -4546,7 +5870,7 @@ type ExtList struct {
 
 func (x *ExtList) Reset() {
 	*x = ExtList{}
-	mi := &file_messages_proto_msgTypes[42]
+	mi := &file_messages_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4558,7 +5882,7 @@ func (x *ExtList) String() string {
 func (*ExtList) ProtoMessage() {}
 
 func (x *ExtList) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[42]
+	mi := &file_messages_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4571,7 +5895,7 @@ func (x *ExtList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExtList.ProtoReflect.Descriptor instead.
 func (*ExtList) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{42}
+	return file_messages_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *ExtList) GetKey() string {
@@ -4606,7 +5930,7 @@ type Rsp struct {
 
 func (x *Rsp) Reset() {
 	*x = Rsp{}
-	mi := &file_messages_proto_msgTypes[43]
+	mi := &file_messages_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4618,7 +5942,7 @@ func (x *Rsp) String() string {
 func (*Rsp) ProtoMessage() {}
 
 func (x *Rsp) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[43]
+	mi := &file_messages_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4631,7 +5955,7 @@ func (x *Rsp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Rsp.ProtoReflect.Descriptor instead.
 func (*Rsp) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{43}
+	return file_messages_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *Rsp) GetA() int32 {
@@ -4727,7 +6051,7 @@ type PreMessage struct {
 
 func (x *PreMessage) Reset() {
 	*x = PreMessage{}
-	mi := &file_messages_proto_msgTypes[44]
+	mi := &file_messages_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4739,7 +6063,7 @@ func (x *PreMessage) String() string {
 func (*PreMessage) ProtoMessage() {}
 
 func (x *PreMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[44]
+	mi := &file_messages_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4752,7 +6076,7 @@ func (x *PreMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PreMessage.ProtoReflect.Descriptor instead.
 func (*PreMessage) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{44}
+	return file_messages_proto_rawDescGZIP(), []int{53}
 }
 
 func (x *PreMessage) GetCmd() uint32 {
@@ -4863,7 +6187,7 @@ type HeadersList struct {
 
 func (x *HeadersList) Reset() {
 	*x = HeadersList{}
-	mi := &file_messages_proto_msgTypes[45]
+	mi := &file_messages_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4875,7 +6199,7 @@ func (x *HeadersList) String() string {
 func (*HeadersList) ProtoMessage() {}
 
 func (x *HeadersList) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[45]
+	mi := &file_messages_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4888,7 +6212,7 @@ func (x *HeadersList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HeadersList.ProtoReflect.Descriptor instead.
 func (*HeadersList) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{45}
+	return file_messages_proto_rawDescGZIP(), []int{54}
 }
 
 func (x *HeadersList) GetKey() string {
@@ -4916,7 +6240,7 @@ type LiveShoppingMessage struct {
 
 func (x *LiveShoppingMessage) Reset() {
 	*x = LiveShoppingMessage{}
-	mi := &file_messages_proto_msgTypes[46]
+	mi := &file_messages_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4928,7 +6252,7 @@ func (x *LiveShoppingMessage) String() string {
 func (*LiveShoppingMessage) ProtoMessage() {}
 
 func (x *LiveShoppingMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[46]
+	mi := &file_messages_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4941,7 +6265,7 @@ func (x *LiveShoppingMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LiveShoppingMessage.ProtoReflect.Descriptor instead.
 func (*LiveShoppingMessage) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{46}
+	return file_messages_proto_rawDescGZIP(), []int{55}
 }
 
 func (x *LiveShoppingMessage) GetCommon() *Common {
@@ -4983,7 +6307,7 @@ type RoomStatsMessage struct {
 
 func (x *RoomStatsMessage) Reset() {
 	*x = RoomStatsMessage{}
-	mi := &file_messages_proto_msgTypes[47]
+	mi := &file_messages_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4995,7 +6319,7 @@ func (x *RoomStatsMessage) String() string {
 func (*RoomStatsMessage) ProtoMessage() {}
 
 func (x *RoomStatsMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[47]
+	mi := &file_messages_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5008,7 +6332,7 @@ func (x *RoomStatsMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoomStatsMessage.ProtoReflect.Descriptor instead.
 func (*RoomStatsMessage) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{47}
+	return file_messages_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *RoomStatsMessage) GetCommon() *Common {
@@ -5093,7 +6417,7 @@ type ProductInfo struct {
 
 func (x *ProductInfo) Reset() {
 	*x = ProductInfo{}
-	mi := &file_messages_proto_msgTypes[48]
+	mi := &file_messages_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5105,7 +6429,7 @@ func (x *ProductInfo) String() string {
 func (*ProductInfo) ProtoMessage() {}
 
 func (x *ProductInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[48]
+	mi := &file_messages_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5118,7 +6442,7 @@ func (x *ProductInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProductInfo.ProtoReflect.Descriptor instead.
 func (*ProductInfo) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{48}
+	return file_messages_proto_rawDescGZIP(), []int{57}
 }
 
 func (x *ProductInfo) GetPromotionId() int64 {
@@ -5162,7 +6486,7 @@ type CategoryInfo struct {
 
 func (x *CategoryInfo) Reset() {
 	*x = CategoryInfo{}
-	mi := &file_messages_proto_msgTypes[49]
+	mi := &file_messages_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5174,7 +6498,7 @@ func (x *CategoryInfo) String() string {
 func (*CategoryInfo) ProtoMessage() {}
 
 func (x *CategoryInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[49]
+	mi := &file_messages_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5187,7 +6511,7 @@ func (x *CategoryInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CategoryInfo.ProtoReflect.Descriptor instead.
 func (*CategoryInfo) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{49}
+	return file_messages_proto_rawDescGZIP(), []int{58}
 }
 
 func (x *CategoryInfo) GetId() int32 {
@@ -5239,7 +6563,7 @@ type ProductChangeMessage struct {
 
 func (x *ProductChangeMessage) Reset() {
 	*x = ProductChangeMessage{}
-	mi := &file_messages_proto_msgTypes[50]
+	mi := &file_messages_proto_msgTypes[59]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5251,7 +6575,7 @@ func (x *ProductChangeMessage) String() string {
 func (*ProductChangeMessage) ProtoMessage() {}
 
 func (x *ProductChangeMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[50]
+	mi := &file_messages_proto_msgTypes[59]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5264,7 +6588,7 @@ func (x *ProductChangeMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProductChangeMessage.ProtoReflect.Descriptor instead.
 func (*ProductChangeMessage) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{50}
+	return file_messages_proto_rawDescGZIP(), []int{59}
 }
 
 func (x *ProductChangeMessage) GetCommon() *Common {
@@ -5321,7 +6645,7 @@ type Rsp_F struct {
 
 func (x *Rsp_F) Reset() {
 	*x = Rsp_F{}
-	mi := &file_messages_proto_msgTypes[53]
+	mi := &file_messages_proto_msgTypes[63]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5333,7 +6657,7 @@ func (x *Rsp_F) String() string {
 func (*Rsp_F) ProtoMessage() {}
 
 func (x *Rsp_F) ProtoReflect() protoreflect.Message {
-	mi := &file_messages_proto_msgTypes[53]
+	mi := &file_messages_proto_msgTypes[63]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5346,7 +6670,7 @@ func (x *Rsp_F) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Rsp_F.ProtoReflect.Descriptor instead.
 func (*Rsp_F) Descriptor() ([]byte, []int) {
-	return file_messages_proto_rawDescGZIP(), []int{43, 0}
+	return file_messages_proto_rawDescGZIP(), []int{52, 0}
 }
 
 func (x *Rsp_F) GetQ1() uint64 {
@@ -5381,7 +6705,7 @@ var File_messages_proto protoreflect.FileDescriptor
 
 const file_messages_proto_rawDesc = "" +
 	"\n" +
-	"\x0emessages.proto\"\xf4\x03\n" +
+	"\x0emessages.proto\"\x97\x04\n" +
 	"\bResponse\x12,\n" +
 	"\fmessagesList\x18\x01 \x03(\v2\b.MessageR\fmessagesList\x12\x16\n" +
 	"\x06cursor\x18\x02 \x01(\tR\x06cursor\x12$\n" +
@@ -5399,10 +6723,11 @@ const file_messages_proto_rawDesc = "" +
 	"\n" +
 	"liveCursor\x18\v \x01(\tR\n" +
 	"liveCursor\x12$\n" +
-	"\rhistoryNoMore\x18\f \x01(\bR\rhistoryNoMore\x1a>\n" +
+	"\rhistoryNoMore\x18\f \x01(\bR\rhistoryNoMore\x12!\n" +
+	"\fproxy_server\x18\r \x01(\tR\vproxyServer\x1a>\n" +
 	"\x10RouteParamsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xeb\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xed\x02\n" +
 	"\aMessage\x12\x16\n" +
 	"\x06method\x18\x01 \x01(\tR\x06method\x12\x18\n" +
 	"\apayload\x18\x02 \x01(\fR\apayload\x12\x14\n" +
@@ -5413,7 +6738,11 @@ const file_messages_proto_rawDesc = "" +
 	"\vwrdsVersion\x18\a \x01(\x03R\vwrdsVersion\x12\x1e\n" +
 	"\n" +
 	"wrdsSubKey\x18\b \x01(\tR\n" +
-	"wrdsSubKey\"\xa7\x06\n" +
+	"wrdsSubKey\x12?\n" +
+	"\rmessage_extra\x18\t \x03(\v2\x1a.Message.MessageExtraEntryR\fmessageExtra\x1a?\n" +
+	"\x11MessageExtraEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xee\x06\n" +
 	"\vChatMessage\x12\x1f\n" +
 	"\x06common\x18\x01 \x01(\v2\a.CommonR\x06common\x12\x19\n" +
 	"\x04user\x18\x02 \x01(\v2\x05.UserR\x04user\x12\x18\n" +
@@ -5422,8 +6751,9 @@ const file_messages_proto_rawDesc = "" +
 	"\x0fbackgroundImage\x18\x05 \x01(\v2\x06.ImageR\x0fbackgroundImage\x120\n" +
 	"\x13fullScreenTextColor\x18\x06 \x01(\tR\x13fullScreenTextColor\x124\n" +
 	"\x11backgroundImageV2\x18\a \x01(\v2\x06.ImageR\x11backgroundImageV2\x12=\n" +
-	"\x10publicAreaCommon\x18\b \x01(\v2\x11.PublicAreaCommonR\x10publicAreaCommon\x12$\n" +
-	"\tgiftImage\x18\t \x01(\v2\x06.ImageR\tgiftImage\x12\x1e\n" +
+	"\x10publicAreaCommon\x18\t \x01(\v2\x11.PublicAreaCommonR\x10publicAreaCommon\x12$\n" +
+	"\tgiftImage\x18\n" +
+	" \x01(\v2\x06.ImageR\tgiftImage\x12\x1e\n" +
 	"\n" +
 	"agreeMsgId\x18\v \x01(\x04R\n" +
 	"agreeMsgId\x12$\n" +
@@ -5434,12 +6764,14 @@ const file_messages_proto_rawDesc = "" +
 	"sendReview\x18\x10 \x01(\bR\n" +
 	"sendReview\x12\"\n" +
 	"\ffromIntercom\x18\x11 \x01(\bR\ffromIntercom\x122\n" +
-	"\x14intercomHideUserCard\x18\x12 \x01(\bR\x14intercomHideUserCard\x12\x16\n" +
-	"\x06chatBy\x18\x14 \x01(\tR\x06chatBy\x126\n" +
+	"\x14intercomHideUserCard\x18\x12 \x01(\bR\x14intercomHideUserCard\x12\x1a\n" +
+	"\bchatTags\x18\x13 \x01(\rR\bchatTags\x12\x16\n" +
+	"\x06chatBy\x18\x14 \x01(\x04R\x06chatBy\x126\n" +
 	"\x16individualChatPriority\x18\x15 \x01(\rR\x16individualChatPriority\x12%\n" +
 	"\n" +
-	"rtfContent\x18\x16 \x01(\v2\x05.TextR\n" +
-	"rtfContent\"\xe6\x01\n" +
+	"rtfContent\x18( \x01(\v2\x05.TextR\n" +
+	"rtfContent\x12)\n" +
+	"\frtfContentV2\x18) \x01(\v2\x05.TextR\frtfContentV2\"\xe6\x01\n" +
 	"\x13LandscapeAreaCommon\x12\x1a\n" +
 	"\bshowHead\x18\x01 \x01(\bR\bshowHead\x12\"\n" +
 	"\fshowNickname\x18\x02 \x01(\bR\fshowNickname\x12$\n" +
@@ -5479,7 +6811,7 @@ const file_messages_proto_rawDesc = "" +
 	"\x05delta\x18\x04 \x01(\x04R\x05delta\x12\x1a\n" +
 	"\bisHidden\x18\x05 \x01(\bR\bisHidden\x12*\n" +
 	"\x10scoreDescription\x18\x06 \x01(\tR\x10scoreDescription\x12\"\n" +
-	"\fexactlyScore\x18\a \x01(\tR\fexactlyScore\"\x91\t\n" +
+	"\fexactlyScore\x18\a \x01(\tR\fexactlyScore\"\xa8\v\n" +
 	"\vGiftMessage\x12\x1f\n" +
 	"\x06common\x18\x01 \x01(\v2\a.CommonR\x06common\x12\x16\n" +
 	"\x06giftId\x18\x02 \x01(\x04R\x06giftId\x12&\n" +
@@ -5520,7 +6852,18 @@ const file_messages_proto_rawDesc = "" +
 	"\bsendTime\x18! \x01(\x04R\bsendTime\x120\n" +
 	"\x13forceDisplayEffects\x18\" \x01(\x04R\x13forceDisplayEffects\x12\x18\n" +
 	"\atraceId\x18# \x01(\tR\atraceId\x12(\n" +
-	"\x0feffectDisplayTs\x18$ \x01(\x04R\x0feffectDisplayTs\"\xd8\x04\n" +
+	"\x0feffectDisplayTs\x18$ \x01(\x04R\x0feffectDisplayTs\x12.\n" +
+	"\vroomHotInfo\x18' \x01(\v2\f.RoomHotInfoR\vroomHotInfo\x12$\n" +
+	"\rgiftPlayParam\x18( \x01(\tR\rgiftPlayParam\x122\n" +
+	"\x14multiSendEffectLevel\x18) \x01(\rR\x14multiSendEffectLevel\x12&\n" +
+	"\x0euseRoomMessage\x18+ \x01(\bR\x0euseRoomMessage\x12\x14\n" +
+	"\x05count\x18, \x01(\x04R\x05count\x12.\n" +
+	"\x12videoLinkmicRoomId\x18- \x01(\x04R\x12videoLinkmicRoomId\x12\x1d\n" +
+	"\ttoOpenids\x18\x88' \x03(\tR\ttoOpenids\"\x81\x01\n" +
+	"\vRoomHotInfo\x12*\n" +
+	"\x10localHotStrategy\x18\x01 \x01(\rR\x10localHotStrategy\x12(\n" +
+	"\x0fpublicAreaLevel\x18\x02 \x01(\rR\x0fpublicAreaLevel\x12\x1c\n" +
+	"\tgiftLevel\x18\x03 \x01(\rR\tgiftLevel\"\xf1\x11\n" +
 	"\n" +
 	"GiftStruct\x12\x1c\n" +
 	"\x05image\x18\x01 \x01(\v2\x06.ImageR\x05image\x12\x1a\n" +
@@ -5547,7 +6890,65 @@ const file_messages_proto_rawDesc = "" +
 	"\x04icon\x18\x15 \x01(\v2\x06.ImageR\x04icon\x12\x1e\n" +
 	"\n" +
 	"actionType\x18\x16 \x01(\rR\n" +
-	"actionType\"\x82\x01\n" +
+	"actionType\x12(\n" +
+	"\x0fwatermelonSeeds\x18\x17 \x01(\rR\x0fwatermelonSeeds\x12\x1e\n" +
+	"\n" +
+	"goldEffect\x18\x18 \x01(\tR\n" +
+	"goldEffect\x12 \n" +
+	"\vgoldenBeans\x18\x1a \x01(\x04R\vgoldenBeans\x12\x1e\n" +
+	"\n" +
+	"honorLevel\x18\x1b \x01(\x04R\n" +
+	"honorLevel\x12\x1a\n" +
+	"\bitemType\x18\x1c \x01(\rR\bitemType\x12\x1c\n" +
+	"\tschemeUrl\x18\x1d \x01(\tR\tschemeUrl\x12\x1c\n" +
+	"\teventName\x18\x1f \x01(\tR\teventName\x12\x1e\n" +
+	"\n" +
+	"nobleLevel\x18  \x01(\x04R\n" +
+	"nobleLevel\x12\x1a\n" +
+	"\bguideUrl\x18! \x01(\tR\bguideUrl\x12&\n" +
+	"\x0epunishMedicine\x18\" \x01(\bR\x0epunishMedicine\x12\x1c\n" +
+	"\tforPortal\x18# \x01(\bR\tforPortal\x12\"\n" +
+	"\fbusinessText\x18$ \x01(\tR\fbusinessText\x12\x18\n" +
+	"\acnyGift\x18% \x01(\bR\acnyGift\x12\x14\n" +
+	"\x05appId\x18& \x01(\x04R\x05appId\x12\x1a\n" +
+	"\bvipLevel\x18' \x01(\x04R\bvipLevel\x12\x16\n" +
+	"\x06isGray\x18( \x01(\bR\x06isGray\x12$\n" +
+	"\rgraySchemeUrl\x18) \x01(\tR\rgraySchemeUrl\x12\x1c\n" +
+	"\tgiftScene\x18* \x01(\x04R\tgiftScene\x12*\n" +
+	"\x10forFirstRecharge\x18. \x01(\bR\x10forFirstRecharge\x12<\n" +
+	"\x15dynamicImgForSelected\x18/ \x01(\v2\x06.ImageR\x15dynamicImgForSelected\x12(\n" +
+	"\x0fafterSendAction\x180 \x01(\rR\x0fafterSendAction\x12(\n" +
+	"\x0fgiftOfflineTime\x181 \x01(\x04R\x0fgiftOfflineTime\x12\x1e\n" +
+	"\n" +
+	"topBarText\x182 \x01(\tR\n" +
+	"topBarText\x12.\n" +
+	"\x0etopRightAvatar\x183 \x01(\v2\x06.ImageR\x0etopRightAvatar\x12(\n" +
+	"\x0fbannerSchemeUrl\x184 \x01(\tR\x0fbannerSchemeUrl\x12\x1a\n" +
+	"\bisLocked\x185 \x01(\bR\bisLocked\x12\"\n" +
+	"\freqExtraType\x186 \x01(\x04R\freqExtraType\x12\x1a\n" +
+	"\bassetIds\x187 \x03(\x04R\bassetIds\x120\n" +
+	"\x13needSweepLightCount\x18: \x01(\rR\x13needSweepLightCount\x12%\n" +
+	"\n" +
+	"bottomText\x18< \x01(\v2\x05.TextR\n" +
+	"bottomText\x12,\n" +
+	"\x11mysteryShopStatus\x18= \x01(\rR\x11mysteryShopStatus\x12*\n" +
+	"\x10optionalAssetIds\x18> \x03(\x04R\x10optionalAssetIds\x12(\n" +
+	"\x0fdisableWishList\x18? \x01(\bR\x0fdisableWishList\x128\n" +
+	"\x17trayDynamicImgFlippable\x18B \x01(\bR\x17trayDynamicImgFlippable\x12&\n" +
+	"\x0epicoShowAction\x18C \x01(\x04R\x0epicoShowAction\x124\n" +
+	"\x15selectedDynamicEffect\x18D \x01(\x04R\x15selectedDynamicEffect\x12\x18\n" +
+	"\abizType\x18H \x01(\rR\abizType\x12$\n" +
+	"\twebpImage\x18J \x01(\v2\x06.ImageR\twebpImage\x12\x1e\n" +
+	"\n" +
+	"giftSource\x18K \x01(\rR\n" +
+	"giftSource\x12&\n" +
+	"\x0erequiredAssets\x18L \x03(\x04R\x0erequiredAssets\x12,\n" +
+	"\rselectedLabel\x18M \x01(\v2\x06.ImageR\rselectedLabel\x12\x1c\n" +
+	"\tsortScore\x18N \x01(\x04R\tsortScore\x12\x18\n" +
+	"\atopicId\x18O \x01(\x04R\atopicId\x12\x1c\n" +
+	"\tsortExtra\x18P \x01(\tR\tsortExtra\x12(\n" +
+	"\x0fsendExtraParams\x18Q \x01(\tR\x0fsendExtraParams\x12&\n" +
+	"\x0egiftObtainTime\x18R \x01(\x04R\x0egiftObtainTime\"\x82\x01\n" +
 	"\x0eGiftIMPriority\x12&\n" +
 	"\x0equeueSizesList\x18\x01 \x03(\x04R\x0equeueSizesList\x12,\n" +
 	"\x11selfQueuePriority\x18\x02 \x01(\x04R\x11selfQueuePriority\x12\x1a\n" +
@@ -5574,7 +6975,7 @@ const file_messages_proto_rawDesc = "" +
 	"\fshadowRadius\x18\f \x01(\rR\fshadowRadius\x12 \n" +
 	"\vshadowColor\x18\r \x01(\tR\vshadowColor\x12 \n" +
 	"\vstrokeColor\x18\x0e \x01(\tR\vstrokeColor\x12 \n" +
-	"\vstrokeWidth\x18\x0f \x01(\rR\vstrokeWidth\"\xca\x06\n" +
+	"\vstrokeWidth\x18\x0f \x01(\rR\vstrokeWidth\"\x8a\b\n" +
 	"\rMemberMessage\x12\x1f\n" +
 	"\x06common\x18\x01 \x01(\v2\a.CommonR\x06common\x12\x19\n" +
 	"\x04user\x18\x02 \x01(\v2\x05.UserR\x04user\x12 \n" +
@@ -5597,11 +6998,85 @@ const file_messages_proto_rawDesc = "" +
 	"\x11anchorDisplayText\x18\x12 \x01(\v2\x05.TextR\x11anchorDisplayText\x12=\n" +
 	"\x10publicAreaCommon\x18\x13 \x01(\v2\x11.PublicAreaCommonR\x10publicAreaCommon\x12*\n" +
 	"\x10userEnterTipType\x18\x14 \x01(\x04R\x10userEnterTipType\x12.\n" +
-	"\x12anchorEnterTipType\x18\x15 \x01(\x04R\x12anchorEnterTipType\"\x9c\x01\n" +
+	"\x12anchorEnterTipType\x18\x15 \x01(\x04R\x12anchorEnterTipType\x12G\n" +
+	"\x15picoEnterEffectConfig\x18\x18 \x01(\v2\x11.PicoEffectConfigR\x15picoEnterEffectConfig\x12&\n" +
+	"\x0eunsetAdminType\x18\x19 \x01(\rR\x0eunsetAdminType\x12,\n" +
+	"\x11enterRedirectFrom\x18\x1a \x01(\tR\x11enterRedirectFrom\x12\x1f\n" +
+	"\n" +
+	"userOpenId\x18\x88' \x01(\tR\n" +
+	"userOpenId\"\xb4\t\n" +
 	"\x10PublicAreaCommon\x12$\n" +
 	"\tuserLabel\x18\x01 \x01(\v2\x06.ImageR\tuserLabel\x12,\n" +
 	"\x11userConsumeInRoom\x18\x02 \x01(\x04R\x11userConsumeInRoom\x124\n" +
-	"\x15userSendGiftCntInRoom\x18\x03 \x01(\x04R\x15userSendGiftCntInRoom\"\x85\a\n" +
+	"\x15userSendGiftCntInRoom\x18\x03 \x01(\x04R\x15userSendGiftCntInRoom\x12.\n" +
+	"\x12individualPriority\x18\x04 \x01(\x04R\x12individualPriority\x12\x1e\n" +
+	"\n" +
+	"supportPin\x18\x06 \x01(\x04R\n" +
+	"supportPin\x12+\n" +
+	"\n" +
+	"suffixText\x18\a \x01(\v2\v.SuffixTextR\n" +
+	"suffixText\x12\x1a\n" +
+	"\bimAction\x18\b \x01(\rR\bimAction\x12*\n" +
+	"\x10forbiddenProfile\x18\t \x01(\bR\x10forbiddenProfile\x120\n" +
+	"\treplyResp\x18\n" +
+	" \x01(\v2\x12.ChatReplyRespInfoR\treplyResp\x12\x1e\n" +
+	"\n" +
+	"isFeatured\x18\f \x01(\x04R\n" +
+	"isFeatured\x12,\n" +
+	"\x11needFilterDisplay\x18\r \x01(\bR\x11needFilterDisplay\x12R\n" +
+	"\x17personalizedDisplayInfo\x18\x0e \x01(\v2\x18.PersonalizedDisplayInfoR\x17personalizedDisplayInfo\x126\n" +
+	"\x16forceInsertionPriority\x18\x0f \x01(\x04R\x16forceInsertionPriority\x122\n" +
+	"\vmentionInfo\x18\x10 \x01(\v2\x10.ChatMentionInfoR\vmentionInfo\x12(\n" +
+	"\thoverInfo\x18\x11 \x01(\v2\n" +
+	".HoverInfoR\thoverInfo\x12$\n" +
+	"\rshowInDanmaku\x18\x12 \x01(\bR\rshowInDanmaku\x12$\n" +
+	"\risLikeComment\x18\x13 \x01(\bR\risLikeComment\x12\"\n" +
+	"\fbatchRefresh\x18\x14 \x01(\bR\fbatchRefresh\x12\x18\n" +
+	"\aisAiMsg\x18\x15 \x01(\bR\aisAiMsg\x12<\n" +
+	"\x19shouldLogLightInteractMob\x18\x16 \x01(\bR\x19shouldLogLightInteractMob\x12*\n" +
+	"\x10tailInteractType\x18\x18 \x01(\x05R\x10tailInteractType\x124\n" +
+	"\x15defaultClickSchemaUrl\x18\x19 \x01(\tR\x15defaultClickSchemaUrl\x128\n" +
+	"\x0fbottomPinConfig\x18\x1a \x01(\v2\x0e.BottomPinInfoR\x0fbottomPinConfig\x12\"\n" +
+	"\fforcedInsert\x18\x1b \x01(\bR\fforcedInsert\x122\n" +
+	"\x14withUserFeatureLabel\x18\x1c \x01(\bR\x14withUserFeatureLabel\x12+\n" +
+	"\n" +
+	"scrollInfo\x18\x1d \x01(\v2\v.ScrollInfoR\n" +
+	"scrollInfo\"q\n" +
+	"\n" +
+	"SuffixText\x12\x18\n" +
+	"\abizType\x18\x01 \x01(\x04R\abizType\x12\x19\n" +
+	"\x04text\x18\x02 \x01(\v2\x05.TextR\x04text\x12\x12\n" +
+	"\x04tags\x18\x03 \x01(\tR\x04tags\x12\x1a\n" +
+	"\btextList\x18\x04 \x01(\tR\btextList\"\xcb\x01\n" +
+	"\tHoverInfo\x12\x18\n" +
+	"\aisHover\x18\x01 \x01(\bR\aisHover\x12\x1a\n" +
+	"\bpriority\x18\x02 \x01(\x04R\bpriority\x12\x1a\n" +
+	"\bduration\x18\x03 \x01(\x04R\bduration\x12>\n" +
+	"\x1adurationInvolveDisplayTime\x18\x04 \x01(\x04R\x1adurationInvolveDisplayTime\x12,\n" +
+	"\x11durationThreshold\x18\x05 \x01(\x04R\x11durationThreshold\"]\n" +
+	"\x17PersonalizedDisplayInfo\x12&\n" +
+	"\x0eisPersonalized\x18\x01 \x01(\bR\x0eisPersonalized\x12\x1a\n" +
+	"\bfoldType\x18\x02 \x01(\x04R\bfoldType\"\xdb\x01\n" +
+	"\x11ChatReplyRespInfo\x12\x1e\n" +
+	"\n" +
+	"replyMsgId\x18\x01 \x01(\x04R\n" +
+	"replyMsgId\x12\x18\n" +
+	"\areplyId\x18\x02 \x01(\x04R\areplyId\x12#\n" +
+	"\treplyText\x18\x03 \x01(\v2\x05.TextR\treplyText\x12\x1a\n" +
+	"\breplyUid\x18\x04 \x01(\x04R\breplyUid\x12(\n" +
+	"\x0freplyWebcastUid\x18\x05 \x01(\tR\x0freplyWebcastUid\x12!\n" +
+	"\vreplyOpenId\x18\x88' \x01(\tR\vreplyOpenId\"\x8b\x01\n" +
+	"\x0fChatMentionInfo\x12&\n" +
+	"\x0ementionUserIds\x18\x01 \x03(\tR\x0ementionUserIds\x124\n" +
+	"\x15mentionWebcastUserIds\x18\x02 \x03(\tR\x15mentionWebcastUserIds\x12\x1a\n" +
+	"\bshowTime\x18\x03 \x01(\x04R\bshowTime\"W\n" +
+	"\rBottomPinInfo\x12\"\n" +
+	"\fstayDuration\x18\x01 \x01(\x04R\fstayDuration\x12\"\n" +
+	"\fexitStrategy\x18\x02 \x01(\x04R\fexitStrategy\"h\n" +
+	"\n" +
+	"ScrollInfo\x12*\n" +
+	"\x10scrollSlowEnable\x18\x01 \x01(\bR\x10scrollSlowEnable\x12.\n" +
+	"\x12scrollSlowDuration\x18\x02 \x01(\x04R\x12scrollSlowDuration\"\xcd\a\n" +
 	"\fEffectConfig\x12\x12\n" +
 	"\x04type\x18\x01 \x01(\x04R\x04type\x12\x1a\n" +
 	"\x04icon\x18\x02 \x01(\v2\x06.ImageR\x04icon\x12\x1c\n" +
@@ -5625,10 +7100,21 @@ const file_messages_proto_rawDesc = "" +
 	"\vmaxWaitTime\x18\x13 \x01(\x04R\vmaxWaitTime\x12\x18\n" +
 	"\adressId\x18\x14 \x01(\tR\adressId\x12\x1c\n" +
 	"\talignment\x18\x15 \x01(\x04R\talignment\x12(\n" +
-	"\x0falignmentOffset\x18\x16 \x01(\x04R\x0falignmentOffset\x1a;\n" +
+	"\x0falignmentOffset\x18\x16 \x01(\x04R\x0falignmentOffset\x12 \n" +
+	"\veffectScene\x18\x17 \x01(\tR\veffectScene\x12$\n" +
+	"\tbadgeList\x18\x19 \x03(\v2\x06.ImageR\tbadgeList\x1a;\n" +
 	"\rExtraMapEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x9d\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x83\x02\n" +
+	"\x10PicoEffectConfig\x12\x12\n" +
+	"\x04type\x18\x01 \x01(\x04R\x04type\x12\x1a\n" +
+	"\x04icon\x18\x02 \x01(\v2\x06.ImageR\x04icon\x12\x19\n" +
+	"\x04text\x18\x03 \x01(\v2\x05.TextR\x04text\x12\"\n" +
+	"\btextIcon\x18\x04 \x01(\v2\x06.ImageR\btextIcon\x12\x1a\n" +
+	"\bstayTime\x18\x05 \x01(\rR\bstayTime\x12\x1c\n" +
+	"\x05badge\x18\x06 \x01(\v2\x06.ImageR\x05badge\x12,\n" +
+	"\x11centerAnimAssetId\x18\a \x01(\x04R\x11centerAnimAssetId\x12\x18\n" +
+	"\adressId\x18\t \x01(\tR\adressId\"\x9d\x01\n" +
 	"\x04Text\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12$\n" +
 	"\rdefaultPatter\x18\x02 \x01(\tR\rdefaultPatter\x121\n" +
@@ -5748,7 +7234,7 @@ const file_messages_proto_rawDesc = "" +
 	"\x11leftScoreAddition\x18\x12 \x01(\rR\x11leftScoreAddition\x12.\n" +
 	"\x12rightScoreAddition\x18\x13 \x01(\rR\x12rightScoreAddition\x12 \n" +
 	"\vleftGoalInt\x18\x14 \x01(\x04R\vleftGoalInt\x12\"\n" +
-	"\frightGoalInt\x18\x15 \x01(\x04R\frightGoalInt\"\xdd\x05\n" +
+	"\frightGoalInt\x18\x15 \x01(\x04R\frightGoalInt\"\xba\x06\n" +
 	"\x06Common\x12\x16\n" +
 	"\x06method\x18\x01 \x01(\tR\x06method\x12\x14\n" +
 	"\x05msgId\x18\x02 \x01(\x04R\x05msgId\x12\x16\n" +
@@ -5758,7 +7244,8 @@ const file_messages_proto_rawDesc = "" +
 	"createTime\x12\x18\n" +
 	"\amonitor\x18\x05 \x01(\rR\amonitor\x12\x1c\n" +
 	"\tisShowMsg\x18\x06 \x01(\bR\tisShowMsg\x12\x1a\n" +
-	"\bdescribe\x18\a \x01(\tR\bdescribe\x12\x1a\n" +
+	"\bdescribe\x18\a \x01(\tR\bdescribe\x12'\n" +
+	"\vdisplayText\x18\b \x01(\v2\x05.TextR\vdisplayText\x12\x1a\n" +
 	"\bfoldType\x18\t \x01(\x04R\bfoldType\x12&\n" +
 	"\x0eanchorFoldType\x18\n" +
 	" \x01(\x04R\x0eanchorFoldType\x12$\n" +
@@ -5775,7 +7262,9 @@ const file_messages_proto_rawDesc = "" +
 	"isDispatch\x12\x1c\n" +
 	"\tchannelId\x18\x15 \x01(\x04R\tchannelId\x12,\n" +
 	"\x11diffSei2absSecond\x18\x16 \x01(\x04R\x11diffSei2absSecond\x12.\n" +
-	"\x12anchorFoldDuration\x18\x17 \x01(\x04R\x12anchorFoldDuration\"\xf8\a\n" +
+	"\x12anchorFoldDuration\x18\x17 \x01(\x04R\x12anchorFoldDuration\x12\x14\n" +
+	"\x05appId\x18\x18 \x01(\x04R\x05appId\x12\x1c\n" +
+	"\troomIdStr\x18\x1b \x01(\tR\troomIdStr\"\xf8\a\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x18\n" +
 	"\ashortId\x18\x02 \x01(\x04R\ashortId\x12\x1a\n" +
@@ -5853,7 +7342,7 @@ const file_messages_proto_rawDesc = "" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1c\n" +
 	"\tfontColor\x18\x02 \x01(\tR\tfontColor\x12\x14\n" +
 	"\x05level\x18\x03 \x01(\x04R\x05level\x12(\n" +
-	"\x0falternativeText\x18\x04 \x01(\tR\x0falternativeText\"\xff\x01\n" +
+	"\x0falternativeText\x18\x04 \x01(\tR\x0falternativeText\"\x9d\x02\n" +
 	"\tPushFrame\x12\x14\n" +
 	"\x05seqId\x18\x01 \x01(\x04R\x05seqId\x12\x14\n" +
 	"\x05logId\x18\x02 \x01(\x04R\x05logId\x12\x18\n" +
@@ -5862,7 +7351,9 @@ const file_messages_proto_rawDesc = "" +
 	"\vheadersList\x18\x05 \x03(\v2\f.HeadersListR\vheadersList\x12(\n" +
 	"\x0fpayloadEncoding\x18\x06 \x01(\tR\x0fpayloadEncoding\x12 \n" +
 	"\vpayloadType\x18\a \x01(\tR\vpayloadType\x12\x18\n" +
-	"\apayload\x18\b \x01(\fR\apayload\"\x12\n" +
+	"\apayload\x18\b \x01(\fR\apayload\x12\x1c\n" +
+	"\n" +
+	"lod_id_new\x18\t \x01(\tR\blodIdNew\"\x12\n" +
 	"\x02kk\x12\f\n" +
 	"\x01k\x18\x0e \x01(\rR\x01k\"\xb1\x02\n" +
 	"\x0fSendMessageBody\x12&\n" +
@@ -5968,7 +7459,7 @@ func file_messages_proto_rawDescGZIP() []byte {
 }
 
 var file_messages_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 54)
+var file_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 64)
 var file_messages_proto_goTypes = []any{
 	(CommentTypeTag)(0),                   // 0: CommentTypeTag
 	(*Response)(nil),                      // 1: Response
@@ -5980,158 +7471,192 @@ var file_messages_proto_goTypes = []any{
 	(*UpdateFanTicketMessage)(nil),        // 7: UpdateFanTicketMessage
 	(*RoomUserSeqMessageContributor)(nil), // 8: RoomUserSeqMessageContributor
 	(*GiftMessage)(nil),                   // 9: GiftMessage
-	(*GiftStruct)(nil),                    // 10: GiftStruct
-	(*GiftIMPriority)(nil),                // 11: GiftIMPriority
-	(*TextEffect)(nil),                    // 12: TextEffect
-	(*TextEffectDetail)(nil),              // 13: TextEffectDetail
-	(*MemberMessage)(nil),                 // 14: MemberMessage
-	(*PublicAreaCommon)(nil),              // 15: PublicAreaCommon
-	(*EffectConfig)(nil),                  // 16: EffectConfig
-	(*Text)(nil),                          // 17: Text
-	(*TextPiece)(nil),                     // 18: TextPiece
-	(*TextPieceImage)(nil),                // 19: TextPieceImage
-	(*TextPiecePatternRef)(nil),           // 20: TextPiecePatternRef
-	(*TextPieceHeart)(nil),                // 21: TextPieceHeart
-	(*TextPieceGift)(nil),                 // 22: TextPieceGift
-	(*PatternRef)(nil),                    // 23: PatternRef
-	(*TextPieceUser)(nil),                 // 24: TextPieceUser
-	(*TextFormat)(nil),                    // 25: TextFormat
-	(*LikeMessage)(nil),                   // 26: LikeMessage
-	(*SocialMessage)(nil),                 // 27: SocialMessage
-	(*PicoDisplayInfo)(nil),               // 28: PicoDisplayInfo
-	(*DoubleLikeDetail)(nil),              // 29: DoubleLikeDetail
-	(*DisplayControlInfo)(nil),            // 30: DisplayControlInfo
-	(*EpisodeChatMessage)(nil),            // 31: EpisodeChatMessage
-	(*MatchAgainstScoreMessage)(nil),      // 32: MatchAgainstScoreMessage
-	(*Against)(nil),                       // 33: Against
-	(*Common)(nil),                        // 34: Common
-	(*User)(nil),                          // 35: User
-	(*FollowInfo)(nil),                    // 36: FollowInfo
-	(*Image)(nil),                         // 37: Image
-	(*NinePatchSetting)(nil),              // 38: NinePatchSetting
-	(*ImageContent)(nil),                  // 39: ImageContent
-	(*PushFrame)(nil),                     // 40: PushFrame
-	(*Kk)(nil),                            // 41: kk
-	(*SendMessageBody)(nil),               // 42: SendMessageBody
-	(*ExtList)(nil),                       // 43: ExtList
-	(*Rsp)(nil),                           // 44: Rsp
-	(*PreMessage)(nil),                    // 45: PreMessage
-	(*HeadersList)(nil),                   // 46: HeadersList
-	(*LiveShoppingMessage)(nil),           // 47: LiveShoppingMessage
-	(*RoomStatsMessage)(nil),              // 48: RoomStatsMessage
-	(*ProductInfo)(nil),                   // 49: ProductInfo
-	(*CategoryInfo)(nil),                  // 50: CategoryInfo
-	(*ProductChangeMessage)(nil),          // 51: ProductChangeMessage
-	nil,                                   // 52: Response.RouteParamsEntry
-	nil,                                   // 53: EffectConfig.ExtraMapEntry
-	(*Rsp_F)(nil),                         // 54: Rsp.F
+	(*RoomHotInfo)(nil),                   // 10: RoomHotInfo
+	(*GiftStruct)(nil),                    // 11: GiftStruct
+	(*GiftIMPriority)(nil),                // 12: GiftIMPriority
+	(*TextEffect)(nil),                    // 13: TextEffect
+	(*TextEffectDetail)(nil),              // 14: TextEffectDetail
+	(*MemberMessage)(nil),                 // 15: MemberMessage
+	(*PublicAreaCommon)(nil),              // 16: PublicAreaCommon
+	(*SuffixText)(nil),                    // 17: SuffixText
+	(*HoverInfo)(nil),                     // 18: HoverInfo
+	(*PersonalizedDisplayInfo)(nil),       // 19: PersonalizedDisplayInfo
+	(*ChatReplyRespInfo)(nil),             // 20: ChatReplyRespInfo
+	(*ChatMentionInfo)(nil),               // 21: ChatMentionInfo
+	(*BottomPinInfo)(nil),                 // 22: BottomPinInfo
+	(*ScrollInfo)(nil),                    // 23: ScrollInfo
+	(*EffectConfig)(nil),                  // 24: EffectConfig
+	(*PicoEffectConfig)(nil),              // 25: PicoEffectConfig
+	(*Text)(nil),                          // 26: Text
+	(*TextPiece)(nil),                     // 27: TextPiece
+	(*TextPieceImage)(nil),                // 28: TextPieceImage
+	(*TextPiecePatternRef)(nil),           // 29: TextPiecePatternRef
+	(*TextPieceHeart)(nil),                // 30: TextPieceHeart
+	(*TextPieceGift)(nil),                 // 31: TextPieceGift
+	(*PatternRef)(nil),                    // 32: PatternRef
+	(*TextPieceUser)(nil),                 // 33: TextPieceUser
+	(*TextFormat)(nil),                    // 34: TextFormat
+	(*LikeMessage)(nil),                   // 35: LikeMessage
+	(*SocialMessage)(nil),                 // 36: SocialMessage
+	(*PicoDisplayInfo)(nil),               // 37: PicoDisplayInfo
+	(*DoubleLikeDetail)(nil),              // 38: DoubleLikeDetail
+	(*DisplayControlInfo)(nil),            // 39: DisplayControlInfo
+	(*EpisodeChatMessage)(nil),            // 40: EpisodeChatMessage
+	(*MatchAgainstScoreMessage)(nil),      // 41: MatchAgainstScoreMessage
+	(*Against)(nil),                       // 42: Against
+	(*Common)(nil),                        // 43: Common
+	(*User)(nil),                          // 44: User
+	(*FollowInfo)(nil),                    // 45: FollowInfo
+	(*Image)(nil),                         // 46: Image
+	(*NinePatchSetting)(nil),              // 47: NinePatchSetting
+	(*ImageContent)(nil),                  // 48: ImageContent
+	(*PushFrame)(nil),                     // 49: PushFrame
+	(*Kk)(nil),                            // 50: kk
+	(*SendMessageBody)(nil),               // 51: SendMessageBody
+	(*ExtList)(nil),                       // 52: ExtList
+	(*Rsp)(nil),                           // 53: Rsp
+	(*PreMessage)(nil),                    // 54: PreMessage
+	(*HeadersList)(nil),                   // 55: HeadersList
+	(*LiveShoppingMessage)(nil),           // 56: LiveShoppingMessage
+	(*RoomStatsMessage)(nil),              // 57: RoomStatsMessage
+	(*ProductInfo)(nil),                   // 58: ProductInfo
+	(*CategoryInfo)(nil),                  // 59: CategoryInfo
+	(*ProductChangeMessage)(nil),          // 60: ProductChangeMessage
+	nil,                                   // 61: Response.RouteParamsEntry
+	nil,                                   // 62: Message.MessageExtraEntry
+	nil,                                   // 63: EffectConfig.ExtraMapEntry
+	(*Rsp_F)(nil),                         // 64: Rsp.F
 }
 var file_messages_proto_depIdxs = []int32{
 	2,   // 0: Response.messagesList:type_name -> Message
-	52,  // 1: Response.routeParams:type_name -> Response.RouteParamsEntry
-	34,  // 2: ChatMessage.common:type_name -> Common
-	35,  // 3: ChatMessage.user:type_name -> User
-	37,  // 4: ChatMessage.backgroundImage:type_name -> Image
-	37,  // 5: ChatMessage.backgroundImageV2:type_name -> Image
-	15,  // 6: ChatMessage.publicAreaCommon:type_name -> PublicAreaCommon
-	37,  // 7: ChatMessage.giftImage:type_name -> Image
-	4,   // 8: ChatMessage.landscapeAreaCommon:type_name -> LandscapeAreaCommon
-	17,  // 9: ChatMessage.rtfContent:type_name -> Text
-	0,   // 10: LandscapeAreaCommon.commentTypeTagsList:type_name -> CommentTypeTag
-	34,  // 11: RoomUserSeqMessage.common:type_name -> Common
-	8,   // 12: RoomUserSeqMessage.ranksList:type_name -> RoomUserSeqMessageContributor
-	8,   // 13: RoomUserSeqMessage.seatsList:type_name -> RoomUserSeqMessageContributor
-	34,  // 14: CommonTextMessage.common:type_name -> Common
-	35,  // 15: CommonTextMessage.user:type_name -> User
-	34,  // 16: UpdateFanTicketMessage.common:type_name -> Common
-	35,  // 17: RoomUserSeqMessageContributor.user:type_name -> User
-	34,  // 18: GiftMessage.common:type_name -> Common
-	35,  // 19: GiftMessage.user:type_name -> User
-	35,  // 20: GiftMessage.toUser:type_name -> User
-	12,  // 21: GiftMessage.textEffect:type_name -> TextEffect
-	11,  // 22: GiftMessage.priority:type_name -> GiftIMPriority
-	10,  // 23: GiftMessage.gift:type_name -> GiftStruct
-	15,  // 24: GiftMessage.publicAreaCommon:type_name -> PublicAreaCommon
-	17,  // 25: GiftMessage.trayDisplayText:type_name -> Text
-	37,  // 26: GiftStruct.image:type_name -> Image
-	37,  // 27: GiftStruct.giftLabelIcon:type_name -> Image
-	37,  // 28: GiftStruct.icon:type_name -> Image
-	13,  // 29: TextEffect.portrait:type_name -> TextEffectDetail
-	13,  // 30: TextEffect.landscape:type_name -> TextEffectDetail
-	17,  // 31: TextEffectDetail.text:type_name -> Text
-	37,  // 32: TextEffectDetail.background:type_name -> Image
-	34,  // 33: MemberMessage.common:type_name -> Common
-	35,  // 34: MemberMessage.user:type_name -> User
-	35,  // 35: MemberMessage.operator:type_name -> User
-	16,  // 36: MemberMessage.effectConfig:type_name -> EffectConfig
-	16,  // 37: MemberMessage.enterEffectConfig:type_name -> EffectConfig
-	37,  // 38: MemberMessage.backgroundImage:type_name -> Image
-	37,  // 39: MemberMessage.backgroundImageV2:type_name -> Image
-	17,  // 40: MemberMessage.anchorDisplayText:type_name -> Text
-	15,  // 41: MemberMessage.publicAreaCommon:type_name -> PublicAreaCommon
-	37,  // 42: PublicAreaCommon.userLabel:type_name -> Image
-	37,  // 43: EffectConfig.icon:type_name -> Image
-	17,  // 44: EffectConfig.text:type_name -> Text
-	37,  // 45: EffectConfig.textIcon:type_name -> Image
-	37,  // 46: EffectConfig.badge:type_name -> Image
-	37,  // 47: EffectConfig.textIconOverlay:type_name -> Image
-	37,  // 48: EffectConfig.animatedBadge:type_name -> Image
-	37,  // 49: EffectConfig.dynamicImage:type_name -> Image
-	53,  // 50: EffectConfig.extraMap:type_name -> EffectConfig.ExtraMapEntry
-	25,  // 51: Text.defaultFormat:type_name -> TextFormat
-	18,  // 52: Text.piecesList:type_name -> TextPiece
-	25,  // 53: TextPiece.format:type_name -> TextFormat
-	24,  // 54: TextPiece.userValue:type_name -> TextPieceUser
-	22,  // 55: TextPiece.giftValue:type_name -> TextPieceGift
-	21,  // 56: TextPiece.heartValue:type_name -> TextPieceHeart
-	20,  // 57: TextPiece.patternRefValue:type_name -> TextPiecePatternRef
-	19,  // 58: TextPiece.imageValue:type_name -> TextPieceImage
-	37,  // 59: TextPieceImage.image:type_name -> Image
-	23,  // 60: TextPieceGift.nameRef:type_name -> PatternRef
-	35,  // 61: TextPieceUser.user:type_name -> User
-	34,  // 62: LikeMessage.common:type_name -> Common
-	35,  // 63: LikeMessage.user:type_name -> User
-	29,  // 64: LikeMessage.doubleLikeDetail:type_name -> DoubleLikeDetail
-	30,  // 65: LikeMessage.displayControlInfo:type_name -> DisplayControlInfo
-	28,  // 66: LikeMessage.picoDisplayInfo:type_name -> PicoDisplayInfo
-	34,  // 67: SocialMessage.common:type_name -> Common
-	35,  // 68: SocialMessage.user:type_name -> User
-	15,  // 69: SocialMessage.publicAreaCommon:type_name -> PublicAreaCommon
-	37,  // 70: PicoDisplayInfo.emojiIcon:type_name -> Image
-	2,   // 71: EpisodeChatMessage.common:type_name -> Message
-	35,  // 72: EpisodeChatMessage.user:type_name -> User
-	37,  // 73: EpisodeChatMessage.giftImage:type_name -> Image
-	34,  // 74: MatchAgainstScoreMessage.common:type_name -> Common
-	33,  // 75: MatchAgainstScoreMessage.against:type_name -> Against
-	37,  // 76: Against.leftLogo:type_name -> Image
-	37,  // 77: Against.rightLogo:type_name -> Image
-	35,  // 78: Common.user:type_name -> User
-	37,  // 79: User.AvatarThumb:type_name -> Image
-	37,  // 80: User.AvatarMedium:type_name -> Image
-	37,  // 81: User.AvatarLarge:type_name -> Image
-	37,  // 82: User.BadgeImageList:type_name -> Image
-	36,  // 83: User.FollowInfo:type_name -> FollowInfo
-	37,  // 84: User.AvatarBorder:type_name -> Image
-	37,  // 85: User.Medal:type_name -> Image
-	37,  // 86: User.RealTimeIconsList:type_name -> Image
-	39,  // 87: Image.content:type_name -> ImageContent
-	38,  // 88: Image.FlexSettingList:type_name -> NinePatchSetting
-	38,  // 89: Image.TextSettingList:type_name -> NinePatchSetting
-	46,  // 90: PushFrame.headersList:type_name -> HeadersList
-	43,  // 91: SendMessageBody.ext:type_name -> ExtList
-	54,  // 92: Rsp.f:type_name -> Rsp.F
-	42,  // 93: PreMessage.sendMessageBody:type_name -> SendMessageBody
-	46,  // 94: PreMessage.headers:type_name -> HeadersList
-	34,  // 95: LiveShoppingMessage.common:type_name -> Common
-	34,  // 96: RoomStatsMessage.common:type_name -> Common
-	34,  // 97: ProductChangeMessage.common:type_name -> Common
-	49,  // 98: ProductChangeMessage.updateProductInfoList:type_name -> ProductInfo
-	50,  // 99: ProductChangeMessage.updateCategoryInfoList:type_name -> CategoryInfo
-	100, // [100:100] is the sub-list for method output_type
-	100, // [100:100] is the sub-list for method input_type
-	100, // [100:100] is the sub-list for extension type_name
-	100, // [100:100] is the sub-list for extension extendee
-	0,   // [0:100] is the sub-list for field type_name
+	61,  // 1: Response.routeParams:type_name -> Response.RouteParamsEntry
+	62,  // 2: Message.message_extra:type_name -> Message.MessageExtraEntry
+	43,  // 3: ChatMessage.common:type_name -> Common
+	44,  // 4: ChatMessage.user:type_name -> User
+	46,  // 5: ChatMessage.backgroundImage:type_name -> Image
+	46,  // 6: ChatMessage.backgroundImageV2:type_name -> Image
+	16,  // 7: ChatMessage.publicAreaCommon:type_name -> PublicAreaCommon
+	46,  // 8: ChatMessage.giftImage:type_name -> Image
+	4,   // 9: ChatMessage.landscapeAreaCommon:type_name -> LandscapeAreaCommon
+	26,  // 10: ChatMessage.rtfContent:type_name -> Text
+	26,  // 11: ChatMessage.rtfContentV2:type_name -> Text
+	0,   // 12: LandscapeAreaCommon.commentTypeTagsList:type_name -> CommentTypeTag
+	43,  // 13: RoomUserSeqMessage.common:type_name -> Common
+	8,   // 14: RoomUserSeqMessage.ranksList:type_name -> RoomUserSeqMessageContributor
+	8,   // 15: RoomUserSeqMessage.seatsList:type_name -> RoomUserSeqMessageContributor
+	43,  // 16: CommonTextMessage.common:type_name -> Common
+	44,  // 17: CommonTextMessage.user:type_name -> User
+	43,  // 18: UpdateFanTicketMessage.common:type_name -> Common
+	44,  // 19: RoomUserSeqMessageContributor.user:type_name -> User
+	43,  // 20: GiftMessage.common:type_name -> Common
+	44,  // 21: GiftMessage.user:type_name -> User
+	44,  // 22: GiftMessage.toUser:type_name -> User
+	13,  // 23: GiftMessage.textEffect:type_name -> TextEffect
+	12,  // 24: GiftMessage.priority:type_name -> GiftIMPriority
+	11,  // 25: GiftMessage.gift:type_name -> GiftStruct
+	16,  // 26: GiftMessage.publicAreaCommon:type_name -> PublicAreaCommon
+	26,  // 27: GiftMessage.trayDisplayText:type_name -> Text
+	10,  // 28: GiftMessage.roomHotInfo:type_name -> RoomHotInfo
+	46,  // 29: GiftStruct.image:type_name -> Image
+	46,  // 30: GiftStruct.giftLabelIcon:type_name -> Image
+	46,  // 31: GiftStruct.icon:type_name -> Image
+	46,  // 32: GiftStruct.dynamicImgForSelected:type_name -> Image
+	46,  // 33: GiftStruct.topRightAvatar:type_name -> Image
+	26,  // 34: GiftStruct.bottomText:type_name -> Text
+	46,  // 35: GiftStruct.webpImage:type_name -> Image
+	46,  // 36: GiftStruct.selectedLabel:type_name -> Image
+	14,  // 37: TextEffect.portrait:type_name -> TextEffectDetail
+	14,  // 38: TextEffect.landscape:type_name -> TextEffectDetail
+	26,  // 39: TextEffectDetail.text:type_name -> Text
+	46,  // 40: TextEffectDetail.background:type_name -> Image
+	43,  // 41: MemberMessage.common:type_name -> Common
+	44,  // 42: MemberMessage.user:type_name -> User
+	44,  // 43: MemberMessage.operator:type_name -> User
+	24,  // 44: MemberMessage.effectConfig:type_name -> EffectConfig
+	24,  // 45: MemberMessage.enterEffectConfig:type_name -> EffectConfig
+	46,  // 46: MemberMessage.backgroundImage:type_name -> Image
+	46,  // 47: MemberMessage.backgroundImageV2:type_name -> Image
+	26,  // 48: MemberMessage.anchorDisplayText:type_name -> Text
+	16,  // 49: MemberMessage.publicAreaCommon:type_name -> PublicAreaCommon
+	25,  // 50: MemberMessage.picoEnterEffectConfig:type_name -> PicoEffectConfig
+	46,  // 51: PublicAreaCommon.userLabel:type_name -> Image
+	17,  // 52: PublicAreaCommon.suffixText:type_name -> SuffixText
+	20,  // 53: PublicAreaCommon.replyResp:type_name -> ChatReplyRespInfo
+	19,  // 54: PublicAreaCommon.personalizedDisplayInfo:type_name -> PersonalizedDisplayInfo
+	21,  // 55: PublicAreaCommon.mentionInfo:type_name -> ChatMentionInfo
+	18,  // 56: PublicAreaCommon.hoverInfo:type_name -> HoverInfo
+	22,  // 57: PublicAreaCommon.bottomPinConfig:type_name -> BottomPinInfo
+	23,  // 58: PublicAreaCommon.scrollInfo:type_name -> ScrollInfo
+	26,  // 59: SuffixText.text:type_name -> Text
+	26,  // 60: ChatReplyRespInfo.replyText:type_name -> Text
+	46,  // 61: EffectConfig.icon:type_name -> Image
+	26,  // 62: EffectConfig.text:type_name -> Text
+	46,  // 63: EffectConfig.textIcon:type_name -> Image
+	46,  // 64: EffectConfig.badge:type_name -> Image
+	46,  // 65: EffectConfig.textIconOverlay:type_name -> Image
+	46,  // 66: EffectConfig.animatedBadge:type_name -> Image
+	46,  // 67: EffectConfig.dynamicImage:type_name -> Image
+	63,  // 68: EffectConfig.extraMap:type_name -> EffectConfig.ExtraMapEntry
+	46,  // 69: EffectConfig.badgeList:type_name -> Image
+	46,  // 70: PicoEffectConfig.icon:type_name -> Image
+	26,  // 71: PicoEffectConfig.text:type_name -> Text
+	46,  // 72: PicoEffectConfig.textIcon:type_name -> Image
+	46,  // 73: PicoEffectConfig.badge:type_name -> Image
+	34,  // 74: Text.defaultFormat:type_name -> TextFormat
+	27,  // 75: Text.piecesList:type_name -> TextPiece
+	34,  // 76: TextPiece.format:type_name -> TextFormat
+	33,  // 77: TextPiece.userValue:type_name -> TextPieceUser
+	31,  // 78: TextPiece.giftValue:type_name -> TextPieceGift
+	30,  // 79: TextPiece.heartValue:type_name -> TextPieceHeart
+	29,  // 80: TextPiece.patternRefValue:type_name -> TextPiecePatternRef
+	28,  // 81: TextPiece.imageValue:type_name -> TextPieceImage
+	46,  // 82: TextPieceImage.image:type_name -> Image
+	32,  // 83: TextPieceGift.nameRef:type_name -> PatternRef
+	44,  // 84: TextPieceUser.user:type_name -> User
+	43,  // 85: LikeMessage.common:type_name -> Common
+	44,  // 86: LikeMessage.user:type_name -> User
+	38,  // 87: LikeMessage.doubleLikeDetail:type_name -> DoubleLikeDetail
+	39,  // 88: LikeMessage.displayControlInfo:type_name -> DisplayControlInfo
+	37,  // 89: LikeMessage.picoDisplayInfo:type_name -> PicoDisplayInfo
+	43,  // 90: SocialMessage.common:type_name -> Common
+	44,  // 91: SocialMessage.user:type_name -> User
+	16,  // 92: SocialMessage.publicAreaCommon:type_name -> PublicAreaCommon
+	46,  // 93: PicoDisplayInfo.emojiIcon:type_name -> Image
+	2,   // 94: EpisodeChatMessage.common:type_name -> Message
+	44,  // 95: EpisodeChatMessage.user:type_name -> User
+	46,  // 96: EpisodeChatMessage.giftImage:type_name -> Image
+	43,  // 97: MatchAgainstScoreMessage.common:type_name -> Common
+	42,  // 98: MatchAgainstScoreMessage.against:type_name -> Against
+	46,  // 99: Against.leftLogo:type_name -> Image
+	46,  // 100: Against.rightLogo:type_name -> Image
+	26,  // 101: Common.displayText:type_name -> Text
+	44,  // 102: Common.user:type_name -> User
+	46,  // 103: User.AvatarThumb:type_name -> Image
+	46,  // 104: User.AvatarMedium:type_name -> Image
+	46,  // 105: User.AvatarLarge:type_name -> Image
+	46,  // 106: User.BadgeImageList:type_name -> Image
+	45,  // 107: User.FollowInfo:type_name -> FollowInfo
+	46,  // 108: User.AvatarBorder:type_name -> Image
+	46,  // 109: User.Medal:type_name -> Image
+	46,  // 110: User.RealTimeIconsList:type_name -> Image
+	48,  // 111: Image.content:type_name -> ImageContent
+	47,  // 112: Image.FlexSettingList:type_name -> NinePatchSetting
+	47,  // 113: Image.TextSettingList:type_name -> NinePatchSetting
+	55,  // 114: PushFrame.headersList:type_name -> HeadersList
+	52,  // 115: SendMessageBody.ext:type_name -> ExtList
+	64,  // 116: Rsp.f:type_name -> Rsp.F
+	51,  // 117: PreMessage.sendMessageBody:type_name -> SendMessageBody
+	55,  // 118: PreMessage.headers:type_name -> HeadersList
+	43,  // 119: LiveShoppingMessage.common:type_name -> Common
+	43,  // 120: RoomStatsMessage.common:type_name -> Common
+	43,  // 121: ProductChangeMessage.common:type_name -> Common
+	58,  // 122: ProductChangeMessage.updateProductInfoList:type_name -> ProductInfo
+	59,  // 123: ProductChangeMessage.updateCategoryInfoList:type_name -> CategoryInfo
+	124, // [124:124] is the sub-list for method output_type
+	124, // [124:124] is the sub-list for method input_type
+	124, // [124:124] is the sub-list for extension type_name
+	124, // [124:124] is the sub-list for extension extendee
+	0,   // [0:124] is the sub-list for field type_name
 }
 
 func init() { file_messages_proto_init() }
@@ -6145,7 +7670,7 @@ func file_messages_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_messages_proto_rawDesc), len(file_messages_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   54,
+			NumMessages:   64,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

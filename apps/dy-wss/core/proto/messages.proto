@@ -30,7 +30,7 @@ message Message {
   map<string, string> message_extra = 9;
 }
 
-// 聊天
+// 聊天 — field numbers from live-schema-im.e322bd8a.js
 message ChatMessage {
   Common common = 1;
   User user = 2;
@@ -39,8 +39,8 @@ message ChatMessage {
   Image backgroundImage = 5;
   string fullScreenTextColor = 6;
   Image backgroundImageV2 = 7;
-  PublicAreaCommon publicAreaCommon = 8;
-  Image giftImage = 9;
+  PublicAreaCommon publicAreaCommon = 9;
+  Image giftImage = 10;
   uint64 agreeMsgId = 11;
   uint32 priorityLevel = 12;
   LandscapeAreaCommon landscapeAreaCommon = 13;
@@ -48,10 +48,11 @@ message ChatMessage {
   bool sendReview = 16;
   bool fromIntercom = 17;
   bool intercomHideUserCard = 18;
-  //  repeated chatTagsList = 19;
-  string chatBy = 20;
+  uint32 chatTags = 19;
+  uint64 chatBy = 20;
   uint32 individualChatPriority = 21;
-  Text rtfContent = 22;
+  Text rtfContent = 40;
+  Text rtfContentV2 = 41;
 }
 
 message LandscapeAreaCommon {
@@ -102,7 +103,7 @@ message RoomUserSeqMessageContributor {
   string exactlyScore = 7;
 }
 
-// 礼物消息
+// 礼物消息 — live-schema-im.e322bd8a.js
 message GiftMessage {
   Common common = 1;
   uint64 giftId = 2;
@@ -124,20 +125,36 @@ message GiftMessage {
   PublicAreaCommon publicAreaCommon = 18;
   Text trayDisplayText = 19;
   uint64 bannedDisplayEffects = 20;
-  //  GiftTrayInfo trayInfo = 21;
-  //  AssetEffectMixInfo assetEffectMixInfo = 22;
+  // GiftTrayInfo trayInfo = 21;
+  // AssetEffectMixInfo assetEffectMixInfo = 24;
   bool displayForSelf = 25;
   string interactGiftInfo = 26;
   string diyItemInfo = 27;
   repeated uint64 minAssetSetList = 28;
   uint64 totalCount = 29;
   uint32 clientGiftSource = 30;
-  //  AnchorGiftData anchorGift = 31;
+  // AnchorGiftData anchorGift = 31;
   repeated uint64 toUserIdsList = 32;
   uint64 sendTime = 33;
   uint64 forceDisplayEffects = 34;
   string traceId = 35;
   uint64 effectDisplayTs = 36;
+  // SendTogether sendTogether = 37;
+  // ExtraEffect extraEffect = 38;
+  RoomHotInfo roomHotInfo = 39;
+  string giftPlayParam = 40;
+  uint32 multiSendEffectLevel = 41;
+  // repeated SeriesPlayGift seriesGiftData = 42;
+  bool useRoomMessage = 43;
+  uint64 count = 44;
+  uint64 videoLinkmicRoomId = 45;
+  repeated string toOpenids = 5000;
+}
+
+message RoomHotInfo {
+  uint32 localHotStrategy = 1;
+  uint32 publicAreaLevel = 2;
+  uint32 giftLevel = 3;
 }
 
 message GiftStruct {
@@ -146,7 +163,7 @@ message GiftStruct {
   bool notify = 3;
   uint64 duration = 4;
   uint64 id = 5;
-  //  GiftStructFansClubInfo fansclubInfo = 6;
+  // GiftStructFansClubInfo fansclubInfo = 6;
   bool forLinkmic = 7;
   bool doodle = 8;
   bool forFansclub = 9;
@@ -160,10 +177,54 @@ message GiftStruct {
   string region = 17;
   string manual = 18;
   bool forCustom = 19;
-  //  specialEffectsMap = 20;
   Image icon = 21;
   uint32 actionType = 22;
-  // fixme 后面的就不写了还有几十个属性
+  uint32 watermelonSeeds = 23;
+  string goldEffect = 24;
+  uint64 goldenBeans = 26;
+  uint64 honorLevel = 27;
+  uint32 itemType = 28;
+  string schemeUrl = 29;
+  string eventName = 31;
+  uint64 nobleLevel = 32;
+  string guideUrl = 33;
+  bool punishMedicine = 34;
+  bool forPortal = 35;
+  string businessText = 36;
+  bool cnyGift = 37;
+  uint64 appId = 38;
+  uint64 vipLevel = 39;
+  bool isGray = 40;
+  string graySchemeUrl = 41;
+  uint64 giftScene = 42;
+  bool forFirstRecharge = 46;
+  Image dynamicImgForSelected = 47;
+  uint32 afterSendAction = 48;
+  uint64 giftOfflineTime = 49;
+  string topBarText = 50;
+  Image topRightAvatar = 51;
+  string bannerSchemeUrl = 52;
+  bool isLocked = 53;
+  uint64 reqExtraType = 54;
+  repeated uint64 assetIds = 55;
+  uint32 needSweepLightCount = 58;
+  Text bottomText = 60;
+  uint32 mysteryShopStatus = 61;
+  repeated uint64 optionalAssetIds = 62;
+  bool disableWishList = 63;
+  bool trayDynamicImgFlippable = 66;
+  uint64 picoShowAction = 67;
+  uint64 selectedDynamicEffect = 68;
+  uint32 bizType = 72;
+  Image webpImage = 74;
+  uint32 giftSource = 75;
+  repeated uint64 requiredAssets = 76;
+  Image selectedLabel = 77;
+  uint64 sortScore = 78;
+  uint64 topicId = 79;
+  string sortExtra = 80;
+  string sendExtraParams = 81;
+  uint64 giftObtainTime = 82;
 }
 
 message GiftIMPriority {
@@ -195,7 +256,7 @@ message TextEffectDetail {
   uint32 strokeWidth = 15;
 }
 
-// 成员消息
+// 成员消息 — live-schema-im.e322bd8a.js
 message MemberMessage {
   Common common = 1;
   User user = 2;
@@ -218,17 +279,84 @@ message MemberMessage {
   PublicAreaCommon publicAreaCommon = 19;
   uint64 userEnterTipType = 20;
   uint64 anchorEnterTipType = 21;
-  uint64 user_enter_tip_type = 20;
-  uint64 anchor_enter_tip_type = 21;
-  // PicoEffectConfig pico_enter_effect_config = 24;
-  uint32 unset_admin_type = 25;
-  string user_open_id = 5000;
+  PicoEffectConfig picoEnterEffectConfig = 24;
+  uint32 unsetAdminType = 25;
+  string enterRedirectFrom = 26;
+  string userOpenId = 5000;
 }
 
 message PublicAreaCommon {
   Image userLabel = 1;
   uint64 userConsumeInRoom = 2;
   uint64 userSendGiftCntInRoom = 3;
+  uint64 individualPriority = 4;
+  uint64 supportPin = 6;
+  SuffixText suffixText = 7;
+  uint32 imAction = 8;
+  bool forbiddenProfile = 9;
+  ChatReplyRespInfo replyResp = 10;
+  uint64 isFeatured = 12;
+  bool needFilterDisplay = 13;
+  PersonalizedDisplayInfo personalizedDisplayInfo = 14;
+  uint64 forceInsertionPriority = 15;
+  ChatMentionInfo mentionInfo = 16;
+  HoverInfo hoverInfo = 17;
+  bool showInDanmaku = 18;
+  bool isLikeComment = 19;
+  bool batchRefresh = 20;
+  bool isAiMsg = 21;
+  bool shouldLogLightInteractMob = 22;
+  int32 tailInteractType = 24;
+  string defaultClickSchemaUrl = 25;
+  BottomPinInfo bottomPinConfig = 26;
+  bool forcedInsert = 27;
+  bool withUserFeatureLabel = 28;
+  ScrollInfo scrollInfo = 29;
+}
+
+message SuffixText {
+  uint64 bizType = 1;
+  Text text = 2;
+  string tags = 3;
+  string textList = 4;
+}
+
+message HoverInfo {
+  bool isHover = 1;
+  uint64 priority = 2;
+  uint64 duration = 3;
+  uint64 durationInvolveDisplayTime = 4;
+  uint64 durationThreshold = 5;
+}
+
+message PersonalizedDisplayInfo {
+  bool isPersonalized = 1;
+  uint64 foldType = 2;
+}
+
+message ChatReplyRespInfo {
+  uint64 replyMsgId = 1;
+  uint64 replyId = 2;
+  Text replyText = 3;
+  uint64 replyUid = 4;
+  string replyWebcastUid = 5;
+  string replyOpenId = 5000;
+}
+
+message ChatMentionInfo {
+  repeated string mentionUserIds = 1;
+  repeated string mentionWebcastUserIds = 2;
+  uint64 showTime = 3;
+}
+
+message BottomPinInfo {
+  uint64 stayDuration = 1;
+  uint64 exitStrategy = 2;
+}
+
+message ScrollInfo {
+  bool scrollSlowEnable = 1;
+  uint64 scrollSlowDuration = 2;
 }
 
 message EffectConfig {
@@ -254,6 +382,19 @@ message EffectConfig {
   string dressId = 20;
   uint64 alignment = 21;
   uint64 alignmentOffset = 22;
+  string effectScene = 23;
+  repeated Image badgeList = 25;
+}
+
+message PicoEffectConfig {
+  uint64 type = 1;
+  Image icon = 2;
+  Text text = 3;
+  Image textIcon = 4;
+  uint32 stayTime = 5;
+  Image badge = 6;
+  uint64 centerAnimAssetId = 7;
+  string dressId = 9;
 }
 
 message Text {
@@ -412,7 +553,7 @@ message Common {
   uint32 monitor = 5;
   bool isShowMsg = 6;
   string describe = 7;
-  //  DisplayText displayText = 8;
+  Text displayText = 8;
   uint64 foldType = 9;
   uint64 anchorFoldType = 10;
   uint64 priorityScore = 11;
@@ -420,7 +561,7 @@ message Common {
   string msgProcessFilterK = 13;
   string msgProcessFilterV = 14;
   User user = 15;
-  //  Room room = 16;
+  // Room room = 16;
   uint64 anchorFoldTypeV2 = 17;
   uint64 processAtSeiTimeMs = 18;
   uint64 randomDispatchMs = 19;
@@ -428,7 +569,8 @@ message Common {
   uint64 channelId = 21;
   uint64 diffSei2absSecond = 22;
   uint64 anchorFoldDuration = 23;
-  uint64 app_id = 24;
+  uint64 appId = 24;
+  string roomIdStr = 27;
 }
 
 message User {
