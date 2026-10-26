@@ -1,0 +1,7 @@
+# scrape snapshots / webpack entry dumps (regenerate locally)
+page.html
+client-entry*.js
+runtime~*.js
+latest/
+__pycache__/
+*.pyc
