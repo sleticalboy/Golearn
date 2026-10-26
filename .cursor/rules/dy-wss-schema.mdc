@@ -1,0 +1,19 @@
+---
+description: dy-wss Douyin WSS / webcast schema refresh and proto fill workflow
+globs: apps/dy-wss/**/*,_schema_probe/**/*
+alwaysApply: false
+---
+
+# dy-wss schema & proto
+
+Full playbook: `apps/dy-wss/AGENTS.md`. Schema truth: `apps/dy-wss/core/assets/SCHEMA.md`.
+
+When refreshing IM field definitions:
+
+1. `python _schema_probe/fetch_latest.py` (add `--copy-assets` to update assets)
+2. `python _schema_probe/dump_maps2.py` / `diff_decode_maps.py`
+3. Edit `apps/dy-wss/core/proto/messages.proto` from diff; types via `dy_live.proto.txt`
+4. `cd apps/dy-wss/core/proto && protoc --go_out=.. --go_opt=paths=source_relative messages.proto`
+5. `go run ./apps/dy-wss <live-url>` — expect MemberMessage unpack
+
+Do not hand-edit `messages.pb.go`. Do not use deprecated `live-schema.f30b05b0.js` as truth. Push only if user asks.

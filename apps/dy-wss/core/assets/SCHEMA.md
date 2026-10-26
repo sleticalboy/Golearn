@@ -1,15 +1,23 @@
 # Webcast schema sources
 
-Truth source for IM field numbers (CDN webpack chunks, 2026-10):
+Agent workflow: [`../AGENTS.md`](../AGENTS.md) (repo path `apps/dy-wss/AGENTS.md`).
 
-- `live-schema-im.e322bd8a.js` — IM / chat / gift / member messages
-- `live-schema.66b4f47c.js` — data helpers
-- `transport-schema.32356986.js` / `transport-schema-im.63ff9a29.js` — transport
+Truth source for IM field numbers (CDN webpack chunks; refresh via `_schema_probe/fetch_latest.py`):
+
+- `live-schema-im.*.js` — IM / chat / gift / member messages
+- `live-schema.*.js` (not `-im`) — data helpers
+- `transport-schema*.js` — transport
+
+Current checked-in hashes (2026-10):
+
+- `live-schema-im.e322bd8a.js`
+- `live-schema.66b4f47c.js`
+- `transport-schema.32356986.js` / `transport-schema-im.63ff9a29.js`
 
 Reference:
 
-- `dy_live.proto.txt` — human-readable proto dump (nested types / field typing)
-- `../../../../_schema_probe/` — diff/dump scripts against these assets
+- `dy_live.proto.txt` — nested types / field typing
+- `_schema_probe/` — fetch / dump / diff
 
 Deprecated (do not use for new fields):
 
