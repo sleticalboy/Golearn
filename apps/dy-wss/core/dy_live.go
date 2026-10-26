@@ -1,26 +1,17 @@
 package core
 
 import (
-	"bufio"
 	"bytes"
 	"compress/gzip"
-	"embed"
-	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"os"
-	"os/exec"
-	"strings"
 	"time"
 
 	"github.com/gorilla/websocket"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 )
-
-//go:embed assets/*
-var assetsFs embed.FS
 
 var liveRoomId string
 var LIVE_GIFT_LIST = map[string]bool{
@@ -134,52 +125,14 @@ func init() {
 	log.SetPrefix("\n")
 }
 
+// GetLiveInfo fetches room metadata in pure Go (no main.exe).
+// Signature still stubbed until JS engine is wired.
 func GetLiveInfo(liveUrl string) *LiveInfo {
-	buf, err := assetsFs.ReadFile("assets/main.exe")
+	info, err := ParseLiveRoomURL(liveUrl)
 	if err != nil {
-		panic(err)
+		log.Fatalf("GetLiveInfo: %v", err)
 	}
-	_ = os.WriteFile("tmp.exe", buf, 0644)
-	buf, err = assetsFs.ReadFile("assets/webmssdk.js")
-	if err != nil {
-		panic(err)
-	}
-	_ = os.WriteFile("webmssdk.js", buf, 0644)
-	defer func() {
-		if r := recover(); r != nil {
-			log.Println("panic:", r)
-			_ = os.Remove("./tmp.exe")
-			_ = os.Remove("./webmssdk.js")
-		}
-	}()
-	cmd := exec.Command("./tmp.exe", liveUrl)
-	stdout, err := cmd.StdoutPipe()
-	if err != nil {
-		panic(err)
-	}
-	// 启动子进程
-	if err := cmd.Start(); err != nil {
-		log.Fatal(err)
-	}
-	var signature string
-	scanner := bufio.NewScanner(stdout)
-	// 读取子进程输出
-	for scanner.Scan() {
-		text := scanner.Text()
-		if _, r, found := strings.Cut(text, "live_info: "); found {
-			signature = r
-		}
-		fmt.Printf("子进程输出: %s\n", text)
-	}
-	// 等待子进程结束
-	if err := cmd.Wait(); err != nil {
-		log.Fatal(err)
-	}
-	var liveInfo LiveInfo
-	if err := json.Unmarshal([]byte(signature), &liveInfo); err != nil {
-		panic(err)
-	}
-	return &liveInfo
+	return info
 }
 
 func WssServerStart(liveInfo *LiveInfo) {
@@ -214,26 +167,20 @@ func WssServerStart(liveInfo *LiveInfo) {
 }
 
 func startHeartbeat(conn *websocket.Conn) {
-	// 构造心跳包
 	pingMsg := &PushFrame{PayloadType: "hb"}
 	data, err := proto.Marshal(pingMsg)
 	if err != nil {
 		log.Printf("Failed to marshal Ping message: %v", err)
 		return
 	}
-	for {
-		select {
-		case <-time.After(10 * time.Second):
-			// 发送二进制消息
-			err = conn.WriteMessage(websocket.BinaryMessage, data)
-			if err != nil {
-				log.Printf("WebSocket 发送心跳失败: %v", err)
-				break
-			}
-			log.Printf("[sendHeartbeat] [发送 ping 心跳] [房间Id：%s]", liveRoomId)
-		default:
-			//
+	ticker := time.NewTicker(10 * time.Second)
+	defer ticker.Stop()
+	for range ticker.C {
+		if err := conn.WriteMessage(websocket.BinaryMessage, data); err != nil {
+			log.Printf("WebSocket 发送心跳失败: %v", err)
+			return
 		}
+		log.Printf("[sendHeartbeat] [发送 ping 心跳] [房间Id：%s]", liveRoomId)
 	}
 }
 
@@ -366,14 +313,10 @@ func unPackWebcastMemberMessage(data []byte) proto.Message {
 		msg.MemberCount, liveRoomId, pjson.Format(&msg))
 
 	Gval.allEnterUsers += 1
-	// 判断是否是匿名用户
-	if msg.User.SecUid == "" || msg.User.Id == 111111 {
+	if msg.User != nil && (msg.User.SecUid == "" || msg.User.Id == 111111) {
 		Gval.validUsers += 1
-		log.Printf("[unPackWebcastMemberMessage] %d -> %d, %s uid: %v, secuid: %s | %+v",
-			Gval.allEnterUsers, Gval.validUsers, msg.User.NickName, msg.User.Id, msg.User.SecUid, "-") // pjson.Format(&msg))
-		log.Printf("[unPackWebcastMemberMessage] raw: %s", data)
-		_ = os.WriteFile("member_message.bin", data, 0644)
-		os.Exit(1)
+		log.Printf("[unPackWebcastMemberMessage] anon/enter %d -> %d, %s uid=%v",
+			Gval.allEnterUsers, Gval.validUsers, msg.User.NickName, msg.User.Id)
 	}
 
 	return &msg
